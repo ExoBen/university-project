@@ -1,2 +1,2 @@
-# dissertation
-4th Year Dissertation
+# project
+4th Year Project
