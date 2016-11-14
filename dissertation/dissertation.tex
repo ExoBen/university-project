@@ -1,0 +1,102 @@
+\pdfoutput=1
+
+\documentclass{l4proj}
+
+%
+% put any packages here
+%
+
+\begin{document}
+\title{Visualisation of Large Networks in a Browser}
+\author{Ben Jackson}
+\date{October 3, 2016}
+\maketitle
+
+\begin{abstract}
+We show how to produce a level 4 project report using latex and pdflatex using the
+style file l4proj.cls
+\end{abstract}
+
+\educationalconsent
+%
+%NOTE: if you include the educationalconsent (above) and your project is graded an A then
+%      it may be entered in the CS Hall of Fame
+%
+\tableofcontents
+%==============================================================================
+
+\chapter{Introduction}
+\pagenumbering{arabic}
+Rendering large networks of data (tens or hundreds of thousands of nodes and edges) is a frequent problem encountered in visualisation software due to limits in browser performance and the ability to render the information in a meaningful way the user can make sense of it. This project aims to analyse many different software packages available and outline different approaches which can be taken to help minimize the clutter and performance required to display these large networks. 
+ 
+\section{Aim}
+Currently, the problem is that far too much data is passed to the client from the server, both requireing a lot of bandwidth and processing power, and once the data is finally rendered, the result is a mass of nodes of which no useless information can be taken from. 
+
+The ideal end result of the project would involve taking the data from the server that would normally be graphed, and instead analysing that data, and then passing a modified version of the data to the client. This could be in the form of an image, removing unnecessary nodes / edges, or node bundling / edge bundling. This would result in the information being far more useful to the client, with them being able to make useful decisions based on the network presented to them, as opposed to before where they were shown a huge mass of nodes that could not easily deciphered. The end result would also ideally reduce load times / CPU / RAM required. 
+
+
+\subsection{A subsection}
+The quick brown fox jumped over the lazy dog.
+
+
+\chapter{The Fox and Dog}
+The quick brown fox jumped over the lazy dog.
+
+
+\section{The Fox Jumps Over}
+The quick brown fox jumped over the lazy dog.
+The quick brown fox jumped over Uroborus (Figure \ref{uroborus}).
+The quick brown fox jumped over the lazy dog.
+
+% %\vspace{-7mm}
+% \begin{figure}
+% \centering
+% \includegraphics[height=9.2cm,width=13.2cm]{uroboros.pdf}
+% \vspace{-30mm}
+% \caption{An alternative hierarchy of the algorithms.}
+% \label{uroborus}
+% \end{figure}
+
+The quick brown fox jumped over the lazy dog.
+
+The quick brown fox jumped over \cite{ckt} the lazy dog.
+The quick brown fox jumped over the lazy dog.
+
+
+\section{The Lazy Dog}
+The quick brown fox jumped over the lazy dog.
+
+
+%%%%%%%%%%%%%%%%
+%              %
+%  APPENDICES  %
+%              %
+%%%%%%%%%%%%%%%%
+\begin{appendices}
+
+\chapter{Running the Programs}
+An example of running from the command line is as follows:
+\begin{verbatim}
+      > java MaxClique BBMC1 brock200_1.clq 14400
+\end{verbatim}
+This will apply $BBMC$ with $style = 1$ to the first brock200 DIMACS instance allowing 14400 seconds of cpu time.
+
+\chapter{Generating Random Graphs}
+\label{sec:randomGraph}
+We generate Erd\'{o}s-R\"{e}nyi random graphs $G(n,p)$ where $n$ is the number of vertices and
+each edge is included in the graph with probability $p$ independent from every other edge. It produces
+a random graph in DIMACS format with vertices numbered 1 to $n$ inclusive. It can be run from the command line as follows to produce
+a clq file
+\begin{verbatim}
+      > java RandomGraph 100 0.9 > 100-90-00.clq
+\end{verbatim}
+\end{appendices}
+
+%%%%%%%%%%%%%%%%%%%%
+%   BIBLIOGRAPHY   %
+%%%%%%%%%%%%%%%%%%%%
+
+\bibliographystyle{plain}
+\bibliography{bib}
+
+\end{document}
