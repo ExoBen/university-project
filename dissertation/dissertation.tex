@@ -1,6 +1,7 @@
 \pdfoutput=1
 
 \documentclass{l4proj}
+\usepackage{hyperref}
 
 %
 % put any packages here
@@ -13,58 +14,156 @@
 \maketitle
 
 \begin{abstract}
-We show how to produce a level 4 project report using latex and pdflatex using the
-style file l4proj.cls
+The purpose of this research is to identify different techniques that existing software uses to visualise extremely large networks in a browser, and then compare them and review which methods are the most successful. This is good because ??. I did it by doing ??. I found out ??. Conclusion.
 \end{abstract}
 
 \educationalconsent
 %
-%NOTE: if you include the educationalconsent (above) and your project is graded an A then
-%      it may be entered in the CS Hall of Fame
+%NOTE: if you include the educationalconsent (above) and your project is graded an A then it may be entered in the CS Hall of Fame
 %
+
 \tableofcontents
 %==============================================================================
 
 \chapter{Introduction}
 \pagenumbering{arabic}
-Rendering large networks of data (tens or hundreds of thousands of nodes and edges) is a frequent problem encountered in visualisation software due to limits in browser performance and the ability to render the information in a meaningful way the user can make sense of it. This project aims to analyse many different software packages available and outline different approaches which can be taken to help minimize the clutter and performance required to display these large networks. 
+
+Rendering large networks of data (tens or hundreds of thousands of nodes and edges) in a browser is a frequent problem encountered in visualisation software due to limits in browser performance and the ability to render the information in a meaningful way the user can make sense of it. This project aims to analyse many different software packages available and outline different approaches which can be taken to help minimize the clutter and performance required to display these large networks. 
  
-\section{Aim}
+\section{Context}
 Currently, the problem is that far too much data is passed to the client from the server, both requireing a lot of bandwidth and processing power, and once the data is finally rendered, the result is a mass of nodes of which no useless information can be taken from. 
 
 The ideal end result of the project would involve taking the data from the server that would normally be graphed, and instead analysing that data, and then passing a modified version of the data to the client. This could be in the form of an image, removing unnecessary nodes / edges, or node bundling / edge bundling. This would result in the information being far more useful to the client, with them being able to make useful decisions based on the network presented to them, as opposed to before where they were shown a huge mass of nodes that could not easily deciphered. The end result would also ideally reduce load times / CPU / RAM required. 
 
+useful? 
 
-\subsection{A subsection}
-The quick brown fox jumped over the lazy dog.
+Visualisation of large networks is challenging for a number of reasons, incuding the amount of processing power and memory required in order to produce the network or get an interactive visualisation of it, and the difficulty of displaying the network clearly so a user can get useful information from it. Limiting the research to visualising the data in a browser adds another level of complexity as browsers perform far more poorly than servers or average computers and there are far fewer choices of software available that will run in a browser.
 
-
-\chapter{The Fox and Dog}
-The quick brown fox jumped over the lazy dog.
+\section{Aims and Objectives}
 
 
-\section{The Fox Jumps Over}
-The quick brown fox jumped over the lazy dog.
-The quick brown fox jumped over Uroborus (Figure \ref{uroborus}).
-The quick brown fox jumped over the lazy dog.
 
-% %\vspace{-7mm}
-% \begin{figure}
-% \centering
-% \includegraphics[height=9.2cm,width=13.2cm]{uroboros.pdf}
-% \vspace{-30mm}
-% \caption{An alternative hierarchy of the algorithms.}
-% \label{uroborus}
-% \end{figure}
-
-The quick brown fox jumped over the lazy dog.
-
-The quick brown fox jumped over \cite{ckt} the lazy dog.
-The quick brown fox jumped over the lazy dog.
+\section{Achievements}
 
 
-\section{The Lazy Dog}
-The quick brown fox jumped over the lazy dog.
+
+% \subsection{A subsection}
+% The quick brown fox jumped over the lazy dog.
+
+
+\chapter{Background}
+
+\section{Visualisation}
+
+\section{Network Visualisation}
+
+\section{Challenges of Browser Visualisation}
+
+\section{Current Graphing Software}
+
+i should write somewhere about how difficult it was to find out about testing software systems as a developer.
+
+
+\chapter{Experiment 1}
+
+
+\section{Aim} 
+((need to talk about JS and browser related stuff))
+The goal of the first experiment was to do background research into several different types of graphing software, and as a result of the research, decide what paths the project could take. The software would be analysed for several characteristics, both related to general graphing of networks, and graphing of specificaly huge networks. A list of parameters were chosen to evaluate the software against as follows:
+\begin{itemize}
+	\item Ease of download and installation of software
+	\item Quality of documentation 
+	\item How easy it was to make a simple network using the software
+	\item The ability to import and/or export a file into the system
+	\item Render time for multiple sizes of graphs
+	\item What features the software contained, including features are specific to displaying very large graphs
+	\item Whether the software had the ability to change graphical options
+	\item If multivariate graphs were supported
+\end{itemize}
+
+The software that was compared against the above parameters was all of the software found in the initial research of graphing software, which was:
+\begin{itemize}
+	\item GUESS
+	\item SNAP
+	\item Gephi
+	\item GraphViz
+	\item Tulip
+	\item D3.js
+	\item InfoViz
+\end{itemize}
+
+\section{Methodology}
+Using the list of paramaters above, a spreadsheet was made, in which every piece of software had a different sheet, and each sheet had all of the parameters each piece of software was to be compared against. The final list of parameters, split into as many sections as possible, all of which aimed to be as binary as possible or times, was:
+\begin{itemize}
+	\item Date that the current version was created
+	\item Ease of download (for most software this was a given but occassionally it was more difficult)
+	\item Installation necessary
+	\item Documentation
+	\begin{itemize}
+		\item Easy to find
+		\item Easy to understand
+		\item Comprehensive
+	\end{itemize}
+	\item Time until a hardcoded graph could be displayed
+	\item A file could be loaded into the system
+	\item If the file is altered, could it be exported to a file
+	\item For different sizes, how long it took to render the graph
+	\item If the software allowed for:
+	\begin{itemize}
+		\item Zooming
+		\item Panning
+		\item Scrolling
+	\end{itemize}
+	\item A graph could be dynamic - allowing data taken at multiple points over time to be viewed
+	\item If the software included features for displaying huge graphs, such as:
+	\begin{itemize}
+		\item Edge Bundling
+		\item Node bundling
+		\item Alternative layout options
+	\end{itemize}
+	\item A graph could be multivariate
+	\item There was the possibility of changing graphical settings for the graph
+	\item A graph could be displayed in 3D
+	\item Any other points of interest
+\end{itemize}
+
+Each piece of software was to be evaluated against this criteria, with the goal of both finding out which pieces of software were better, over many parameters, and also to become more familiar with graphing software used in industry.
+
+\section{Data}
+
+(need to incorperate that I expected APIs but I got full software packages which are fairly useless for visualising in a browser)
+
+Upon beginning to run the experiment, it became clear that several pieces of software were not useful candidates for a number of reasons. The first piece of software, GUESS, turned out to be abandonware, last being developed in 2007 and never left beta, and hence wasn't tested thoroughly as a result of this, along with documentation being very poor and hard to find. 
+
+The next piece of software, SNAP, was not fit for purpose. It was very powerful but had the purpose solely of analysing and manipulating graphs, as opposed to also visualising them. As a result, many of the characteristics being tested were not relevant for SNAP as there was no visualisations and hence no zooming / panning / scrolling / huge graph visualisation support / render times (NEED TO CHANGE THIS), although it was still examined: reading it's documentation and going through all the sample code snippets, and understandin ghow they worked. The reason this was done was because, depending on the direction the project took, graph manipulation may well be used in order to bundle edges or nodes in order to increase performance of huge networks. 
+
+Next, Gephi was tested successfully. It was recent, easy to use, and documentation was thorough. After about half an hour I was comfortable with how it worked, able to make simple graphs, and to import graphs from many formats (CSV, GDF, QML, GraphML, net, etc.) and export to all of them, along with as a PNG, PDF or SVG. The time to render graphs of a few thousand nodes was less than half a second, less than a thousand nodes was instant. It supported zooming, panning and scrolling, and having data being dynamic was a possibility. There was also multiple heavily customisable layout options, many of which would suit huge networks more than others, although there was no additional support for huge networks, other than the system being very efficient (bundling was not supported, along with partial viewing of the data). Additionally, there was the ability to change graphical settings, have the data graphed in 3D, and have a multivariate graph. 
+
+Graphviz was difficult to test, being a collection of software as opposed to a single package. Most of the packages were not fit for purpose, often displaying data in charts, for example. The package I ended up testing, sfdp, was fairly disappointing. Although it fitted most of the criteria, it turned out to be very focused on graphing far smaller networks with little support for anything of a few thousand nodes or more. The documentation was, although by no means great, fine, and the software had the ability to import and export as a very large amount of file formats. It also supported zooming/panning/scrolling, but along with getting decreasing in speed a lot faster than other pieces of software (three thousand nodes took several seconds), the UI clearly was not build around supporting large networks, with information becoming very unclear quickly.  ((IMAGE)). There was also no explicit support for visualising huge networks.
+
+Tulip - TO DO
+
+D3.js is a an API over full software which is what I hoped more of the software would be like. As a result it is far more flexible but requires far more setup to be done by the user. The documentation is good although complicated, and importing and exporting is easily possible via JSON, and other file formats with slightly greater difficulty. It supports zooming / panning / scrolling as expected and was fairly performant, displaying a few thousand nodes in about a second. Also, there are many ways to make it effective at showing huge networks, but this would require research into many different packages and potentially writing code to do it.
+
+InfoViz was really pretty similar to D3, but less widely used. (write more here).
+
+
+\section{Results}
+In general the software was not what was expected and hence the experiment was not a huge success. Far more of the software was standalone packages than expected, and other issues were also come across (such as software being deprecated or for a different purpose). 
+
+\section{Conclusion}
+
+Look into D3.js or graph manipulation and then D3 / InfoViz.
+
+
+
+\chapter{Experiment 2}
+
+
+
+\chapter{Conclusion}
+
+
 
 
 %%%%%%%%%%%%%%%%
@@ -74,22 +173,9 @@ The quick brown fox jumped over the lazy dog.
 %%%%%%%%%%%%%%%%
 \begin{appendices}
 
-\chapter{Running the Programs}
-An example of running from the command line is as follows:
-\begin{verbatim}
-      > java MaxClique BBMC1 brock200_1.clq 14400
-\end{verbatim}
-This will apply $BBMC$ with $style = 1$ to the first brock200 DIMACS instance allowing 14400 seconds of cpu time.
+\chapter{My first appendix}
+This is what was interesting.
 
-\chapter{Generating Random Graphs}
-\label{sec:randomGraph}
-We generate Erd\'{o}s-R\"{e}nyi random graphs $G(n,p)$ where $n$ is the number of vertices and
-each edge is included in the graph with probability $p$ independent from every other edge. It produces
-a random graph in DIMACS format with vertices numbered 1 to $n$ inclusive. It can be run from the command line as follows to produce
-a clq file
-\begin{verbatim}
-      > java RandomGraph 100 0.9 > 100-90-00.clq
-\end{verbatim}
 \end{appendices}
 
 %%%%%%%%%%%%%%%%%%%%
