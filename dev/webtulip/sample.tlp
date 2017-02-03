@@ -1,0 +1,11 @@
+(tlp "2.0" 
+;
+(cluster 3 "cluster"
+  (nodes 1 2 3 )
+  (edges 2 8 )
+  (cluster 4 "Sub Cluster"
+    (nodes 1 2 )
+    (edges 2 )
+  )
+)
+)

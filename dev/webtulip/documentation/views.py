@@ -1,8 +1,9 @@
 from django.shortcuts import render
 
-from tulip import *
-
 # Create your views here.
 
 def home(request):
 	return render(request, "home.html")
+
+def network(request):
+	return render(request, "network.html")
