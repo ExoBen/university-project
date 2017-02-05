@@ -5,14 +5,28 @@
 	Networks
 {% endblock %}
 
+{% block extra-css %}
+<link href="{% static 'css/vis.min.css' %}" rel="stylesheet"/>
+{% endblock %}
 
 {% block content %}
-	
-<input id="graphToLoad"></input><input type="button" value="Load" name="loadGraph"></input>
-<p id="loadedJSON"></p>
+<div class="row">
+	<div class="col-lg-6">
+		<a class="btn btn-default" href="/upload">Upload a new file.</a>
+	</div>
+	<div class="col-lg-6">
+		<input id="graphToLoad" class="form-control inlineDisplay"></input>
+		<input class="btn btn-default inlineDisplay" type="button" value="Load" name="loadGraph"></input>
+	</div>
+</div>
+
+<br/>
+
 <!-- <a href="api/saveGraph">Save a graph</a> <br/>
 <a href="api/importGraph">Import a graph</a> <br/>
 <a href="api/exportGraph">Export a graph</a> <br/> -->
+
+<div id="main_network"></div>
 
 
 
@@ -22,5 +36,7 @@
 
 <script src="{% static 'js/tulipWebApi.js' %}"></script>
 <script src="{% static 'js/interface.js' %}"></script>
+<script src="{% static 'js/vis.min.js' %}"></script>
+<script src="{% static 'js/custom_vis.js' %}"></script>
 
 {% endblock %}
