@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
 	Networks
@@ -7,11 +8,19 @@
 
 {% block content %}
 	
-<a href="api/loadGraph">Load a graph</a> <br/>
+<input id="graphToLoad"></input><input type="button" value="Load" name="loadGraph"></input>
+<p id="loadedJSON"></p>
 <!-- <a href="api/saveGraph">Save a graph</a> <br/>
 <a href="api/importGraph">Import a graph</a> <br/>
 <a href="api/exportGraph">Export a graph</a> <br/> -->
 
 
+
+{% endblock %}
+
+{% block extra-js %}
+
+<script src="{% static 'js/tulipWebApi.js' %}"></script>
+<script src="{% static 'js/interface.js' %}"></script>
 
 {% endblock %}

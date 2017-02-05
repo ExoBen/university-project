@@ -1,16 +1,19 @@
 from django.shortcuts import render
-from django.http import JsonResponse
-
+from django.http import HttpResponse
 from tulip import tlp
-# Create your views here.
+from .tlp_json_converter import TlpJsonConverter
+
 
 def loadGraph(request):
 
 	# return list of all graphs the user can load
-	print (request)
-	sample = tlp.loadGraph("sample.tlp")
-	print(sample)
-	return JsonResponse({'graph':'loaded'})
+	if (request.method == "GET" and request.GET.get("name", None) != None):
+		nameOfGraph = request.GET.get("name", None)
+		currentNetwork = tlp.loadGraph(nameOfGraph)
+
+		graphInJson = TlpJsonConverter.tlp_to_json(nameOfGraph, currentNetwork)
+
+		return HttpResponse(graphInJson, content_type="application/json")
 
 # def saveGraph(request):
 
