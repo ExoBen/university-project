@@ -1,0 +1,93 @@
+
+
+\chapter{Experiment 1}
+
+
+\section{Aim} 
+((need to talk about JS and browser related stuff))
+The goal of the first experiment was to do background research into several different types of graphing software, and as a result of the research, decide what paths the project could take. The software would be analysed for several characteristics, both related to general graphing of networks, and graphing of specificaly huge networks. A list of parameters were chosen to evaluate the software against as follows:
+\begin{itemize}
+	\item Ease of download and installation of software
+	\item Quality of documentation 
+	\item How easy it was to make a simple network using the software
+	\item The ability to import and/or export a file into the system
+	\item Render time for multiple sizes of graphs
+	\item What features the software contained, including features are specific to displaying very large graphs
+	\item Whether the software had the ability to change graphical options
+	\item If multivariate graphs were supported
+\end{itemize}
+
+The software that was compared against the above parameters was all of the software found in the initial research of graphing software, which was:
+\begin{itemize}
+	\item GUESS
+	\item SNAP
+	\item Gephi
+	\item GraphViz
+	\item Tulip
+	\item D3.js
+	\item InfoViz
+\end{itemize}
+
+\section{Methodology}
+Using the list of paramaters above, a spreadsheet was made, in which every piece of software had a different sheet, and each sheet had all of the parameters each piece of software was to be compared against. The final list of parameters, split into as many sections as possible, all of which aimed to be as binary as possible or times, was:
+\begin{itemize}
+	\item Date that the current version was created
+	\item Ease of download (for most software this was a given but occassionally it was more difficult)
+	\item Installation necessary
+	\item Documentation
+	\begin{itemize}
+		\item Easy to find
+		\item Easy to understand
+		\item Comprehensive
+	\end{itemize}
+	\item Time until a hardcoded graph could be displayed
+	\item A file could be loaded into the system
+	\item If the file is altered, could it be exported to a file
+	\item For different sizes, how long it took to render the graph
+	\item If the software allowed for:
+	\begin{itemize}
+		\item Zooming
+		\item Panning
+		\item Scrolling
+	\end{itemize}
+	\item A graph could be dynamic - allowing data taken at multiple points over time to be viewed
+	\item If the software included features for displaying huge graphs, such as:
+	\begin{itemize}
+		\item Edge Bundling
+		\item Node bundling
+		\item Alternative layout options
+	\end{itemize}
+	\item A graph could be multivariate
+	\item There was the possibility of changing graphical settings for the graph
+	\item A graph could be displayed in 3D
+	\item Any other points of interest
+\end{itemize}
+
+Each piece of software was to be evaluated against this criteria, with the goal of both finding out which pieces of software were better, over many parameters, and also to become more familiar with graphing software used in industry.
+
+\section{Data}
+
+(need to incorperate that I expected APIs but I got full software packages which are fairly useless for visualising in a browser)
+
+Upon beginning to run the experiment, it became clear that several pieces of software were not useful candidates for a number of reasons. The first piece of software, GUESS, turned out to be abandonware, last being developed in 2007 and never left beta, and hence wasn't tested thoroughly as a result of this, along with documentation being very poor and hard to find. 
+
+The next piece of software, SNAP, was not fit for purpose. It was very powerful but had the purpose solely of analysing and manipulating graphs, as opposed to also visualising them. As a result, many of the characteristics being tested were not relevant for SNAP as there was no visualisations and hence no zooming / panning / scrolling / huge graph visualisation support / render times (NEED TO CHANGE THIS), although it was still examined: reading it's documentation and going through all the sample code snippets, and understandin ghow they worked. The reason this was done was because, depending on the direction the project took, graph manipulation may well be used in order to bundle edges or nodes in order to increase performance of huge networks. 
+
+Next, Gephi was tested successfully. It was recent, easy to use, and documentation was thorough. After about half an hour I was comfortable with how it worked, able to make simple graphs, and to import graphs from many formats (CSV, GDF, QML, GraphML, net, etc.) and export to all of them, along with as a PNG, PDF or SVG. The time to render graphs of a few thousand nodes was less than half a second, less than a thousand nodes was instant. It supported zooming, panning and scrolling, and having data being dynamic was a possibility. There was also multiple heavily customisable layout options, many of which would suit huge networks more than others, although there was no additional support for huge networks, other than the system being very efficient (bundling was not supported, along with partial viewing of the data). Additionally, there was the ability to change graphical settings, have the data graphed in 3D, and have a multivariate graph. 
+
+Graphviz was difficult to test, being a collection of software as opposed to a single package. Most of the packages were not fit for purpose, often displaying data in charts, for example. The package I ended up testing, sfdp, was fairly disappointing. Although it fitted most of the criteria, it turned out to be very focused on graphing far smaller networks with little support for anything of a few thousand nodes or more. The documentation was, although by no means great, fine, and the software had the ability to import and export as a very large amount of file formats. It also supported zooming/panning/scrolling, but along with getting decreasing in speed a lot faster than other pieces of software (three thousand nodes took several seconds), the UI clearly was not build around supporting large networks, with information becoming very unclear quickly.  ((IMAGE)). There was also no explicit support for visualising huge networks.
+
+Tulip - TO DO
+
+D3.js is a an API over full software which is what I hoped more of the software would be like. As a result it is far more flexible but requires far more setup to be done by the user. The documentation is good although complicated, and importing and exporting is easily possible via JSON, and other file formats with slightly greater difficulty. It supports zooming / panning / scrolling as expected and was fairly performant, displaying a few thousand nodes in about a second. Also, there are many ways to make it effective at showing huge networks, but this would require research into many different packages and potentially writing code to do it.
+
+InfoViz was really pretty similar to D3, but less widely used. (write more here).
+
+
+\section{Results}
+In general the software was not what was expected and hence the experiment was not a huge success. Far more of the software was standalone packages than expected, and other issues were also come across (such as software being deprecated or for a different purpose). 
+
+\section{Conclusion}
+
+Look into D3.js or graph manipulation and then D3 / InfoViz.
+
