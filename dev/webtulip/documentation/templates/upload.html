@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+	Upload
+{% endblock %}
+
+{% block extra-css %}
+<link href="{% static 'css/vis.min.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+
+<form action="" method="post" enctype="multipart/form-data">
+  	{% csrf_token %}
+    {% for field in form %}
+        <div class="fieldWrapper">
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+        </div>
+    {% endfor %}
+    <br/>
+  	<button class="btn btn-default" type="submit">Upload</button>
+</form>
+
+
+{% if uploaded_file_url %}
+  <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+{% endif %}
+
+{% endblock %}
+
+{% block extra-js %}
+{% endblock %}
