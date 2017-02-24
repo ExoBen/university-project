@@ -1,5 +1,6 @@
 
 db.sqlite3
+media/*
 
 
 # Standard .gitignore for django
