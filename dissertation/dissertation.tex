@@ -3,58 +3,40 @@
 \documentclass{l4proj}
 \usepackage{hyperref}
 \usepackage{subfiles}
-
-%
-% put any packages here
-%
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\setlength\parindent{0pt}
 
 \begin{document}
-\title{Visualisation of Large Networks in a Browser}
-\author{Ben Jackson}
-\date{October 3, 2016}
+\title{Visualisation of Massive Networks in a Browser}
+\author{Benjamin Jackson}
+\date{February 26, 2017}
 \maketitle
 
-\begin{abstract}
-The purpose of this research is to identify different techniques that existing software uses to visualise extremely large networks in a browser, and then compare them and review which methods are the most successful. This is good because ??. I did it by doing ??. I found out ??. Conclusion.
-\end{abstract}
+\subfile{sections/0-abstract.tex}
 
 \educationalconsent
-%
-%NOTE: if you include the educationalconsent (above) and your project is graded an A then it may be entered in the CS Hall of Fame
-%
 
 \tableofcontents
-%==============================================================================
-\pagebreak
 
+\pagebreak
 \pagenumbering{arabic}
 
 \subfile{sections/1-introduction.tex}
 
-\subfile{sections/2-background.tex}
+\subfile{sections/2-motivation.tex}
 
-\subfile{sections/3-exp1.tex}
+\subfile{sections/3-review.tex}
 
-\chapter{Experiment 2}
+\subfile{sections/4-research.tex}
 
-\chapter{Conclusion}
+\subfile{sections/5-design.tex}
 
+\subfile{sections/6-implementation.tex}
 
-%%%%%%%%%%%%%%%%
-%              %
-%  APPENDICES  %
-%              %
-%%%%%%%%%%%%%%%%
-\begin{appendices}
+\subfile{sections/7-conclusion.tex}
 
-\chapter{My first appendix}
-This is what was interesting.
-
-\end{appendices}
-
-%%%%%%%%%%%%%%%%%%%%
-%   BIBLIOGRAPHY   %
-%%%%%%%%%%%%%%%%%%%%
+\subfile{sections/8-appendices.tex}
 
 \bibliographystyle{plain}
 \bibliography{bib}
