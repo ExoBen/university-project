@@ -3,9 +3,10 @@ var tulipWebApi = (function() {
 	return {
 
 		loadGraph: function(fileName, callback, errorCallback) {
+
 			$.ajax({
-				url: "/api/loadGraph", 
-				data: { 
+				url: "/api/loadGraph",
+				data: {
 			        "name": fileName,
 			    },
 			    cache: false,
@@ -24,5 +25,3 @@ var tulipWebApi = (function() {
 
 	}
 })();
-
-
