@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.conf import settings
 import os
-from django.http import HttpResponse
+from django.http import JsonResponse
 from tulip import tlp
 from .tlp_json_converter import TlpJsonConverter
 
@@ -15,10 +15,11 @@ def loadGraph(request):
 		networkFromDB = Network.objects.filter(name=nameOfGraph)[0]
 		print (networkFromDB.network.name)
 		currentNetwork = tlp.loadGraph(os.path.join(settings.MEDIA_ROOT,networkFromDB.network.name))
-
-		graphInJson = TlpJsonConverter.tlp_to_json(nameOfGraph, currentNetwork)
-
-		return HttpResponse(graphInJson, content_type="application/json")
+		if currentNetwork is None:
+			return JsonResponse({"success": False, "message": "File failed to load"})
+		else:
+			graphInJson = TlpJsonConverter.tlp_to_json(nameOfGraph, currentNetwork)
+			return JsonResponse({"success": True, "data": graphInJson})
 
 # def saveGraph(request):
 

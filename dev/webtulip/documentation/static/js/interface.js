@@ -4,6 +4,8 @@ $("input[name='loadGraph']").click(function() {
 
 	tulipWebApi.loadGraph(graphToLoad, function(result) {
 		networkCreator.drawSimpleGraph(result);
+	}, function(error) {
+		console.error(error)
 	});
 
 });

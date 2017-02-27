@@ -2,7 +2,7 @@
 var tulipWebApi = (function() {
 	return {
 
-		loadGraph: function(fileName, callback) {
+		loadGraph: function(fileName, callback, errorCallback) {
 			$.ajax({
 				url: "/api/loadGraph", 
 				data: { 
@@ -11,7 +11,13 @@ var tulipWebApi = (function() {
 			    cache: false,
 			    type: "GET",
 				success: function(result) {
-		        	callback(result);
+					if (result.success) {
+		        		callback(result.data);
+					} else {
+						if (typeof errorCallback === "function") {
+							errorCallback(result.message);
+						}
+					}
 		        }
 		    });
 		}

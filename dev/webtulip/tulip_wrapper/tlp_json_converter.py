@@ -14,7 +14,7 @@ class TlpJsonConverter:
 			jsonNetwork["nodes"].append(currentNode)
 
 
-		return json.dumps(jsonNetwork)
+		return jsonNetwork
 
 
 	# def json_to_tlp(json):
