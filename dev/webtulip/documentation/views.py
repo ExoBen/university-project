@@ -12,7 +12,12 @@ def home(request):
 	return render(request, "home.html")
 
 def network(request):
-	return render(request, "network.html")
+	context = {}
+	context["network_names"] = Network.objects.all()
+	for data in context["network_names"]:
+		print(data.name)
+		print(data.network)
+	return render(request, "network.html", context)
 
 def upload(request):
 	if request.method == 'POST':

@@ -1,5 +1,4 @@
 
-
 var networkCreator = (function() {
 	return {
 
@@ -9,7 +8,7 @@ var networkCreator = (function() {
       arrayOfEdges = [];
 
       for (var i = 0; i < result.nodes.length; i++) {
-        arrayOfNodes.push({id: i, label: });
+        arrayOfNodes.push({id: i, label: i});
         result.nodes[i].outEdges.forEach(function(element) {
           arrayOfEdges.push({from: i, to: element})
         });
