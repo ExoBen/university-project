@@ -16,3 +16,15 @@
 .inlineDisplay {
 	display: inline;
 }
+
+.padding_sm {
+	padding: 5px;
+}
+
+.padding_md {
+	padding: 10px;
+}
+
+.padding_lg {
+	padding: 15px;
+}

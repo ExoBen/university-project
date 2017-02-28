@@ -1,11 +1,47 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
-	Home
+  Tulip Web Wrapper
 {% endblock %}
 
+{% block extra-css %}
+<link href="{% static 'css/vis.min.css' %}" rel="stylesheet"/>
+{% endblock %}
 
 {% block content %}
-	<h1>Tulip Web Wrapper</h1>
-    <h3><a href="/network">Click here</a> to visualise some networks.</h3>
+<div class="row">
+  <div class="col-lg-6">
+    {% if network_names %}
+    <select id="graphToLoad" class="form-control inlineDisplay">
+    {% for network in network_names %}
+        <option value="{{network.network_name}}">{{network.network_name}}</option>
+      {% endfor %}
+      </select>
+    <input class="btn btn-default inlineDisplay" type="button" value="Load" name="loadGraph"></input>
+    {% else %}
+      <p>No networks uploaded!</p>
+    {% endif %}
+  </div>
+</div>
+
+<br/>
+
+<!-- <a href="api/saveGraph">Save a graph</a> <br/>
+<a href="api/importGraph">Import a graph</a> <br/>
+<a href="api/exportGraph">Export a graph</a> <br/> -->
+
+<div id="main_network"></div>
+
+
+
+{% endblock %}
+
+{% block extra-js %}
+
+<script src="{% static 'js/tulipWebApi.js' %}"></script>
+<script src="{% static 'js/interface.js' %}"></script>
+<script src="{% static 'js/vis.min.js' %}"></script>
+<script src="{% static 'js/custom_vis.js' %}"></script>
+
 {% endblock %}

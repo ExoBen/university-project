@@ -7,7 +7,7 @@ var tulipWebApi = (function() {
 			$.ajax({
 				url: "/api/loadGraph",
 				data: {
-			        "name": fileName,
+			        "network_name": fileName,
 			    },
 			    cache: false,
 			    type: "GET",
@@ -28,7 +28,7 @@ var tulipWebApi = (function() {
 			$.ajax({
 				url: "/api/deleteGraph",
 				data: {
-			        "name": fileName,
+			        "network_name": fileName,
 			    },
 			    cache: false,
 			    type: "POST",

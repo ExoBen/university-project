@@ -11,16 +11,20 @@
 {% block content %}
 <form action="" method="post" enctype="multipart/form-data">
   <div class="row">
-    <div class="col-lg-8">
-      <select id="graphToDelete" class="form-control inlineDisplay">
-        {% for network in network_names %}
-          <option value="{{network.name}}">{{network.name}}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="col-lg-4">
-      <input class="btn btn-default inlineDisplay" type="button" value="Delete" name="deleteGraph"></input>
-    </div>
+    {% if network_names %}
+      <div class="col-lg-8">
+        <select id="graphToDelete" class="form-control inlineDisplay">
+          {% for network in network_names %}
+            <option value="{{network.network_name}}">{{network.network_name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-lg-4">
+        <input class="btn btn-default inlineDisplay" type="button" value="Delete" name="deleteGraph"></input>
+      </div>
+    {% else %}
+      <p>No network to delete!
+    {% endif %}
     <br/><br/>
     <h2 id="deleted"></p>
   </div>
