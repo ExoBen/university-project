@@ -21,6 +21,27 @@ var tulipWebApi = (function() {
 					}
 		        }
 		    });
+		},
+
+		deleteGraph: function(fileName, callback, errorCallback) {
+
+			$.ajax({
+				url: "/api/deleteGraph",
+				data: {
+			        "name": fileName,
+			    },
+			    cache: false,
+			    type: "POST",
+				success: function(result) {
+					if (result.success) {
+		        		callback(result.message);
+					} else {
+						if (typeof errorCallback === "function") {
+							errorCallback(result.message);
+						}
+					}
+		        }
+		    });
 		}
 
 	}

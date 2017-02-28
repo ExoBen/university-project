@@ -20,6 +20,26 @@ def loadGraph(request):
 		else:
 			graphInJson = TlpJsonConverter.tlp_to_json(nameOfGraph, currentNetwork)
 			return JsonResponse({"success": True, "data": graphInJson})
+	return JsonResponse({"success": False, "message": "Define name and use GET"}) 
+
+def deleteGraph(request):
+
+	# return list of all graphs the user can load
+	if (request.method == "POST" and request.POST.get("name", None) != None):
+		nameOfGraph = request.POST.get("name", None)
+		print("To delete: " + nameOfGraph)
+		print("oo")
+		networkToDelete = Network.objects.filter(name=nameOfGraph)[0]
+
+		if networkToDelete is None:
+			return JsonResponse({"success": False, "message": "File failed to delete"})
+		
+		else:
+			networkToDelete.network.delete()
+			networkToDelete.delete()
+			return JsonResponse({"success": True, "message": "File deleted"})
+
+	return JsonResponse({"success": False, "message": "Define name and use POST"}) 
 
 # def saveGraph(request):
 

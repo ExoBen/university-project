@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-	Networks
+  Networks
 {% endblock %}
 
 {% block extra-css %}
@@ -11,17 +11,20 @@
 
 {% block content %}
 <div class="row">
-	<div class="col-lg-6">
-		<a class="btn btn-default" href="/upload">Upload a new file.</a>
-	</div>
-	<div class="col-lg-6">
-		<select id="graphToLoad" class="form-control inlineDisplay">
-		{% for network in network_names %}
-	    	<option value="{{network.name}}">{{network.name}}</option>
-	    {% endfor %}
-	    </select>
-		<input class="btn btn-default inlineDisplay" type="button" value="Load" name="loadGraph"></input>
-	</div>
+  <div class="col-lg-6">
+    <select id="graphToLoad" class="form-control inlineDisplay">
+    {% for network in network_names %}
+        <option value="{{network.name}}">{{network.name}}</option>
+      {% endfor %}
+      </select>
+    <input class="btn btn-default inlineDisplay" type="button" value="Load" name="loadGraph"></input>
+  </div>
+  <div class="col-lg-3">
+    <a class="btn btn-default" href="/upload">Upload a new file.</a>
+  </div>
+  <div class="col-lg-3">
+    <a class="btn btn-default" href="/delete">Delete some networks.</a>
+  </div>
 </div>
 
 <br/>

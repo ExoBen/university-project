@@ -9,3 +9,16 @@ $("input[name='loadGraph']").click(function() {
 	});
 
 });
+
+$("input[name='deleteGraph']").click(function() {
+	graphToDelete = $("#graphToDelete").val();
+
+	tulipWebApi.deleteGraph(graphToDelete, function(result) {
+		$("#deleted").text(result);
+		$('#graphToDelete option[value=' + graphToDelete + ']').remove();
+	}, function(error) {
+		$("#deleted").text(error);
+		console.error(error)
+	});
+
+});

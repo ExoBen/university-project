@@ -32,14 +32,14 @@ var networkCreator = (function() {
 					improvedLayout:false
 				},
 				physics: {
-					//stabilization:false
-					stabilization: {
-			      enabled: true,
-			      iterations: 1000,
-			      updateInterval: 100,
-			      onlyDynamicEdges: false,
-			      fit: true
-			    },
+					stabilization:false
+					/*stabilization: {
+				      enabled: true,
+				      iterations: 1000,
+				      updateInterval: 100,
+				      onlyDynamicEdges: false,
+				      fit: true
+			    	},*/
 				}
 			};
 

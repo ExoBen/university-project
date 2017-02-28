@@ -27,14 +27,6 @@
           </button>
           <a href="/" class="navbar-brand">Tulip Python Web Wrapper</a>
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="/">Something</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right"> 
-            <li><a href="/network">Login</a></li>
-          </ul>
-        </div> 
       </div>
     </nav>
 
@@ -50,6 +42,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/csrf.js' %}"></script>
     {% block extra-js %}{% endblock %}
   </body>
 </html>
