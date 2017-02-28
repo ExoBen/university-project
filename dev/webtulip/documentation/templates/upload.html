@@ -13,6 +13,18 @@
 
 <form action="" method="post" enctype="multipart/form-data">
     	{% csrf_token %}
+      {% if form.errors %}
+        <div class="alert alert-error">
+        Errors submitted:
+          <ul>
+            {% for field in form %} 
+              {% if field.errors %}
+              <li>{{ field.label }}: {{ field.errors|striptags }}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
       {% for field in form %}
       <div class="row">
         <div class="col-lg-2 padding_sm">{{ field.label_tag }}</div>

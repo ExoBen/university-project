@@ -1,8 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
-
 class Network(models.Model):
     TLP_TYPE = "tlp"
     IND_TYPE = "ind"
