@@ -94,7 +94,7 @@ var networkCreator = (function() {
 
 			console.log("Network created");
 
-      // initialize your network!
+      // initialize the network!
       var network = new vis.Network(container, data, options);
 			console.log("Network visualised");
     }
