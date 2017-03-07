@@ -1,0 +1,248 @@
+\documentclass[../dissertation.tex]{subfiles}
+\begin{document}
+
+\chapter{Systematic Review of Existing Software}
+\label{sec:systematic-review}
+
+\section{Aim} 
+
+The goal of the review was to look into several different types of network visualisation software, and as a result, find out more about how it works. The software would be analysed for several characteristics, both related to general graphing of networks, and graphing of specifically huge networks.
+
+\section{Methodology}
+
+Upon finishing background research and defining a clear aim for the research, the next step was to come up with a list of criteria that each of the pieces of software would be compared against, and a robust process for how the software would be tested against the criteria. 
+
+TODO: Should this be removed?
+
+The process and criteria would ideally be based off an established way to systematically evaluate information visualisation. However, even after a long time was spent trying to find papers on that subject, it turned out to be surprisingly difficult to find out about testing software as a developer. Nearly all of the results found were about evaluating a system you had made and tended to be focused on getting professional testers to use the application or trialing the software on potential future end-users, as opposed to systematically evaluating systems.
+
+The initial plan was to split the criteria into several categories and weigh each category as to its importance. 
+
+The first criteria to assess would be how easy it is to get a basic network (5 or 10 nodes) displayed from scratch, from downloading the software and installing it, to understanding it's documentation, to getting a network displayed. 
+
+After that, some more important criteria were how easy it is to load in a network from a file, and also, if the network was modified in any way between loading it in and displaying it to the used, or even while the user was viewing it, then saving the network to a file. 
+
+The next features to be analysed for will be based on interactivity - how easily a user can edit the network to get more useful information out of it. This would include the ability to zoom into a part of the network or being able to pan. A more complex feature (that would be rarely used but would occasionally add valuable information to the user) would be the ability to make it dynamic - showing the change in a graph over time (or another parameter). 
+
+A major criteria would then be how well the software would scale up to massive networks - this would include running tests on increasingly large networks and seeing how long the software takes, and also if it includes node or edge bundling or other ways of increasing clarity of massive networks. Time taken to render is also an important statistic, but less important than clarity for massive amounts of data for this project. This is perhaps the most important category as no matter the above features, if the network is not clear for huge numbers of nodes / edges then it does not answer the problem at hand. A feature that would be desired to increase user clarity would be the ability to view the network in many different layouts - which would give users more flexibility and would often lead to better understanding. 
+
+This set of criteria, both qualitative and quantitative (to maximise information gathered), was compiled into a list to act as the process for the experiment. This enabled a systematic analysis to take place of the software.
+
+\begin{enumerate}
+	\item \textbf{Standalone or library?}\\
+	If a software package is standalone then it can be executed (often after it has been installed) without any programming on the user's behalf. If the software comes as a library package then that library will provide an API so one can call functions from the library in their own programs. 
+	\item \textbf{Documentation}:
+	\begin{enumerate}
+		\item Is it easy to understand: is it explained clearly and concisely?
+		\item Is it comprehensive: are all aspects of the software fully documented?
+		\item Length of time spent reading until confident in using the system: how long was spent reading documentation before programming using the system could begin?
+	\end{enumerate}
+	\item \textbf{Time until a simple graph could be displayed?}\\
+	After finishing reading the documentation and starting to use the software, how long did it take to create a hard-coded graph with three nodes and two edges. These values were chosen as they represent a very basic graph that should be instantaneous to load in nearly all systems, but an understanding of the software is still required to display the network.
+	\item \textbf{Can a file be loaded into the system?}\\
+	Is there a way to load a file (whether in a standard file format such as JSON or XML, or in a custom file format) into the software. If this is possible, even only in one file format, then a script could be written in order to convert from that file format to whatever necessary file format was needed. 
+	\item \textbf{Can a network be exported to a file?}\\
+	Is there a way to export a network to a file, in the form of a representation of the network, such as JSON or XML. This would mean that the network could be easily passed between software applications and across a network.
+	\item \textbf{Can a network be exported to an image?}\\
+	Could the network be exported to a file as an image, such as a PNG or a JPEG. This is useful as images will generally be far smaller than representations of the image in code, such as JSON or XML, and hence are far easier and quicker to send or store on a machine.
+	\item \textbf{How long it took to render the graph of:}
+	\begin{enumerate}
+	    \item 30 nodes
+	    \item 200 nodes
+	    \item 1000 nodes
+	    \item 3000 nodes
+	\end{enumerate}
+	
+	These numbers were chosen as it was expected that all software could handle all of the values, with all software having no trouble with thirty nodes, but software that performs less well being expected to struggle as the number of nodes got into the range of the thousands. 
+	\item \textbf{If the software allowed for:}
+	\begin{enumerate}
+		\item Zooming: if certain parts of a network could be focused on and viewed in more detail.
+		\item Panning: the network could be traversed in the x or y axis.
+	\end{enumerate}
+	\item \textbf{Can a network be dynamic?}\\
+	This would allow for information to be viewed across multiple points in time? This has the allowing certain types of information to be visualised far more easily, in particular when data has been been collected over a long time period over which relationships between the data constantly evolve.
+	\item \textbf{Does the software included features for displaying huge graphs:}
+	\begin{enumerate} 
+		\item Node Bundling: See section \ref{sec:node_bundling}.
+		\item Edge Bundling: See section \ref{sec:edge_bundling}.
+		\item Alternative layout options: This includes the ability to change what algorithms decide how the network is laid out.
+	\end{enumerate}
+	\item \textbf{Can a graph be multivariate?}\\
+	Does the software support nodes being labeled in more than one way, such as each node having a label and being part of a larger group?
+	\item \textbf{Is there a possibility of changing graphical settings for the network?}\\
+	Can nodes or edges be coloured differently at the users request, can they be enlarged or shrunk, or can they the shape of nodes or the background colour be set?
+	\item \textbf{Can a graph be displayed in 3D?}\\
+	Is there a way to view the network in three dimensions, for example as a globe. This allows for a unique insight into the data and can often make the data a lot easier to comprehend and/or reveal more subtle relationships in the data?
+	\item \textbf{Any other idiosyncrasies?}\\
+	Is there any other aspects of the software that is not identified above of worth.
+\end{enumerate}
+
+Each piece of software was to be evaluated against this criteria, with the goal of both finding out which pieces of software were more successful, over many parameters, and also to become more familiar with graphing software used in industry.
+
+\section{Data and Results}
+
+After starting to run the experiments, it became clear that two pieces of software from the list above would not be capable of being compared against the criteria previously created, which were GUESS and SNAP.
+
+GUESS was software that never left beta, and was last developed in 2007. Having never been released meant that the software had fairly little documentation and what it did have was not comprehensive. On top of this, the wiki created for it was no longer hosted online which meant many of the links to documentation on the website were broken. Despite it looking promising, it became clear it would not be usable.
+
+SNAP could not be compared to much of the criteria as the purpose of it is to analyse and manipulate graphs, as opposed to also visualise them, despite the fact that it had looked promising on several papers. However, time was spent reading it’s documentation and going through all the sample code snippets to understanding how the software worked to some degree. The reason this was done was that it both felt important to have some knowledge of how network manipulation software worked, and also depending on the direction the project took, network manipulation may well be used in order to bundle edges or nodes in order to increase performance of massive networks.
+
+The rest of the software however was analysed against the above criteria and results are documented below.
+
+\subsection{Gephi}
+
+This was the first software package that was as expected, and was fairly easy to test, use and was well documented. After about half an hour I was comfortable with how it worked, able to make simple graphs, and to import graphs from many formats (CSV, GDF, QML, GraphML, net, etc.) and export to all of them, along with as a PNG, PDF or SVG. It supported zooming, panning and scrolling, and having data being dynamic was a possibility. There was also multiple heavily customisable layout options, some of which would suit large networks more than others, although there was no additional support for large networks, other than the system being very efficient (bundling was not supported, along with partial viewing of the data). Additionally, there was the ability to change graphical settings, have the data graphed in 3D, and have a multivariate graph.
+
+\subsection{Graphviz}
+
+Graphviz was difficult to test, being a collection of software as opposed to a single package. Most of the packages were not fit for purpose, often displaying data in charts, for example. The package I ended up testing was "sfdp". Although it fitted most of the criteria and claimed to support large networks, it turned out to be very focused on graphing far smaller networks with little support for anything of a few thousand nodes or more. The documentation was okay, and the software had the ability to import and export as a very large amount of file formats. It also supported zooming/panning/scrolling, but the User Interface clearly was not build around supporting large networks, with information becoming very unclear quickly - see Figure \ref{fig:graphviz}. There was also no explicit support for visualising massive networks.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=17cm]{4/graphviz}
+    \caption{this shows how the User Interface is clearly focused towards smaller networks of up to a thousand nodes or so.}
+    \label{fig:graphviz}
+\end{figure}
+
+\subsection{Tulip}
+
+Tulip is an information visualisation framework that also lets you both visualise and analyse the data. It is very easy to use and is well documented, allows for easy importing and exporting of networks, and is really fast, allowing for 3000 nodes to be visualised nearly instantly. 
+
+It is worth noting that on the university lab machines, without admin access, it was not possible to install Tulip, which meant I ended up installing it on Windows (the computer that Tulip was ran on is far more powerful than the university machines and there is a very reasonable chance that on the lab machines Tulip would not perform as well). However, it seemed very good quality software. It also included edge bundling and 'clustering' (a type of node bundling).
+
+\subsection{D3.js}
+
+D3.js is a JavaScript library for data visualisation. The library is far more flexible than the rest of the software tested, but requires far more setup to be done by the user. The documentation is good although it is more complicated that other most of the other programs, and importing and exporting is easily possible via JSON, and other file formats with slightly greater difficulty. It supports zooming / panning / scrolling as expected. Also, there are many ways to make it effective at showing massive networks, but this would require research into many different packages and potentially writing a lot code to do it.
+
+\subsection{Vis.js}
+
+Vis.js is, like D3.js, a JavaScript library for data visualisation. However, unlike D3.js, it is not hugely flexible but much easier to get a basic network setup. The documentation is very good and importing and exporting is easily possible via JSON. It also includes some node bundling options which could be looked into at a future date.
+
+\section{Software Comparison}
+
+For the majority of the criteria, all of the software packages performed similarly. All five of the fully analysed network visualisation software provided the functionality of zooming and panning, along with all of the standalone packages (Gephi, GraphViz and Tulip) allowing for users to export to/import from a file, and the two libraries (D3.js and Vis.js) had functions which made it easy to export a network to a file or import from a file. On top of exporting to a standard file format for a network, all of the software allowed for exporting to an image.
+
+See Table \ref{table:render-times} for render the times for each of the different pieces of software.
+
+See Table \ref{table:documentation} for details on the quality of documentation.
+
+See Table \ref{table:massive-network} for details what features the software had that support visualising massive networks.
+
+See Table \ref{table:other_info} for details on how long it took to create a simple hardcoded network, whether the network visualisation software supported dynamic networks, if the software included graphical options, if networks were viewable in 3D and if a network could be multivariate.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|l|l|}
+        \hline
+                 & 30 nodes  & 200 nodes & 1000 nodes & 3000 nodes \\ \hline
+        Gephi    & n/a       & n/a       & 0.2        & 0.6        \\ \hline
+        Graphviz & n/a       & 0.3       & 1.1        & 4.5        \\ \hline
+        Tulip    & n/a       & n/a       & n/a        & 0.1        \\ \hline
+        D3.js    & n/a       & 0.2       & 1.1        & 5.3        \\ \hline
+        Vis.js   & n/a       & 1.8       & 4.4        & 13.6       \\ \hline
+    \end{tabular}
+    \caption{This shows how long (in seconds) it took each of the different pieces of software to render the specified number of nodes. n/a symbolises that it was too fast to calculate.}
+    \label{table:render-times}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|l|}
+        \hline
+                 & Easy to Understand & Comprehensive & Time spent until confident \\ \hline
+        Gephi    & \tmark             & \tmark        & 30 minutes                 \\ \hline
+        GraphViz & \cmark             & \cmark        & 1 hour                     \\ \hline
+        Tulip    & \tmark             & \tmark        & 15 minutes                 \\ \hline
+        D3.js    & \cmark             & \tmark        & 1 hour, 30 minutes         \\ \hline
+        Vis.js   & \tmark             & \tmark        & 5 minutes                  \\ \hline
+    \end{tabular}
+    \caption{This shows the quality of the documentation for the different pieces of software.}
+    \label{table:documentation}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|l|}
+        \hline
+                 & Massive Graph Layout Options & Node bundling & Edge bundling \\ \hline
+        Gephi    & \tmark                       & \cmark        & \cmark        \\ \hline
+        GraphViz & \cmark                       & \cmark        & \cmark        \\ \hline
+        Tulip    & \tmark                       & \tmark        & \tmark        \\ \hline
+        D3.js    & n/a                          & n/a           & n/a           \\ \hline
+        Vis.js   & \cmark                       & \tmark        & \cmark        \\ \hline
+    \end{tabular}
+    \caption{This shows what support each of the software packages had for massive networks. D3.js has n/a in all cells as it does not support these features natively but D3 is built upon importing third party packages and libraries in and some of these packages support several different massive network solutions, including the ones analysed for above.}
+    \label{table:massive-network}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|l|l|l|l|l|}
+        \hline
+                                                      & Gephi     & GraphViz   & Tulip    & D3.js      & Vis.js    \\ \hline
+        Time until hardcoded graph could be created   & 5 minutes & 30 minutes & 1 minute & 30 minutes & 5 minutes \\ \hline
+        Visualisation could be dynamic                & \tmark    & \cmark     & \tmark   & n/a        & \cmark    \\ \hline
+        Graphical Options                             & \tmark    & \tmark     & \tmark   & \tmark     & \cmark    \\ \hline
+        Ability to view in 3D                         & \tmark    & \cmark     & \tmark   & \tmark     & \tmark    \\ \hline
+        Network could be multivariate                 & \tmark    & \tmark     & \tmark   & \tmark     & \cmark    \\ \hline
+    \end{tabular}
+    \caption{This shows additional information about the network visualisation software. For whether the visualisation could be dynamic, D3 - again - does not support this natively, but with additional libraries, it could.}
+    \label{table:other_info}
+\end{table}
+
+\section{Conclusion}
+
+Following the process outlined above was difficult as a collection of APIs was expected, which could have been easily compared by minor differences, but most of the software were standalone packages and were more difficult to compare. This highlighted the difficultly in conducting a systematic evaluation as, due to the complexities in comparing such diverse software, the criteria changed several times throughout the evaluation and continually evolved, meaning all previously tested software had to be analysed again. Additionally, only the JavaScript libraries would be directly suitable for SAS as the other pieces of software were standalone applications and could not be be utilised by a web application.
+
+Despite the aforementioned challenges, a lot of useful information was gained throughout the evaluation, from how individual packages work to what techniques software uses to deal with large networks. Given all of the above data and comparisons, Tulip was clearly the best performing software. Like all of the other software, it allows for:
+\begin{itemize}
+    \item Importing from a file (many file formats supported, including it's own .tlp format)
+    \item Exporting to a file (to a similarly large number of supported formats)
+    \item Exporting to an image
+    \item High quality documentation
+    \item Graphical options for the network exist
+    \item Networks can be visualised in 3D
+    \item Networks can be multivariate
+\end{itemize}
+
+However, it also rendered networks significantly faster than the other software, supported displaying massive networks in many ways (such as advanced layout options and node/edge bundling), could visualise dynamic information and the software makes it very easy to generate graphs which made testing easier and more informative. 
+
+Additionally, Tulip has a full C++ API, and a full Python wrapper around the C++ API, meaning one can interface with it fully in either of the two languages, and a very simple file format, .tlp (of which more information can be found on their website \cite{tuliptlp}), which means that networks can easily be created by hand or converted to and from it's format to other formats such as JSON.
+
+\section{Potential Directions}
+
+As a result of the above research and review, there were several different directions that the project could go. Four ideas that were considered are listed below:
+
+\subsection{Writing Massive Network Algorithms}
+
+One possible choice would be to write several different programs in JavaScript (or Python, as several of the packages explored earlier have Python APIs) that alter massive networks by any or all of the techniques highlighted in Section \ref{sec:background}. These collections of algorithms would then be compared for how they make it easier to visualise and/or render networks using D3.js or Vis.js. 
+
+Upon writing these algorithms, they would be tested:
+\begin{itemize}
+    \item On their own - what effect that function has on a network
+    \item In conjunction with other algorithms - if combining certain algorithms together leads to a greater improvement
+    \item With a large variety of different sizes of networks - if the algorithm hits a bottleneck after the network contains more than a certain number of nodes, or continues to perform as well as expected.
+    \item With a variety of sparse or highly interconnected networks - some algorithms, for example bundling, may work particularly well with highly interconnected networks, and analysing performance for different levels of connectedness could reveal when it is most often best to use a certain algorithm.
+\end{itemize}
+
+For each of the above tests, each run would have it's performance evaluated (from time taken to how much processing power it required and the amount of RAM used) and then what effect it had on the end visualisation (if spending the time to run the algorithm gave any minor or notable benefit to the visualisability of the network).
+
+\subsection{Evaluation of existing systems}
+
+For each of the standalone systems evaluated in Section \ref{sec:systematic-review} - which were Gephi, GraphViz and Tulip - explore where each of the packages begin to struggle and why. This analysis would include analysing the amount of time taken to run on different data sets, and for massive data sets, what task in particular makes it take as long as it would. Possible reasons could be that the network can't fit in RAM so data is constantly being put onto and pulled off of backing storage, or that algorithms have exponential performance which is negligible for a while but as networks get massive this performance starts to take it's toll. 
+
+Additionally, it would look at how effective the visualisations that created were at imparting knowledge to the user. This analysis would both take into account the quality of the visualisation baring how long it took in mind, and also how good the visualisation was, regardless of how long it took to create. 
+
+\subsection{Exploration of database visualisation systems}
+
+Another option would be to look into different database visualisation systems. Many database software solutions incorporate visualisation into them, and/or support writing your own visualisation programs and linking them to the information in the database. This path could be interesting as most databases can handle a very large amount of data, and hence storing the data would no longer be a problem in which a solution needs to be sought. 
+
+\subsection{Creation of a web application using Tulip}
+
+Given that Tulip was considered the best software under the criteria tested for in Section \ref{sec:systematic-review}, another possible idea would be to create a network visualisation web application using the APIs that Tulip provides. Given that Tulip provides both a C++ API \cite{tulipcppapi} and Python API \cite{tulippyapi} (of which the Python API is a wrapper around the C++ API), the web application could be made using either of the languages. Given that "Python is very flexible and makes experimentation easy" \cite{zelle2004python}, and also that Python has a popular web framework, Django \cite{django}, which is "a powerful Web application framework that lets you do everything rapidly — from designing and developing the original application to updating its features" \cite{forcier2008python}, these seemed a reasonable choice of stack to develop on. It is worth noting that Tulip has covered web visualisations before, when its creators visualised the Firefox Dataset as part of a competition \cite{tulipfirefox}. However, this was an isolated project and currently there is no supported web visualisation framework made by Tulip.
+
+\section{Chosen Direction}
+
+After much discussion and thought with both peers and my supervisor, it was decided that \textbf{creating a web application based on the Tulip Python API} is how the project should progress. This would result in users being able to access a wealth of information without owning a huge amount of computational power, which could benefit both employees of a business, allowing them to work from home on less powerful devices and without the need for huge data connections, and also clients of a business with lower specification machines, which leads to more possible clients for a business.
+
+\end{document}
