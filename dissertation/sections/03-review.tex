@@ -30,32 +30,37 @@ A goal of the project was to research techniques currently used to visualise mas
 \section{Example within the Field}
 
 \subsection{Visual Investigator}
-Currently, Visual Investigator (a SAS product TODO: insert link for who SAS are) lets users view a network of entities in the system to see how they connect (for example: names, phone numbers and addresses). This works perfectly for a few entities, with useful information being shown clearly. However, with potentially millions of nodes, the network no longer shows any useful information - just a mass of nodes - and becomes unusably slow (Visual Investigator is a web app and both processing power and memory are hard limits which, depending on network size, will easily be hit).
+Currently, the SAS product Visual Investigator \cite{sasvi} lets users view a network of entities in the system to see how they connect (for example: names, phone numbers and addresses). This works perfectly for a few entities, with useful information being shown clearly. However, with potentially millions of nodes, the network no longer shows any useful information - just a mass of nodes - and becomes unusably slow (Visual Investigator is a web app and both processing power and memory are hard limits which, depending on network size, will easily be hit).
 
-As can be seen from the pictures below, the network starts out clear and loading times are instant, but it soon becomes both meaningless and really slow. If there was a way to both speed up the loading times of huge networks, and make them convey meaningful information to the user, this would be very useful.
+As can be seen in Figures \ref{fig:30nodes}, \ref{fig:1000nodes}, \ref{fig:2500nodes}, \ref{fig:7500nodes}, the network starts out clear and loading times are instant, but it soon becomes both meaningless and really slow. If there was a way to both speed up the loading times of huge networks, and make them convey meaningful information to the user, this would be very useful.
 
 \begin{figure}
-    \centering
-    \includegraphics[width=9cm]{3/30_nodes}
+\centering
+\begin{minipage}{.5\textwidth}
+    \includegraphics[width=\textwidth]{3/30_nodes}
     \caption{30 nodes, Loading Time less than 1 second}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=9cm]{3/1000_nodes}
+    \label{fig:30nodes}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+    \includegraphics[width=\textwidth]{3/1000_nodes}
     \caption{1000 nodes, Loading Time 10 seconds}
+    \label{fig:1000nodes}
+\end{minipage}
 \end{figure}
 
 \begin{figure}
-    \centering
-    \includegraphics[width=9cm]{3/2500_nodes}
+\centering
+\begin{minipage}{.5\textwidth}
+    \includegraphics[width=\textwidth]{3/2500_nodes}
+    \vspace*{3.5mm}
     \caption{2500 nodes, Loading Time 30 seconds}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=9cm]{3/7500_nodes}
+    \label{fig:2500nodes}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+    \includegraphics[width=\textwidth]{3/7500_nodes}
     \caption{7500 nodes, Loading Time 300 seconds}
+    \label{fig:7500nodes}
+\end{minipage}
 \end{figure}
 
 \end{document}
