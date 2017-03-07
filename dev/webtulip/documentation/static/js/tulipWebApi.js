@@ -19,6 +19,11 @@ var tulipWebApi = (function() {
 							errorCallback(result.message);
 						}
 					}
+		        },
+				error: function() {
+					if (typeof errorCallback === "function") {
+						errorCallback("Unknown server error.");
+					}
 		        }
 		    });
 		},
@@ -39,6 +44,11 @@ var tulipWebApi = (function() {
 						if (typeof errorCallback === "function") {
 							errorCallback(result.message);
 						}
+					}
+		        },
+				error: function() {
+					if (typeof errorCallback === "function") {
+						errorCallback("Unknown server error.");
 					}
 		        }
 		    });
