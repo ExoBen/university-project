@@ -3,7 +3,10 @@ from django.conf import settings
 import os
 from django.http import JsonResponse
 from tulip import tlp
+import time
+
 from .tlp_json_converter import TlpJsonConverter
+from .network_optimiser import NetworkOptimiser
 
 from documentation.models import Network
 
@@ -11,14 +14,64 @@ def loadGraph(request):
 	# return list of all graphs the user can load
 	if (request.method == "GET" and request.GET.get("network_name", None) != None):
 		nameOfGraph = request.GET.get("network_name", None)
+
+		toPrune = request.GET.get("toPrune", False)
+		toPrune = toPrune == "true"
+
+		toCliqueBundle = request.GET.get("toCliqueBundle", False)
+		toCliqueBundle = toCliqueBundle == "true"
+
+		toEdgeBundle = request.GET.get("toEdgeBundle", False)
+		toEdgeBundle = toEdgeBundle == "true"
+
 		networkFromDB = Network.objects.filter(network_name=nameOfGraph)[0]
 		#print (networkFromDB.network_file.name)
+
+		beforeTlpLoaded = time.time()
 		currentNetwork = tlp.loadGraph(os.path.join(settings.MEDIA_ROOT, networkFromDB.network_file.name))
+		afterTlpLoaded = time.time()
+		
+		tlpLoadTime = round(((afterTlpLoaded-beforeTlpLoaded)*1000.0), 1)
+
 		if currentNetwork is None:
 			return JsonResponse({"success": False, "message": "File failed to load"})
 		else:
-			graphInJson = TlpJsonConverter.tlp_to_json(nameOfGraph, currentNetwork)
-			return JsonResponse({"success": True, "data": graphInJson})
+			pruningTime = False
+			cliqueBundlingTime = False
+			edgeBundlingTime = False
+			nodesBeenPruned = []
+			numDeletedClique = []
+			numDeletedEdge = []
+
+
+			if (toPrune):
+				beforePruned = time.time()
+				currentNetwork, nodesBeenPruned = NetworkOptimiser.nodePruning(currentNetwork)
+				afterPruned = time.time()
+				pruningTime = round(((afterPruned-beforePruned)*1000.0), 1)
+
+			if (toCliqueBundle):
+				beforeCliqueBundled = time.time()
+				currentNetwork, numDeletedClique = NetworkOptimiser.cliqueBasedNodeBundling(currentNetwork)
+				afterCliqueBundled = time.time()
+				cliqueBundlingTime = round(((afterCliqueBundled-beforeCliqueBundled)*1000.0), 1)
+
+			if (toEdgeBundle):
+				beforeEdgeBundled = time.time()
+				currentNetwork, numDeletedEdge = NetworkOptimiser.edgeBasedNodeBundling(currentNetwork)
+				afterEdgeBundled = time.time()
+				edgeBundlingTime = round(((afterEdgeBundled-beforeEdgeBundled)*1000.0), 1)
+
+			graphInJson = TlpJsonConverter.tlp_to_json(nameOfGraph, currentNetwork, nodesBeenPruned, numDeletedClique, numDeletedEdge)
+
+			return JsonResponse({
+				"success": True, 
+				"data": graphInJson, 
+				"tlpLoadTime": tlpLoadTime, 
+				"pruningTime": pruningTime, 
+				"cliqueBundlingTime": cliqueBundlingTime, 
+				"edgeBundlingTime": edgeBundlingTime
+				})
 	return JsonResponse({"success": False, "message": "Define name and use GET"}) 
 
 def deleteGraph(request):
@@ -36,22 +89,3 @@ def deleteGraph(request):
 
 	return JsonResponse({"success": False, "message": "Define name and use POST"}) 
 
-
-
-# def saveGraph(request):
-
-# 	# overwrites if no parameter, saves to new file if file name given
-# 	print (request)
-# 	return JsonResponse({'graph':'saved'})
-
-# def importGraph(request):
-
-# 	# user uploads / points to graph and gives it a name etc.
-# 	print (request)
-# 	return JsonResponse({'graph':'import'})
-
-# def exportGraph(request):
-
-# 	# export a graph to a file
-# 	print (request)
-# 	return JsonResponse({'graph':'export'})

@@ -11,28 +11,60 @@
 
 {% block content %}
 <div class="row">
-  <div class="col-lg-6">
-    {% if network_names %}
-    <select id="graphToLoad" class="form-control inlineDisplay">
-    {% for network in network_names %}
-        <option value="{{network.network_name}}">{{network.network_name}}</option>
+  {% if network_names %}
+    <div class="col-lg-2">
+      <select id="graphToLoad" class="form-control inlineDisplay">
+      {% for network in network_names %}
+          <option value="{{network.network_name}}">{{network.network_name}}</option>
       {% endfor %}
       </select>
-    <input class="btn btn-default inlineDisplay" type="button" value="Load" name="loadGraph"></input>
-    {% else %}
-      <p>No networks uploaded!</p>
-    {% endif %}
-  </div>
+    </div>  
+    <div class="col-lg-2">
+      <div class="checkbox">
+        <label><input id="prune" type="checkbox" value="">Prune Network</label>
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="checkbox">
+        <label><input id="cbundle" type="checkbox" value="">Clique Based Bundling</label>
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="checkbox">
+        <label><input id="ebundle" type="checkbox" value="">Edge Based Bundling</label>
+      </div>
+    </div>
+    <div class="col-lg-1">
+      <input class="btn btn-default inlineDisplay" type="button" value="Load" name="loadGraph"></input>
+    </div>
+    <div class="col-lg-3">
+      Click <a href="/moreInfo">here</a> for more information about what the software does.
+    </div>
+  {% else %}
+    <div class="col-lg-12">
+      <p>No networks uploaded! Click <a href="/upload">here</a> to upload a network.</p>
+    </div>
+  {% endif %}
 </div>
 
 <br/>
 
-<!-- <a href="api/saveGraph">Save a graph</a> <br/>
-<a href="api/importGraph">Import a graph</a> <br/>
-<a href="api/exportGraph">Export a graph</a> <br/> -->
-
 <div id="main_network"></div>
 
+<br/>
+<div class="row">
+  <div id="output" class="col-lg-6">
+    Stats:<br/>
+  </div>
+  <div class="col-lg-6">
+    Key:<br/>
+    Blue - normal node<br/>
+    Green - pruned node<br/>
+    Red - Clique based bundling<br/>
+    Purple - Edge based bundling<br/>
+    Larger nodes represent how much nodes have been bundled<br/><br/>
+  </div>
+</div>
 
 
 {% endblock %}

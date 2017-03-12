@@ -49,3 +49,6 @@ def delete(request):
         form = NetworkForm()
     context["form"] = form
     return render(request, 'delete.html', context)
+
+def moreInfo(request):
+    return render(request, 'moreInfo.html')

@@ -1,9 +1,31 @@
 
 $("input[name='loadGraph']").click(function() {
-	graphToLoad = $("#graphToLoad").val();
+	var startTimer = new Date();
+	var graphToLoad = $("#graphToLoad").val();
+	var toPrune = false;
+	if ($("#prune").is(':checked')) {
+		toPrune = true;
+	}
+	var toCliqueBundle = false;
+	if ($("#cbundle").is(':checked')) {
+		toCliqueBundle = true;
+	}
+	var toEdgeBundle = false;
+	if ($("#ebundle").is(':checked')) {
+		toEdgeBundle = true;
+	}
 
-	tulipWebApi.loadGraph(graphToLoad, function(result) {
-		networkCreator.drawSimpleGraph(result);
+	tulipWebApi.loadGraph(graphToLoad, toPrune, toCliqueBundle, toEdgeBundle, function(result) {
+		var ajaxTimer = new Date();
+
+		networkCreator.drawSimpleGraph(
+			result.data, 
+			startTimer, 
+			ajaxTimer, 
+			result.tlpLoadTime, 
+			result.pruningTime, 
+			result.cliqueBundlingTime, 
+			result.edgeBundlingTime);
 	}, function(error) {
 		console.error(error)
 	});
@@ -11,7 +33,7 @@ $("input[name='loadGraph']").click(function() {
 });
 
 $("input[name='deleteGraph']").click(function() {
-	graphToDelete = $("#graphToDelete").val();
+	var graphToDelete = $("#graphToDelete").val();
 
 	tulipWebApi.deleteGraph(graphToDelete, function(result) {
 		$("#deleted").text(result);

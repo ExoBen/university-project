@@ -2,18 +2,21 @@
 var tulipWebApi = (function() {
 	return {
 
-		loadGraph: function(fileName, callback, errorCallback) {
+		loadGraph: function(fileName, toPrune, toCliqueBundle, toEdgeBundle, callback, errorCallback) {
 
 			$.ajax({
 				url: "/api/loadGraph",
 				data: {
 			        "network_name": fileName,
+			        "toPrune": toPrune,
+			        "toCliqueBundle": toCliqueBundle,
+			        "toEdgeBundle": toEdgeBundle,
 			    },
 			    cache: false,
 			    type: "GET",
 				success: function(result) {
 					if (result.success) {
-		        		callback(result.data);
+		        		callback(result);
 					} else {
 						if (typeof errorCallback === "function") {
 							errorCallback(result.message);
