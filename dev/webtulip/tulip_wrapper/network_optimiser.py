@@ -19,19 +19,52 @@ class NetworkOptimiser:
 				source = network.source(edge)
 				target = network.target(edge)
 				if source != node:
-					if source not in arrayOfNodesNextToPruned:
-						arrayOfNodesNextToPruned.append(source)
+					valueUpdated = False
+					for nodeNumPair in arrayOfNodesNextToPruned:
+						if nodeNumPair["node"] == source:
+							nodeNumPair["number"] += 1
+							valueUpdated = True
+							break
+					if valueUpdated == False:
+						arrayOfNodesNextToPruned.append({"node": source, "number": 1})
 					network.delEdge(edge)
 				else:
-					if target not in arrayOfNodesNextToPruned:
-						arrayOfNodesNextToPruned.append(target)
+					valueUpdated = False
+					for nodeNumPair in arrayOfNodesNextToPruned:
+						if nodeNumPair["node"] == target:
+							nodeNumPair["number"] += 1
+							valueUpdated = True
+							break
+					if valueUpdated == False:
+						arrayOfNodesNextToPruned.append({"node": source, "number": 1})
 					network.delEdge(edge)
-
 
 		for node in arrayOfNodesToPrune:
 			network.delNode(node)
 
 		return network, arrayOfNodesNextToPruned
+
+
+	def cliqueBasedNodeBundling(network):
+
+		deletedStats = []
+
+		result = network.getDoubleProperty("clusteringcoef")
+		tlp.clusteringCoefficient(network, result)
+
+		clique_like = []
+
+		for node in network.getNodes():
+			if result.getNodeValue(node) == 1:
+				clique_like.append(node)
+		
+		for node in clique_like:
+			numDeleted = bundleNode(network, node)
+			deletedStats.append({"node": node, "numDeleted": numDeleted})
+
+
+		return network, deletedStats
+
 
 	def edgeBasedNodeBundling(network):
 
@@ -68,28 +101,6 @@ class NetworkOptimiser:
 			theirSizes.pop(index)
 
 		return network, deletedStats
-
-	def cliqueBasedNodeBundling(network):
-
-		deletedStats = []
-
-		result = network.getDoubleProperty("clusteringcoef")
-		tlp.clusteringCoefficient(network, result)
-
-		clique_like = []
-
-		for node in network.getNodes():
-			if result.getNodeValue(node) == 1:
-				clique_like.append(node)
-		
-		for node in clique_like:
-			numDeleted = bundleNode(network, node)
-			deletedStats.append({"node": node, "numDeleted": numDeleted})
-
-
-		return network, deletedStats
-
-
 
 def bundleNode(network, node):
 

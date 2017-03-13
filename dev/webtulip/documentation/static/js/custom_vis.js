@@ -10,13 +10,16 @@ var networkCreator = (function() {
       arrayOfEdges = [];
 
       data.nodes.forEach(function(node) {
-        arrayOfNodes.push({id: node.id, label: node.id});
+        arrayOfNodes.push({id: node.id, label: "id: " + node.id});
       });
 
       for (var j = 0; j<data.nodesBeenPruned.length; j++) {
         for (var i = 0; i<arrayOfNodes.length; i++) {
           if (data.nodesBeenPruned[j].id === arrayOfNodes[i].id) {
             arrayOfNodes[i]["color"] = "#afa";
+            arrayOfNodes[i]["shape"] = "elipse";
+            arrayOfNodes[i]["font"] = {"size": 14+(Math.log((10*data.nodesBeenPruned[j]["number"])))};
+            arrayOfNodes[i]["label"] += ", n: "+data.nodesBeenPruned[j]["number"];
           }
         }
       }
@@ -26,7 +29,8 @@ var networkCreator = (function() {
           if (data.numDeletedClique[j].id === arrayOfNodes[i].id) {
             arrayOfNodes[i]["color"] = "#d88";
             arrayOfNodes[i]["shape"] = "box";
-            arrayOfNodes[i]["font"] = {"size": 16+(data.numDeletedClique[j].numDeleted)};
+            arrayOfNodes[i]["font"] = {"size": 16+5+(Math.log10((10*data.numDeletedEdge[j].numDeleted))*3)};
+            arrayOfNodes[i]["label"] += ", n: " + String(data.numDeletedEdge[j].numDeleted);
           }
         }
       }
@@ -36,7 +40,8 @@ var networkCreator = (function() {
           if (data.numDeletedEdge[j].id === arrayOfNodes[i].id) {
             arrayOfNodes[i]["color"] = "#b6e";
             arrayOfNodes[i]["shape"] = "box";
-            arrayOfNodes[i]["font"] = {"size": 16+(data.numDeletedEdge[j].numDeleted)};
+            arrayOfNodes[i]["font"] = {"size": 16+5+(Math.log((10*data.numDeletedEdge[j].numDeleted))*3)};
+            arrayOfNodes[i]["label"] += ", n: " + String(data.numDeletedEdge[j].numDeleted);
           }
         }
       }

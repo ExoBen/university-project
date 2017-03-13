@@ -11,8 +11,8 @@ class TlpJsonConverter:
 		for edge in tlpNetwork.getEdges():
 			jsonNetwork["edges"].append({"from": tlpNetwork.source(edge).id, "to": tlpNetwork.target(edge).id})
 
-		for node in nodesBeenPruned:
-			jsonNetwork["nodesBeenPruned"].append({"id": node.id})
+		for nodeNumPair in nodesBeenPruned:
+			jsonNetwork["nodesBeenPruned"].append({"id": nodeNumPair["node"].id, "number": nodeNumPair["number"]})
 
 		for nodeNumPair in numDeletedClique:
 			jsonNetwork["numDeletedClique"].append({"id": nodeNumPair["node"].id, "numDeleted": nodeNumPair["numDeleted"]})
