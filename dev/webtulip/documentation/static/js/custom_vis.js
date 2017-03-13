@@ -31,8 +31,8 @@ var networkCreator = (function() {
           if (data.numDeletedClique[j].id === arrayOfNodes[i].id) {
             arrayOfNodes[i]["color"] = "#d88";
             arrayOfNodes[i]["shape"] = "box";
-            arrayOfNodes[i]["font"] = {"size": 16+5+(Math.log10((10*data.numDeletedEdge[j].numDeleted))*2.5)};
-            arrayOfNodes[i]["label"] += ", n: " + String(data.numDeletedEdge[j].numDeleted);
+            arrayOfNodes[i]["font"] = {"size": 16+5+(Math.log10((10*data.numDeletedClique[j].numDeleted))*2.5)};
+            arrayOfNodes[i]["label"] += ", n: " + String(data.numDeletedClique[j].numDeleted);
           }
         }
       }
@@ -48,6 +48,8 @@ var networkCreator = (function() {
           }
         }
       }
+
+      console.log(arrayOfNodes);
 
       data.edges.forEach(function(edge) {
         arrayOfEdges.push({from: edge.from, to: edge.to});
