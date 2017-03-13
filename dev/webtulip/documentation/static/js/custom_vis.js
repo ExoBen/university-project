@@ -143,25 +143,25 @@ var outputStats = function(
 
   toAppend +=
     "<table>"+
-    "<tr><td>Time to load in the TLP</td><td>"+loadingTlpTime+"ms</td>"+
-    "<tr><td>Time from click to AJAX response</td><td>" + timeToAjax +"ms</td>"+
-    "<tr><td>Time spend processing in Vis.js</td><td>" + timeProcessingVis +"ms</td>"+
-    "<tr><td>Time spend creating vis.js network</td><td>" + timeCreatingNetwork +"ms</td>"+
-    "<tr><td>Time spend drawing</td><td>" + timeDrawingNetwork +"ms</td>"+
-    "<tr><td>Sum of all JS times</td><td>" + (timeToAjax+timeProcessingVis+timeCreatingNetwork+timeDrawingNetwork) +"ms</td>"+
-    "<tr><td>Time from first to last Date()</td><td>" + startToEnd +"ms</td>"+
+    "<tr><td>Time to load in the TLP</td><td>"+loadingTlpTime+"</td>"+
+    "<tr><td>Time from click to AJAX response</td><td>" + timeToAjax +"</td>"+
+    "<tr><td>Time spend processing in Vis.js</td><td>" + timeProcessingVis +"</td>"+
+    "<tr><td>Time spend creating vis.js network</td><td>" + timeCreatingNetwork +"</td>"+
+    "<tr><td>Time spend drawing</td><td>" + timeDrawingNetwork +"</td>"+
+    "<tr><td>Sum of all JS times</td><td>" + (timeToAjax+timeProcessingVis+timeCreatingNetwork+timeDrawingNetwork) +"</td>"+
+    "<tr><td>Time from first to last Date()</td><td>" + startToEnd +"</td>"+
     "<tr><td>Number of nodes</td><td>" + numberOfNodes+"</td>"+
     "<tr><td>Number of edges</td><td>" + numberOfEdges+"</td>";
 
 
   if (pruningTime) {
-    toAppend += "<tr><td>Time to prune the network</td><td>" + pruningTime+"ms</td>";
+    toAppend += "<tr><td>Time to prune the network</td><td>" + pruningTime+"</td>";
   }
   if (cliqueBundlingTime) {
-    toAppend += "<tr><td>Time to bundle on cliques</td><td>" + cliqueBundlingTime+"ms</td>";
+    toAppend += "<tr><td>Time to bundle on cliques</td><td>" + cliqueBundlingTime+"</td>";
   }
   if (edgeBundlingTime) {
-    toAppend += "<tr><td>Time to bundle on edges</td><td>" + edgeBundlingTime+"ms</td>";
+    toAppend += "<tr><td>Time to bundle on edges</td><td>" + edgeBundlingTime+"</td>";
   }
 
   toAppend += "</table><br/>";
