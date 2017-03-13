@@ -13,6 +13,7 @@ var networkCreator = (function() {
         arrayOfNodes.push({id: node.id, label: "id: " + node.id});
       });
 
+      // checks data for any nodes that have been pruned and styles accordingly
       for (var j = 0; j<data.nodesBeenPruned.length; j++) {
         for (var i = 0; i<arrayOfNodes.length; i++) {
           if (data.nodesBeenPruned[j].id === arrayOfNodes[i].id) {
@@ -24,23 +25,25 @@ var networkCreator = (function() {
         }
       }
 
+      // checks data for any nodes that have been clique-based bundled and styles accordingly
       for (var j = 0; j<data.numDeletedClique.length; j++) {
         for (var i = 0; i<arrayOfNodes.length; i++) {
           if (data.numDeletedClique[j].id === arrayOfNodes[i].id) {
             arrayOfNodes[i]["color"] = "#d88";
             arrayOfNodes[i]["shape"] = "box";
-            arrayOfNodes[i]["font"] = {"size": 16+5+(Math.log10((10*data.numDeletedEdge[j].numDeleted))*3)};
+            arrayOfNodes[i]["font"] = {"size": 16+5+(Math.log10((10*data.numDeletedEdge[j].numDeleted))*2.5)};
             arrayOfNodes[i]["label"] += ", n: " + String(data.numDeletedEdge[j].numDeleted);
           }
         }
       }
 
+      // checks data for any nodes that have been edge-based bundled and styles accordingly
       for (var j = 0; j<data.numDeletedEdge.length; j++) {
         for (var i = 0; i<arrayOfNodes.length; i++) {
           if (data.numDeletedEdge[j].id === arrayOfNodes[i].id) {
             arrayOfNodes[i]["color"] = "#b6e";
             arrayOfNodes[i]["shape"] = "box";
-            arrayOfNodes[i]["font"] = {"size": 16+5+(Math.log((10*data.numDeletedEdge[j].numDeleted))*3)};
+            arrayOfNodes[i]["font"] = {"size": 16+5+(Math.log((10*data.numDeletedEdge[j].numDeleted))*2.5)};
             arrayOfNodes[i]["label"] += ", n: " + String(data.numDeletedEdge[j].numDeleted);
           }
         }
