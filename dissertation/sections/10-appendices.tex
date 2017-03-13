@@ -11,7 +11,7 @@ After defining the scope of the project in Section \ref{sec:scope}, the below Mo
 Must Have:
 \begin{itemize}
     \item A web endpoint that calls the Tulip Python API
-	\item To be able to deal with large data (that is too large to just send of the network and be visualised be the client without manipulation)
+	\item To be able to deal with large data (that is too large to just send over the network and be visualised by the client without manipulation)
 	\item A basic demo interface
 	\item To have data that can be rendered returned from the endpoint
 \end{itemize}
@@ -22,7 +22,7 @@ Should Have:
 	\item A flexible web endpoint, with flexible meaning covers as many relevant API calls as possible, and making sure that as few of the parameters for the API calls are hard-coded. This has the benefit of both:
 	\begin{itemize}
 	    \item Making the system more useful for a larger number of clients
-        \item Letting users make more than just a JavaScript client, so if they want to make a C\# or Java app that would not be a problem
+        \item Letting users make more than just a JavaScript client, so if they want to make a C\# or Java app that would not create a problem
 	\end{itemize}
 \end{itemize}
 	
@@ -61,7 +61,7 @@ Hadoop is a set of open source programs that contain four core modules. These ar
     \item Hadoop YARN: A framework for job scheduling and cluster resource management.
 \end{itemize}
 
-These combine to give a way of storing, scheduling and processing Big Data in parallel. The way Hadoop could be utilised by the developed application is by storing all of the data that is to be visualised on HDFS, using YARN to schedule the node and edge bundling jobs and the manage the resources available to the cluster where the jobs would be run, and then using MapReduce to process each of the sub-networks then combine them back in to one network.
+These combine to give a way of storing, scheduling and processing Big Data in parallel. The way Hadoop could be utilised by the developed application is by storing all of the data that is to be visualised on HDFS. This would be done by using YARN to schedule the node and edge bundling jobs and then manage the resources available to the cluster where the jobs would be run. Next, MapReduce would be used to process each of the sub-networks and finally combine them back into a single network.
 
 
 

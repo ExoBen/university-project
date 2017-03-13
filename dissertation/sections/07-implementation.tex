@@ -15,13 +15,13 @@ The core Django app included the URL paths for the whole project and the project
 
 \section{Tulip Python API Web Wrapper}
 
-The web wrapper for the Tulip Python API was a major part of the project, and contained all interactions that Django had with Tulip. Tulip has a python package \cite{tulippip} that can be installed using pip \cite{pip}. Calls can then be made to the Python API from within Tulip, such as loading .tlp's and running code against the loaded networks. The end result of this was allowing Tulip to be called after a user asked to visualise a network by Django, and Tulip then creating a network in memory and running operations against the network. 
+The web wrapper for the Tulip Python API was a major part of the project, and contained all interactions that Django had with Tulip. Tulip has a python package \cite{tulippip} that can be installed using pip \cite{pip}. Calls can then be made to the Python API from within Tulip, such as loading .tlp's and running code against the loaded networks. The end result of this was enabling Tulip to be called by Django (after a user asked to visualise a network), and then creating a network in memory and running operations against it. 
 
 Several critical design decisions had to be made throughout the creation of the web wrapper, listed below.
 
 \subsection{How to handle throwing errors - server side}
 
-A decision had to be made as to how the client would be made aware that the server had caught an error. Simply, there are three states which the server can return: success, expected error and unexpected error. From within Django there are many ways in which the errors can be dealt with. The page can simply be refreshed, flushing the error, a custom error page can be shown displaying the error code, such as 404, or an error can be passed back to the interface which can then be caught and displayed as appropriate. As one of the goals of the project was try to make the web wrapper a reusable API as oppposed to a single use system, it was decided that each return would include a JSON object, which would include a success boolean, and then either the expected information (such as the network) or a message with why the error had occurred. It would then be down to the library that called the API to catch the JSON appropriately, and then the interface to act on them accordingly. For this application, how the library and interface handled the errors can be seen in Section \ref{sec:jslib}.
+A decision had to be made as to how the client would be made aware that the server had caught an error. Simply, there are three states which the server can return: success, expected error and unexpected error. From within Django there are many ways in which the errors can be dealt with. The page can simply be refreshed, flushing the error, a custom error page can be shown displaying the error code, such as 404, or an error can be passed back to the interface which can then be caught and displayed as appropriate. As one of the goals of the project was try to make the web wrapper a reusable API as oppposed to a single use system, it was decided that each return would include a JSON object, which would include a success boolean, and then either the expected information (such as the network) or a message with why the error had occurred. It would then be down to the library that called the API to catch the JSON appropriately, and then the interface to act on them accordingly. For this application, it can be seen in Section \ref{sec:jslib} how the library and interface handled errors.
 
 \subsection{How to transfer a network to JavaScript}
 
@@ -32,21 +32,21 @@ There were two ways in which the network could be sent across a network to the u
     \item Transforming the network into JSON and then sending it over the network
 \end{itemize}
 
-The advantage of serialising the network and recreating the whole tlp in JavaScript is that the client then has access to the whole network and there is no data loss in the transaction. However, the advantage of transforming the network into JSON and then sending it across the network is both that the size of the transfer is less as only the required data needs to be sent, superfluous data can be cut out, and also that the client does not need to then recreate the network after receiving it. It was decided that the data would be converted into JSON and then transferred over the network. This decision was made as high performance for massive networks was one of the main goals of the system. Transferring only what is necessary both reduces the amount of data that needs to be sent over the network, and also reducing the amount of processing required by the client are both ways to increase performance.
+The advantage of serialising the network and recreating the whole tlp in JavaScript is that the client then has access to the whole network and there is no data loss in the transaction. However, the advantage of transforming the network into JSON and then sending it across the network is both that the size of the transfer is less as only the required data needs to be sent, superfluous data can be cut out, and also that the client does not need to then recreate the network after receiving it. It was decided that the data would be converted into JSON and then transferred over the network. This decision was made as high performance for massive networks was one of the main goals of the system. Transferring only what is necessary both reduces the amount of data that needs to be sent over the network, and also minimises the amount of processing required by the client. These are both ways to increase performance.
 
 \subsection{How to store the networks on the server}
 
 Another critical design decision had to be made relating to how the networks were to be stored on the server. Upon further research, three possibilities presented themselves as to how this could be completed:
 
 \begin{itemize}
-    \item The structure of the network could be stored directly in the network. This could be done by having a table in the database for networks which would include a network ID, all of the nodes in the network, and all of the edges in a network.
+    \item The structure of the network could be stored directly in a database's table. This could be done by having a table in the database for networks which would include a network ID, all of the nodes edges in a network.
     \item The .tlp of the network could be uploaded to the server and a link to that location could be saved in the database.
-    \item The networks could all be saved on Hadoop's HDFS (explained in Appendix \ref{sec:whatishadoop}) in order for working with Big Data to be supported.
+    \item The networks could all be saved on Hadoop's HDFS (explained in Appendix \ref{sec:whatishadoop}) so that working with Big Data would be supported.
 \end{itemize}
 
-The advantage of storing the network directly is that all data would be stored in a single database. For a small scale application, this would make managing the system easier and have no notable drawback. However, as many massive networks may be saved to the system, the database would quickly become very large and its performance would suffer greatly. As a requirement for the system was that it would work on massive datasets, an alternative solution would have to be found. Out of the other two solutions, one involved saving all of the networks on the server, and the other on a HDFS cluster. 
+The advantage of storing the network directly is that all data would be stored in a single database. For a small scale application, this would make managing the system easier and have no notable drawback. However, as many massive networks may be saved to the system, the database would quickly become very large and therefore its performance would suffer greatly. As a requirement for the system was that it would work on massive datasets, an alternative solution would have to be found. Out of the other two solutions, one involved saving all of the networks on the server, and the other on a HDFS cluster. 
 
-The advantage of storing the networks on the server means that you can still store a massive amount of data on the server without the overhead and complications of setting up a Hadoop cluster. However, the advantage of using Hadoop is that it would allow for far more data to be stored in HDFS, and then considerably faster processing times of massive networks using MapReduce.
+The advantage of storing the networks on the server means that you can still store a massive amount of data on the server without the overhead and complications of setting up a Hadoop cluster. However, the advantage of using Hadoop is that it would allow for far more data to be stored in HDFS, and then MapReduce would allow for considerably faster processing of massive networks.
 
 For this project, it was decided that the network would be stored on the server as this was a simpler approach that would be far quicker to get up and running, and additionally it would not be possible to acquire the resources needed to utilise Hadoop effectively.
 
@@ -55,7 +55,7 @@ This links in to another challenge faced - if a large amount of backing storage 
 \section{JavaScript Library}
 \label{sec:jslib}
 
-The JavaScript library involved creating a function for each function in the Tulip Python API Web Wrapper, which could be called from an interface. The main aim in creating the library was to make it as open and flexible as possible, allowing for developers to have access to exactly what they need, and on top of that be able to handle errors easily. Given that I had not developed a library before, research was done into the best way to take errors from the web wrapper and then pass them on to the interface. The outcome of this research was that the preferred way of error handling was to:
+The JavaScript library involved creating a function to match each function in the Tulip Python API Web Wrapper, which could be called from an interface. The main aim in creating the library was to make it as open and flexible as possible, allowing for developers to have access to exactly what they need, and on top of that be able to handle errors easily. Given that I had not developed a library before, research was done into the best way to take errors from the web wrapper and then pass them on to the interface. The outcome of this research was that the preferred way of error handling was to:
 
 \begin{enumerate}
     \item Make the interface call a function with any parameters, a success callback, and an \emph{optional} error callback. An example of this can be seen in Listing \ref{listing:interf-to-jslib}
@@ -68,30 +68,30 @@ tulipWebApi.loadGraph(graphToLoad, function(result) {
     \end{lstlisting}
     \item The library then receives the call and makes the appropriate AJAX call to the server, and upon getting a result it checks if the call was successful. Line 10 of Listing \ref{listing:jslib} shows this check
     \begin{enumerate}
-        \item If the AJAX call was successful then the callback fuction passed in by the interface is called with the data requested, such as the network requested. This is shown on line 11 of Listing \ref{listing:jslib}.
-        \item If the AJAX call failed then the library checks is errorCallback function was passed in by the interface. If so, then that function is called and the error message is passed. If not, then nothing is called. This means that the library has the option of failing silently if the developer making the interface wishes. This is shown on lines 12 to 16 of Listing \ref{listing:jslib}.
+        \item If the AJAX call was successful then the callback function passed in by the interface is called with the data requested, such as the network requested. This is shown on line 11 of Listing \ref{listing:jslib}.
+        \item If the AJAX call failed then the library checks if an \texttt{errorCallback} function was passed in by the interface. If so, then that function is called and the error message is passed. If not, then nothing is called. This means that the library has the option of failing silently if the developer making the interface wishes. This is shown on lines 12 to 16 of Listing \ref{listing:jslib}.
     \end{enumerate}
     \begin{lstlisting}[caption=How the JavaScript library catches and passes errors, label=listing:jslib]
 loadGraph: function(fileName, callback, errorCallback) {
 	$.ajax({
-		url: "/api/loadGraph",
+		url: ``/api/loadGraph'',
 		data: {
-	        "network_name": fileName,
+	        ``network_name'': fileName,
 	    },
 	    cache: false,
-	    type: "GET",
+	    type: ``GET'',
 		success: function(result) {
 			if (result.success) {
         		callback(result.data);
 			} else {
-				if (typeof errorCallback === "function") {
+				if (typeof errorCallback === ``function'') {
 					errorCallback(result.message);
 				}
 			}
         },
 		error: function() {
-			if (typeof errorCallback === "function") {
-				errorCallback("Unknown server error.");
+			if (typeof errorCallback === ``function'') {
+				errorCallback(``Unknown server error.'');
 			}
         }
     });
@@ -121,7 +121,7 @@ drawSimpleGraph: function(result) {
     var nodes = new vis.DataSet(arrayOfNodes);
     var edges = new vis.DataSet(arrayOfEdges);
     
-    var container = document.getElementById('main_network');
+    var container = document.getElementById(``main_network'');
     
     // provide the data in the required vis.js format
     var data = {
@@ -131,18 +131,22 @@ drawSimpleGraph: function(result) {
     
     var options = { /* Setting many layout and physics parameters */ }
     
-    // initialise the network!
+    // initialise the network
     var network = new vis.Network(container, data, options);
 }
 \end{lstlisting}
 
-There are several different variables that can be set in "options" on line 24 of Listing \ref{listing:vis-js}. A full list of options can be seen on the Vis.js website \cite{visjsoptions}. Several options were experimented with for this project, including mostly within the layout and physics module. 
+TODO: either specify that this is the bare bones or include new stuff i added.
+
+There are several different variables that can be set in \texttt{options} on line 24 of Listing \ref{listing:vis-js}. A full list of options can be seen on the Vis.js website \cite{visjsoptions}. Several options were experimented with for this project, specifically within the layout and physics module. 
 
 
-In \texttt{layout} \cite{visjslayout}, if improvedLayout was set to false, then Kamada Kawai Algorithm \cite{kamada1989algorithm} is \emph{not} applied, which reduces stability of the network but improved rendering times. 
+In \texttt{layout} \cite{visjslayout}, if \texttt{improvedLayout} was set to false, then Kamada Kawai Algorithm \cite{kamada1989algorithm} is \emph{not} applied, which reduces stability of the network but improved rendering times. 
 
-In \texttt{physics} \cite{visjsphysics}, there were several different parameters which could be finely tuned. A major parameter experimented on for this project was stabilization, which sets if the network should be stabilised and, optionally, by what means. Additionally, the maximum and minimum speed can be set, the time between steps can be changed, and the physics solver can be selected. This can be one of four preset solver: barnesHut \cite{barnes1986hierarchical}, forceAtlas2Based (based on the Force Atlas 2 algorithm \cite{jacomy2014forceatlas2}), repulsion or hierarchicalRepulsion, or a custom model. A custom solver could take in the following arguments: gravitationalConstant, centralGravity, springLength, springConstant, damping and avoidOverlap. 
+In \texttt{physics} \cite{visjsphysics}, there were several different parameters which could be finely tuned. Stabilisation was a major parameter experimented on for this project which sets if the network should be stabilised and, if so, by what means. Additionally, the maximum and minimum speed can be set, the time between steps can be changed, and the physics solver can be selected. This can be one of four preset solver: \texttt{barnesHut} \cite{barnes1986hierarchical}, \texttt{forceAtlas2Based} (based on the Force Atlas 2 algorithm \cite{jacomy2014forceatlas2}), \texttt{repulsion} or \texttt{hierarchicalRepulsion}, or alternatively a custom model can be supplied. A custom solver could take in the following arguments: \texttt{gravitationalConstant}, \texttt{centralGravity}, \texttt{springLength}, \texttt{springConstant}, \texttt{damping} and \texttt{avoidOverlap}. 
 
 Although time was spent exploring the physics module and creating several custom solvers, it turned out that creating powerful physics solvers would improve the visualisation slightly at the cost of a large decrease in performance. Physics could also be turned off entirely and the network could be displayed in a ring, with nodes equally spaced. 
+
+TODO: make the above into a list and maybe include a few more options like size etc.?
 
 \end{document}

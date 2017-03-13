@@ -3,18 +3,19 @@
 
 \chapter{Conclusion}
 
-This project aimed to research how existing software visualised networks, do a systematic review of existing network visualisation software, and design, implement and evaluate software that could visualise networks in a browser. 
+This project aimed to research how existing software visualised networks, to do a systematic review of existing network visualisation software, and design, implement and evaluate software that could visualise networks in a browser. 
 
 \section{Recommendations}
 
-As a result of the completed research and development of a prototype for this project, and despite the fact that the application developed is a long way from being deploy-able to the public, there are several things I learnt that I feel SAS might benefit from using. Firstly, in regards to the initial research done and then the systematic review conducted, the most valuable piece of information learnt was that the best way to improve visualisability of a network is to use node and edge bundling, and that the best way to improve performance is to ensure that the server reduces the network as much as possible before sending it to the client to be visualised. These ideas were reaffirmed by the implementation of the visualisation system created for this project.
+As a result of the completed research and development of a prototype for this project, and despite the fact that the application developed is some way from being deployable to the public, there are several things I learnt that I feel SAS might benefit from using. Firstly, in regards to the initial research done and then the systematic review conducted, the most valuable piece of information learnt was that the best way to improve visualisability of a network is to use node and edge bundling, and that the best way to improve performance is to ensure that the server reduces the network as much as possible before sending it to the client to be visualised. These ideas were reaffirmed by the implementation of the visualisation system created for this project.
 
 \section{Future Ideas}
 \label{sec:further_ideas}
 
 \subsection{Supporting Big Data}
 
-A possible way that the application could be extended it to support Big Data. As a result of the node and edge bundling being done across the whole network, which may have hundreds of thousands or millions of nodes, the network could be pre-processed on the server and split off in to multiple different sub-networks. Then Hadoop \cite{hadoop} (explained in Appendix \ref{sec:whatishadoop}) could be utilised and each of these sub-networks could then have its nodes and edges bundled using different map job, and then reduce jobs could combine all of the sub-networks back into one network. This would vastly increase the performance of the server.
+A possible way that the application could be extended woul
+d be to allow it to support Big Data. As a result of the node and edge bundling being done across the whole network, which may have hundreds of thousands or millions of nodes, the network could be pre-processed on the server and split off into multiple different sub-networks. Then Hadoop \cite{hadoop} (explained in Appendix \ref{sec:whatishadoop}) could be utilised and each of these sub-networks could then have its nodes and edges bundled using different \texttt{map} job, and then \texttt{reduce} jobs would combine all of the sub-networks back into a single network. This would considerably increase the performance of the system.
 
 \subsection{External Data Host}
 
