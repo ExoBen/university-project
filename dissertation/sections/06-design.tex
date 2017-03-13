@@ -24,7 +24,7 @@ The back-end would consist of Django, the database it creates, the Tulip Python 
 
 The main Django app and database it creates would be fairly simple to create, and would include the logic for the server.
 
-The Tulip Python API Web Wrapper (itself an API) would include a large amount of functions that can be called from the front-end of the app, and would take in any necessary parameters and pass them to the Tulip Python API. The main purpose of this would be so that when a graph gets loaded, instead of sending the graph directly to the front-end to be rendered, it is optimised in some way first (via for example node bundling or edge bundling) and then sent to the client in a reduced form which will both mean the network will be transferred faster to the client and then visualised faster too. 
+The Tulip Python API Web Wrapper (itself an API) would include a large amount of functions that can be called from the front-end of the app, and would take in any necessary parameters and pass them to the Tulip Python API. The main purpose of this would be so that when a network gets loaded, instead of sending it directly to the front-end to be rendered, it is optimised in some way first (via for example node bundling or edge bundling) and then sent to the client in a reduced form which will both mean the network will be transferred faster to the client and then visualised faster too. 
 
 The web wrapper could be made exactly to match what functions the front-end requires, but a far more elegant and reusable solution would be to make it as flexible and as full as possible, allowing developers to have as much freedom as possible, and not have their options limited by the web wrapper's API. For this project it is likely that the amount of flexibility that the web wrapper would have would be prioritised over the amount of features, given time constraints, although at a later date additional functions could be added with ease. Another advantage of creating an API is that it would mean that developers could make their own client, whether in JavaScript or in another language such as Java or Python.
 
@@ -108,7 +108,7 @@ Based on the data flow shown in Figure \ref{fig:techinfra}, the below list was c
 
 \begin{enumerate}
     \item The user selects a network to open from a list of all networks on the system and clicks on ``Open Network''.
-    \item The ID of that network and the request for the network to be loaded is then caught by the JavaScript interface which calls the ``loadGraph'' function from the JavaScript library, passing the network ID and a success and error callback.
+    \item The ID of that network and the request for the network to be loaded is then caught by the JavaScript interface which calls the \texttt{loadGraph} function from the JavaScript library, passing the network ID and a success and error callback.
     \item The JavaScript library makes the appropriate AJAX call to the web endpoint, the Django server.
     \item The Django web application queries the database for the file to load.
     \item If an external data host is set up, then at this point the database would find the location of where the network is stored as opposed to the path the the file locally.
