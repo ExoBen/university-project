@@ -8,7 +8,7 @@ import time
 from .tlp_json_converter import TlpJsonConverter
 from .network_optimiser import NetworkOptimiser
 
-from documentation.models import Network
+from .models import Network
 
 def loadGraph(request):
 	# return list of all graphs the user can load
@@ -30,7 +30,7 @@ def loadGraph(request):
 		beforeTlpLoaded = time.time()
 		currentNetwork = tlp.loadGraph(os.path.join(settings.MEDIA_ROOT, networkFromDB.network_file.name))
 		afterTlpLoaded = time.time()
-		
+
 		tlpLoadTime = round(((afterTlpLoaded-beforeTlpLoaded)*1000.0), 1)
 
 		if currentNetwork is None:
@@ -65,14 +65,14 @@ def loadGraph(request):
 			graphInJson = TlpJsonConverter.tlp_to_json(nameOfGraph, currentNetwork, nodesBeenPruned, numDeletedClique, numDeletedEdge)
 
 			return JsonResponse({
-				"success": True, 
-				"data": graphInJson, 
-				"tlpLoadTime": tlpLoadTime, 
-				"pruningTime": pruningTime, 
-				"cliqueBundlingTime": cliqueBundlingTime, 
+				"success": True,
+				"data": graphInJson,
+				"tlpLoadTime": tlpLoadTime,
+				"pruningTime": pruningTime,
+				"cliqueBundlingTime": cliqueBundlingTime,
 				"edgeBundlingTime": edgeBundlingTime
 				})
-	return JsonResponse({"success": False, "message": "Define name and use GET"}) 
+	return JsonResponse({"success": False, "message": "Define name and use GET"})
 
 def deleteGraph(request):
 	if (request.method == "POST" and request.POST.get("network_name", None) != None):
@@ -81,11 +81,10 @@ def deleteGraph(request):
 
 		if networkToDelete is None:
 			return JsonResponse({"success": False, "message": "File failed to delete"})
-		
+
 		else:
 			networkToDelete.network_file.delete()
 			networkToDelete.delete()
 			return JsonResponse({"success": True, "message": "File deleted"})
 
-	return JsonResponse({"success": False, "message": "Define name and use POST"}) 
-
+	return JsonResponse({"success": False, "message": "Define name and use POST"})
