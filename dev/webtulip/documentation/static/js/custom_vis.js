@@ -5,7 +5,7 @@ var networkCreator = (function() {
     drawSimpleGraph: function(data, startTimer, ajaxTimer, loadingTlpTime, pruningTime, cliqueBundlingTime, edgeBundlingTime) {
 
       var beforeProcessInJsTimer = new Date();
-      
+
 	    arrayOfNodes = [];
       arrayOfEdges = [];
 
@@ -20,7 +20,7 @@ var networkCreator = (function() {
             arrayOfNodes[i]["color"] = "#afa";
             arrayOfNodes[i]["shape"] = "elipse";
             arrayOfNodes[i]["font"] = {"size": 14+(Math.log((10*data.nodesBeenPruned[j]["number"])))};
-            arrayOfNodes[i]["label"] += ", n: "+data.nodesBeenPruned[j]["number"];
+            arrayOfNodes[i]["label"] += ", p: "+data.nodesBeenPruned[j]["number"];
           }
         }
       }
@@ -32,7 +32,7 @@ var networkCreator = (function() {
             arrayOfNodes[i]["color"] = "#d88";
             arrayOfNodes[i]["shape"] = "box";
             arrayOfNodes[i]["font"] = {"size": 16+5+(Math.log10((10*data.numDeletedClique[j].numDeleted))*2.5)};
-            arrayOfNodes[i]["label"] += ", n: " + String(data.numDeletedClique[j].numDeleted);
+            arrayOfNodes[i]["label"] += ", b: " + String(data.numDeletedClique[j].numDeleted);
           }
         }
       }
@@ -44,7 +44,7 @@ var networkCreator = (function() {
             arrayOfNodes[i]["color"] = "#b6e";
             arrayOfNodes[i]["shape"] = "box";
             arrayOfNodes[i]["font"] = {"size": 16+5+(Math.log((10*data.numDeletedEdge[j].numDeleted))*2.5)};
-            arrayOfNodes[i]["label"] += ", n: " + String(data.numDeletedEdge[j].numDeleted);
+            arrayOfNodes[i]["label"] += ", b: " + String(data.numDeletedEdge[j].numDeleted);
           }
         }
       }
@@ -94,22 +94,22 @@ var networkCreator = (function() {
       var beforeDrawingTimer = new Date();
 
       var networkDataCollectedYet = false;
-      
+
       network.on("afterDrawing", function(canvas, context) {
         if (!networkDataCollectedYet) {
           var afterDrawingTimer = new Date();
           outputStats(
-            startTimer, 
-            ajaxTimer, 
-            beforeProcessInJsTimer, 
-            afterProcessingInJsTimer, 
-            createNetworkTimer, 
-            networkCreatedTimer, 
-            beforeDrawingTimer, 
-            afterDrawingTimer, 
-            loadingTlpTime, 
-            pruningTime, 
-            cliqueBundlingTime, 
+            startTimer,
+            ajaxTimer,
+            beforeProcessInJsTimer,
+            afterProcessingInJsTimer,
+            createNetworkTimer,
+            networkCreatedTimer,
+            beforeDrawingTimer,
+            afterDrawingTimer,
+            loadingTlpTime,
+            pruningTime,
+            cliqueBundlingTime,
             edgeBundlingTime,
             numberOfNodes,
             numberOfEdges);
@@ -121,13 +121,13 @@ var networkCreator = (function() {
 })();
 
 var outputStats = function(
-      startTimer, 
-      ajaxTimer, 
-      beforeProcessInJsTimer, 
-      afterProcessingInJsTimer, 
-      createNetworkTimer, 
-      networkCreatedTimer, 
-      beforeDrawingTimer, 
+      startTimer,
+      ajaxTimer,
+      beforeProcessInJsTimer,
+      afterProcessingInJsTimer,
+      createNetworkTimer,
+      networkCreatedTimer,
+      beforeDrawingTimer,
       afterDrawingTimer,
       loadingTlpTime,
       pruningTime,
