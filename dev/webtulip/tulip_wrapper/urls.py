@@ -18,11 +18,6 @@ from django.conf.urls import url
 from tulip_wrapper import views
 
 urlpatterns = [
-
-	url(r'^loadGraph', views.loadGraph),
-    url(r'^deleteGraph', views.deleteGraph),
-	# url(r'^saveGraph', views.saveGraph),
-	# url(r'^importGraph', views.importGraph),
-	# url(r'^exportGraph', views.exportGraph),
-
+	url(r'^loadGraph', views.loadGraph, name="loadGraph"),
+    url(r'^deleteGraph', views.deleteGraph, name="deleteGraph"),
 ]
