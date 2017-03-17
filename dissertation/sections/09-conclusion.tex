@@ -14,11 +14,18 @@ As a result of the completed research and development of a prototype for this pr
 
 \subsection{Supporting Big Data}
 
-A possible way that the application could be extended woul
-d be to allow it to support Big Data. As a result of the node and edge bundling being done across the whole network, which may have hundreds of thousands or millions of nodes, the network could be pre-processed on the server and split off into multiple different sub-networks. Then Hadoop \cite{hadoop} (explained in Appendix \ref{sec:whatishadoop}) could be utilised and each of these sub-networks could then have its nodes and edges bundled using different \texttt{map} job, and then \texttt{reduce} jobs would combine all of the sub-networks back into a single network. This would considerably increase the performance of the system.
+A possible way that the application could be extended would be to allow it to support Big Data. As a result of the node and edge bundling being done across the whole network, which may have hundreds of thousands or millions of nodes, the network could be pre-processed on the server and split off into multiple different sub-networks. Then Hadoop \cite{hadoop} (explained in Appendix \ref{sec:whatishadoop}) could be utilised and each of these sub-networks could then have its nodes and edges bundled using different \texttt{map} job, and then \texttt{reduce} jobs would combine all of the sub-networks back into a single network. This would considerably increase the performance of the system.
 
 \subsection{External Data Host}
 
 Tied into supporting Big Data, another way the application could be improved is by allowing users of the system to link external data hosts to the database. This would enable users to link their own data host (whether stored locally on company wide network storage or externally on Amazon S3 \cite{amazons3} or Microsoft Azure Storage \cite{msftazure}) to the application. Hence, all of a companies data could be visualised with relative ease.
+
+\subsection{More Interactive Visualisation}
+
+A way to further limit the data lost when minimising the amount of data sent across the network would be to allow users to select a node that has had other nodes bundled into it, and then those nodes would be displayed. This would mean that users could identify parts of the network they are interested in and find out more information from those parts. This could be implemented in two ways. One way would be by continuing to load in the network in the background after the initial visualisation has been displayed, which would not slow initial load times but would put more stress on the system and use up more RAM. Alternatively, when a node is selected an AJAX call would be made to the server and that upon receiving the data to be slotted inserted into the network, the visualisation would be updated.
+
+\subsection{Information Before Rendering}
+
+As the amount of time to process a network on the server is insignificant next to how long it takes to render, a possible feature would be, upon selecting parameters that the network is to be loaded using (what network and what bundling algorithms are to be applied) then a request is sent to the server and a number of nodes, edges, bytes and predicted time to render is returned. This would help users in understanding what algorithms are having a big impact on the dataset provided, and ensure that users are warned when loading times would be large.
 
 \end{document}
