@@ -56,5 +56,9 @@ class ViewsTest(TestCase):
         self.assertEqual(0, len(dict_response["data"]["numDeletedClique"]), 'numDeletedClique should be empty for pruning and edge bundling')
         self.assertEqual(1, len(dict_response["data"]["numDeletedEdge"]), 'numDeletedEdge should have 1 elements for pruning and edge bundling')
 
-    def tearDown(self):
-        self.testNetwork.delete()
+    def test_delete(self):
+        response = client.post(reverse('deleteGraph'), {'network_name': 'sas_30_test'})
+        # WHY FAILING?
+        self.assertEqual(200, response.status_code, 'Bad HTTP Response')
+        dict_response = json.loads(response.content.decode('utf-8'))
+        self.assertEqual(True, dict_response["success"], 'deleteFailed')

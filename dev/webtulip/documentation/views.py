@@ -17,6 +17,7 @@ def home(request):
 
 def upload(request):
     if request.method == 'POST':
+        print(request)
         form = NetworkForm(request.POST, request.FILES)
         if form.is_valid():
             network_model = form.save()
@@ -38,9 +39,11 @@ def upload(request):
     })
 
 def delete(request):
+    # loads the delete graph page but the delete function is in the API
     context = {}
     context["network_names"] = Network.objects.all()
     if request.method == 'POST':
+        print (request)
         form = NetworkForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
