@@ -7,6 +7,7 @@ class NetworkOptimiser:
 		arrayOfNodesNextToPruned = []
 		arrayOfNodesToPrune = []
 
+		# find each node with 1 or less edges
 		for node in network.getNodes():
 			numOfEdges = 0
 			for edge in network.getInOutEdges(node):
@@ -14,11 +15,14 @@ class NetworkOptimiser:
 			if numOfEdges <= 1:
 				arrayOfNodesToPrune.append(node)
 
+		# for each node to be pruned analyse each edge
 		for node in arrayOfNodesToPrune:
 			for edge in network.getInOutEdges(node):
 				source = network.source(edge)
 				target = network.target(edge)
-				if source != node:
+				# if source/target of edge is node to be pruned then check the other end and increment arrayOfNodesNextToPruned
+
+				if target == node:
 					valueUpdated = False
 					for nodeNumPair in arrayOfNodesNextToPruned:
 						if nodeNumPair["node"] == source:
@@ -28,7 +32,8 @@ class NetworkOptimiser:
 					if valueUpdated == False:
 						arrayOfNodesNextToPruned.append({"node": source, "number": 1})
 					network.delEdge(edge)
-				else:
+
+				elif source == node:
 					valueUpdated = False
 					for nodeNumPair in arrayOfNodesNextToPruned:
 						if nodeNumPair["node"] == target:
@@ -36,9 +41,10 @@ class NetworkOptimiser:
 							valueUpdated = True
 							break
 					if valueUpdated == False:
-						arrayOfNodesNextToPruned.append({"node": source, "number": 1})
+						arrayOfNodesNextToPruned.append({"node": target, "number": 1})
 					network.delEdge(edge)
 
+		# delete all nodes that are to be pruned
 		for node in arrayOfNodesToPrune:
 			network.delNode(node)
 

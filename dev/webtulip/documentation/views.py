@@ -7,8 +7,8 @@ import os
 
 from .sas_to_tlp import SasToTlp
 
-from documentation.models import Network
-from documentation.forms import NetworkForm
+from tulip_wrapper.models import Network
+from tulip_wrapper.forms import NetworkForm
 
 def home(request):
     context = {}
@@ -17,8 +17,9 @@ def home(request):
 
 def upload(request):
     if request.method == 'POST':
+        print(request)
         form = NetworkForm(request.POST, request.FILES)
-        if form.is_valid():    
+        if form.is_valid():
             network_model = form.save()
             if network_model.network_type == Network.IND_TYPE:
                 old_file_path = os.path.join(settings.MEDIA_ROOT, network_model.network_file.name)
@@ -38,9 +39,11 @@ def upload(request):
     })
 
 def delete(request):
+    # loads the delete graph page but the delete function is in the API
     context = {}
     context["network_names"] = Network.objects.all()
     if request.method == 'POST':
+        print (request)
         form = NetworkForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
