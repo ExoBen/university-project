@@ -55,9 +55,9 @@ class NetworkOptimiser:
 		clique_like = []
 
 		for node in network.getNodes():
-			if result.getNodeValue(node) == 1:
+			if result.getNodeValue(node) > 0.8:
 				clique_like.append(node)
-		
+
 		for node in clique_like:
 			numDeleted = bundleNode(network, node)
 			deletedStats.append({"node": node, "numDeleted": numDeleted})
