@@ -9,6 +9,7 @@ client = Client()
 
 class ViewsTest(TestCase):
     def setUp(self):
+        # not necessary at the moment
         self.testNetwork = Network.objects.create(network_name="sas_30_test", network_file="../tulip_wrapper/tests/sas_30.tlp", network_type="TLP");
 
     def test_home(self):
