@@ -9,7 +9,8 @@ import json
 class ViewsTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.testNetwork = Network.objects.create(network_name="sas_30_test", network_file="../tulip_wrapper/tests/sas_30.tlp", network_type="TLP");
+        # not necessary at the moment
+        # self.testNetwork = Network.objects.create(network_name="sas_30_test", network_file="../tulip_wrapper/tests/sas_30.tlp", network_type="TLP");
 
     def test_home(self):
         response = self.client.get(reverse('home'), {})

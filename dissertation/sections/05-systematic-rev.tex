@@ -46,7 +46,6 @@ This set of criteria, both qualitative and quantitative (to maximise information
 	    \item 1000 nodes
 	    \item 3000 nodes
 	\end{enumerate}
-	
 	These numbers were chosen as it was expected that all software could handle all of the values, with all software having no trouble with thirty nodes, but software that performs less well being expected to struggle as the number of nodes got into the range of the thousands. 
 	\item \textbf{If the software allowed for:}
 	\begin{enumerate}
@@ -94,7 +93,7 @@ Graphviz was difficult to test, being a collection of software as opposed to a s
 \begin{figure}
     \centering
     \includegraphics[width=17cm]{4/graphviz}
-    \caption{this shows how the User Interface is clearly focused towards smaller networks of up to a thousand nodes or so.}
+    \caption{this shows how the User Interface is focused towards smaller networks of up to a thousand nodes or so, with a lot of detail being shown that becomes impossible to see quickly.}
     \label{fig:graphviz}
 \end{figure}
 
@@ -116,11 +115,11 @@ For the majority of the criteria, all of the software packages performed similar
 
 See Table \ref{table:render-times} for render the times for each of the different pieces of software.
 
-\begin{table}[ht]
+\begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|l|l|}
         \hline
-                 & 30 nodes  & 200 nodes & 1000 nodes & 3000 nodes \\ \hline
+                 & \textbf{30 nodes}  & \textbf{200 nodes} & \textbf{1000 nodes} & \textbf{3000 nodes} \\ \hline
         Gephi    & n/a       & n/a       & 0.2        & 0.6        \\ \hline
         Graphviz & n/a       & 0.3       & 1.1        & 4.5        \\ \hline
         Tulip    & n/a       & n/a       & n/a        & 0.1        \\ \hline
@@ -133,11 +132,11 @@ See Table \ref{table:render-times} for render the times for each of the differen
 
 See Table \ref{table:documentation} for details on the quality of documentation.
 
-\begin{table}[ht]
+\begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|l|}
         \hline
-                 & Easy to Understand & Comprehensive & Time spent until confident \\ \hline
+                 & \textbf{Easy to Understand} & \textbf{Comprehensive} & \textbf{Time spent until confident} \\ \hline
         Gephi    & \tmark             & \tmark        & 30 minutes                 \\ \hline
         GraphViz & \cmark             & \cmark        & 1 hour                     \\ \hline
         Tulip    & \tmark             & \tmark        & 15 minutes                 \\ \hline
@@ -150,11 +149,11 @@ See Table \ref{table:documentation} for details on the quality of documentation.
 
 See Table \ref{table:massive-network} for details what features the software had that support visualising massive networks.
 
-\begin{table}[ht]
+\begin{table}[H]
     \centering
     \begin{tabular}{|l|l|l|l|}
         \hline
-                 & Massive Network Layout Options & Node bundling & Edge bundling \\ \hline
+                 & \textbf{Massive Network Layout Options} & \textbf{Node bundling} & \textbf{Edge bundling} \\ \hline
         Gephi    & \tmark                         & \cmark        & \cmark        \\ \hline
         GraphViz & \cmark                         & \cmark        & \cmark        \\ \hline
         Tulip    & \tmark                         & \tmark        & \tmark        \\ \hline
@@ -171,7 +170,7 @@ See Table \ref{table:other_info} for details on how long it took to create a sim
     \centering
     \begin{tabular}{|l|l|l|l|l|l|}
         \hline
-                                                                    & Gephi     & GraphViz   & Tulip    & D3.js      & Vis.js    \\ \hline
+                                                                    & \textbf{Gephi}     & \textbf{GraphViz}   & \textbf{Tulip}    & \textbf{D3.js}      & \textbf{Vis.js}    \\ \hline
         Time until hardcoded network could be created (minutes)     & 5         & 30         & 1        & 30         & 5         \\ \hline
         Visualisation could be dynamic                              & \tmark    & \cmark     & \tmark   & n/a        & \cmark    \\ \hline
         Graphical Options                                           & \tmark    & \tmark     & \tmark   & \tmark     & \cmark    \\ \hline
@@ -188,7 +187,7 @@ Following the process outlined above was difficult as a collection of APIs was e
 
 Despite the aforementioned challenges, a lot of useful information was gained throughout the evaluation, from how individual packages work to what techniques software uses to deal with large networks. Given all of the above data and comparisons, Tulip was clearly the best performing software. Like all of the other software, it allows for:
 \begin{itemize}
-    \item Importing from a file (many file formats supported, including it's own .tlp format)
+    \item Importing from a file (many file formats supported, including it's own \texttt{.tlp} format)
     \item Exporting to a file (to a similarly large number of supported formats)
     \item Exporting to an image
     \item High quality documentation
@@ -199,7 +198,7 @@ Despite the aforementioned challenges, a lot of useful information was gained th
 
 However, it also rendered networks significantly faster than the other software, supported displaying massive networks in many ways (such as advanced layout options and node/edge bundling), could visualise dynamic information and the software makes it very easy to generate networks which made testing easier and more informative. 
 
-Additionally, Tulip has a full C++ API, and a full Python wrapper around the C++ API, meaning one can interface with it fully in either of the two languages, and a very simple file format, .tlp (of which more information can be found on their website \cite{tuliptlp}), which means that networks can easily be created by hand or converted to and from it's format to other formats such as JSON.
+Additionally, Tulip has a full C++ API, and a full Python wrapper around the C++ API, meaning one can interface with it fully in either of the two languages, and a very simple file format, \texttt{.tlp} (of which more information can be found on their website \cite{tuliptlp}), which means that networks can easily be created by hand or converted to and from it's format to other formats such as JSON.
 
 \section{Potential Areas of Development}
 
