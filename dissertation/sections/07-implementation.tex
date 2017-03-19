@@ -15,15 +15,15 @@ The core Django app included the URL paths for the whole project and the project
 
 \section{Tulip Python API Web Wrapper}
 
-The web wrapper for the Tulip Python API was a major part of the project, and contained all interactions that Django had with Tulip. Tulip has a python package \cite{tulippip} that can be installed using pip \cite{pip}. Calls can then be made to the Python API from within Tulip, such as loading .tlp's and running code against the loaded networks. The end result of this was enabling Tulip to be called by Django (after a user asked to visualise a network), and then creating a network in memory and running operations against it. 
+The web wrapper for the Tulip Python API was a major part of the project, and contained all interactions that Django had with Tulip. Tulip has a python package \cite{tulippip} that can be installed using pip \cite{pip}. Calls can then be made to the Python API from within Tulip, such as loading \texttt{.tlp}'s and running code against the loaded networks. The end result of this was enabling Tulip to be called by Django (after a user asked to visualise a network), and then creating a network in memory and running operations against it. 
 
 Several critical design decisions had to be made throughout the creation of the web wrapper, listed below.
 
-\subsection{How to handle throwing errors - server side}
+\subsection{Handling errors on the server}
 
-A decision had to be made as to how the client would be made aware that the server had caught an error. Simply, there are three states which the server can return: success, expected error and unexpected error. From within Django there are many ways in which the errors can be dealt with. The page can simply be refreshed, flushing the error, a custom error page can be shown displaying the error code, such as 404, or an error can be passed back to the interface which can then be caught and displayed as appropriate. As one of the goals of the project was try to make the web wrapper a reusable API as oppposed to a single use system, it was decided that each return would include a JSON object, which would include a success boolean, and then either the expected information (such as the network) or a message with why the error had occurred. It would then be down to the library that called the API to catch the JSON appropriately, and then the interface to act on them accordingly. For this application, it can be seen in Section \ref{sec:jslib} how the library and interface handled errors.
+A decision had to be made as to how the client would be made aware that the server had caught an error. Simply, there are three states which the server can return: success, expected error and unexpected error. From within Django there are many ways in which the errors can be dealt with. The page can simply be refreshed, flushing the error, a custom error page can be shown displaying the error code, such as 404, or an error can be passed back to the interface which can then be caught and displayed as appropriate. As one of the goals of the project was try to make the web wrapper a reusable API as opposed to a single use system, it was decided that each return would include a JSON object, which would include a success boolean, and then either the expected information (such as the network) or a message with why the error had occurred. It would then be down to the library that called the API to catch the JSON appropriately, and then the interface to act on them accordingly. For this application, it can be seen in Section \ref{sec:jslib} how the library and interface handled errors.
 
-\subsection{How to transfer a network to JavaScript}
+\subsection{Transferring networks to JavaScript}
 
 There were two ways in which the network could be sent across a network to the user. These were:
 
@@ -32,15 +32,15 @@ There were two ways in which the network could be sent across a network to the u
     \item Transforming the network into JSON and then sending it over the network
 \end{itemize}
 
-The advantage of serialising the network and recreating the whole tlp in JavaScript is that the client then has access to the whole network and there is no data loss in the transaction. However, the advantage of transforming the network into JSON and then sending it across the network is both that the size of the transfer is less as only the required data needs to be sent, superfluous data can be cut out, and also that the client does not need to then recreate the network after receiving it. It was decided that the data would be converted into JSON and then transferred over the network. This decision was made as high performance for massive networks was one of the main goals of the system. Transferring only what is necessary both reduces the amount of data that needs to be sent over the network, and also minimises the amount of processing required by the client. These are both ways to increase performance.
+The advantage of serialising and recreating the whole network in JavaScript is that the client then has access to the whole network and there is no data loss in the transaction. However, the advantage of transforming the network into JSON and then sending it across the network is both that the size of the transfer is less as only the required data needs to be sent, superfluous data can be cut out, and also that the client does not need to then recreate the network after receiving it. It was decided that the data would be converted into JSON and then transferred over the network. This decision was made as high performance for massive networks was one of the main goals of the system. Transferring only what is necessary both reduces the amount of data that needs to be sent over the network, and also minimises the amount of processing required by the client. These are both ways to increase performance.
 
-\subsection{How to store the networks on the server}
+\subsection{Storing networks on the server}
 
 Another critical design decision had to be made relating to how the networks were to be stored on the server. Upon further research, three possibilities presented themselves as to how this could be completed:
 
 \begin{itemize}
     \item The structure of the network could be stored directly in a database's table. This could be done by having a table in the database for networks which would include a network ID, all of the nodes edges in a network.
-    \item The .tlp of the network could be uploaded to the server and a link to that location could be saved in the database.
+    \item The \texttt{.tlp} of the network could be uploaded to the server and a link to that location could be saved in the database.
     \item The networks could all be saved on Hadoop's HDFS (explained in Appendix \ref{sec:whatishadoop}) so that working with Big Data would be supported.
 \end{itemize}
 
@@ -52,6 +52,106 @@ For this project, it was decided that the network would be stored on the server 
 
 This links in to another challenge faced - if a large amount of backing storage had been available to utilise then more experimentation could have been done into how the software interacts with massive amounts of data. However, as a result of not having this, the project was tailored in a way which meant that having large datasets was not required, and design decisions such as using Vis.js as opposed to D3.js were made, so differences in performance were more apparent.
 
+\subsection{Bundling a network}
+
+It had been decided that the three algorithms that were to be available to apply were Node Pruning, Node Bundling based on cliques and Node Bundling based on number of edges. Details of how these algorithms worked can be found below.
+
+\subsubsection{Node Pruning}
+\label{sec:impl-node-prun}
+
+Node Pruning involves finding each node with only one edge and removing it from the network. Additionally, it is possible to include information about how many nodes have been bundled into each remaining node. This means less information is lost as a user can clearly see how many nodes with one edge were connected to each node that has been pruned. The algorithm for Node Pruning is outlined in Algorithm \ref{alg:node-pruning}.
+
+\begin{algorithm}
+\caption{Defines the process for Node Pruning}
+\label{alg:node-pruning}
+\begin{algorithmic}
+\STATE{G = (V,E)} \COMMENT{a graph containing vertices and edges}
+\FORALL{V in G} 
+    \IF{V has only 1 edge} 
+        \STATE{add V to list to delete} 
+    \ENDIF 
+\ENDFOR
+\FORALL{V in list to delete} 
+    \STATE{delete V from G} 
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Node Bundling based on cliques}
+
+This is calculated by using the \texttt{clusteringCoefficient} algorithm provided by Tulip \cite{tulip-clustering-coeff-doc}. Each node is assigned a value between 0 and 1, based on how close to a clique its neighbours are. For each node with a value near 1, an operation is done to bundle that node, shown below. It was decided that a \texttt{clusteringCoefficient} of greater than 0.8 was required for nodes to be bundled after several networks were tested against and less than that resulted in too much information being lost. The algorithm for Node Bundling based on cliques presented in Algorithm \ref{alg:node-bundling-clique}.
+
+\begin{algorithm}
+\caption{Defines the process for Node Bundling based on cliques}
+\label{alg:node-bundling-clique}
+\begin{algorithmic}
+\STATE{assign each node a clustering coefficient} \COMMENT{using Tulip's \texttt{tlp.clusteringCoefficient}}
+\STATE{G = (V,E)} \COMMENT{a graph containing vertices and edges}
+\STATE{initialise list toBundle}
+\FORALL{V in G} 
+    \IF{clustering coefficient of V is greater than 0.8}
+        \STATE{add V to toBundle}
+    \ENDIF
+\ENDFOR
+\FORALL{V in toBundle}
+    \STATE{bundle V} \COMMENT{The code to bundle can be seen in Algorithm \ref{alg:bundle-node}} 
+\ENDFOR
+
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Node Bundling based on number of edges}
+
+This is done by initially calculating the mean number of edges in the network. Then, any node that has greater than two times the mean number of edges is bundled, as explained below. Two times the mean was chosen after many sample networks were looked at based on data provided by SAS and this number seemed to be optimal in reducing the amount of data that needed to be passed to the client. Lowering the number resulted in too much data resulted in the visualisation loses meaning and increasing it meant there was little or no processing done in most cases. The algorithm for Node Bundling based on number of edges is outlined in Algorithm \ref{alg:node-bundline-edge}.
+
+\begin{algorithm}
+\caption{Defines the process for Node Bundling based on number of edges}
+\label{alg:node-bundline-edge}
+\begin{algorithmic}
+\STATE{G = (V,E)} \COMMENT{a graph containing vertices and edges}
+\STATE{initialise integer edgeCounter}
+\FORALL{V in G} 
+    \STATE{add the degree of V to edgeCounter} 
+\ENDFOR
+\STATE{meanNumberOfEdges = edgeCounter/number of vertices in G}
+\STATE{initialise list toBundle}
+\FORALL{V in G} 
+    \IF{degree of V greater than meanNumberOfEdges} 
+        \STATE{add V to toBundle} 
+    \ENDIF
+\ENDFOR
+\FORALL{V in toBundle} 
+    \STATE{bundle the vertex with the highest degree} \COMMENT{The code to bundle can be seen in Algorithm \ref{alg:bundle-node}} 
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Bundling a Node}
+
+Upon discovering what nodes need to be bundled, Algorithm \ref{alg:bundle-node} shows how a node is bundled.
+
+\begin{algorithm}
+\caption{Defines the process for bundling a node}
+\label{alg:bundle-node}
+\begin{algorithmic}
+\STATE{aNode} \COMMENT{a node is passed in to this function to be bundled, aNode}
+\STATE{initialise list neighbours}
+\FORALL{neighbour of aNode} 
+    \STATE{add neighbour to neighbours}
+    \FORALL{edge of neighbour}
+        \IF{edge not connected to aNode}
+            \STATE{connect edge to aNode from neighbour}
+        \ELSE
+            \STATE{delete edge}
+        \ENDIF
+    \ENDFOR
+\ENDFOR
+\FORALL{node in neighbours}
+    \STATE{delete node}
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
 \section{JavaScript Library}
 \label{sec:jslib}
 
@@ -59,6 +159,7 @@ The JavaScript library involved creating a function to match each function in th
 
 \begin{enumerate}
     \item Make the interface call a function with any parameters, a success callback, and an \emph{optional} error callback. An example of this can be seen in Listing \ref{listing:interf-to-jslib}
+    
     \begin{lstlisting}[caption=How the interface would call the JavaScript library, label=listing:interf-to-jslib]
 tulipWebApi.loadGraph(graphToLoad, function(result) {
 	networkCreator.drawSimpleGraph(result);
@@ -66,44 +167,47 @@ tulipWebApi.loadGraph(graphToLoad, function(result) {
 	console.error(error)
 });
     \end{lstlisting}
+    
     \item The library then receives the call and makes the appropriate AJAX call to the server, and upon getting a result it checks if the call was successful. Line 10 of Listing \ref{listing:jslib} shows this check
     \begin{enumerate}
         \item If the AJAX call was successful then the callback function passed in by the interface is called with the data requested, such as the network requested. This is shown on line 11 of Listing \ref{listing:jslib}.
         \item If the AJAX call failed then the library checks if an \texttt{errorCallback} function was passed in by the interface. If so, then that function is called and the error message is passed. If not, then nothing is called. This means that the library has the option of failing silently if the developer making the interface wishes. This is shown on lines 12 to 16 of Listing \ref{listing:jslib}.
     \end{enumerate}
+    
     \begin{lstlisting}[caption=How the JavaScript library catches and passes errors, label=listing:jslib]
 loadGraph: function(fileName, callback, errorCallback) {
 	$.ajax({
-		url: ``/api/loadGraph'',
+		url: `/api/loadGraph',
 		data: {
-	        ``network_name'': fileName,
+	        `network_name': fileName,
 	    },
 	    cache: false,
-	    type: ``GET'',
+	    type: `GET',
 		success: function(result) {
 			if (result.success) {
         		callback(result.data);
 			} else {
-				if (typeof errorCallback === ``function'') {
+				if (typeof errorCallback === `function') {
 					errorCallback(result.message);
 				}
 			}
         },
 		error: function() {
-			if (typeof errorCallback === ``function'') {
-				errorCallback(``Unknown server error.'');
+			if (typeof errorCallback === `function') {
+				errorCallback(`Unknown server error.');
 			}
         }
     });
 }
-\end{lstlisting}
+    \end{lstlisting}
+
 \end{enumerate}
 
 \section{Interface and Vis.js visualisation}
 
 The interface involved catching events (such as button clicks) and then calling the appropriate JavaScript library function. If the call is successful then a success message appears and/or an action is executed, and if not then an error is outputted to the console and potentially to the DOM. 
 
-One of the core actions the front end was required to do is to actually render a network. This was done by taking in all the nodes passed to it by the JavaScript library, then converting all of the nodes and edges into two arrays, and then initialising the network with the container of where it would go, the data it would contain and any optional parameters. This can be seen in Listing \ref{listing:vis-js}.
+One of the core actions the front end was required to do is to actually render a network. This was done by taking in all the information passed to it by the JavaScript library, then converting all of the nodes and edges into two arrays, along with stylising them appropriately based on if they had been bundled or pruned, and then initialising the network. This involved specifying the container where the network would be rendered, the data it would contain and any optional parameters. A summary of this can be seen in Listing \ref{listing:vis-js}.
 
 \begin{lstlisting}[caption=How to create a network using Vis.js, label=listing:vis-js]
 drawSimpleGraph: function(result) {
@@ -121,7 +225,7 @@ drawSimpleGraph: function(result) {
     var nodes = new vis.DataSet(arrayOfNodes);
     var edges = new vis.DataSet(arrayOfEdges);
     
-    var container = document.getElementById(``main_network'');
+    var container = document.getElementById(`main_network');
     
     // provide the data in the required vis.js format
     var data = {
@@ -136,10 +240,7 @@ drawSimpleGraph: function(result) {
 }
 \end{lstlisting}
 
-TODO: either specify that this is the bare bones or include new stuff i added.
-
 There are several different variables that can be set in \texttt{options} on line 24 of Listing \ref{listing:vis-js}. A full list of options can be seen on the Vis.js website \cite{visjsoptions}. Several options were experimented with for this project, specifically within the layout and physics module. 
-
 
 In \texttt{layout} \cite{visjslayout}, if \texttt{improvedLayout} was set to false, then Kamada Kawai Algorithm \cite{kamada1989algorithm} is \emph{not} applied, which reduces stability of the network but improved rendering times. 
 
@@ -148,5 +249,13 @@ In \texttt{physics} \cite{visjsphysics}, there were several different parameters
 Although time was spent exploring the physics module and creating several custom solvers, it turned out that creating powerful physics solvers would improve the visualisation slightly at the cost of a large decrease in performance. Physics could also be turned off entirely and the network could be displayed in a ring, with nodes equally spaced. 
 
 TODO: make the above into a list and maybe include a few more options like size etc.?
+
+\section{Front-end}
+
+Screenshots
+
+Bootstrap
+
+Uploading docs (including tlp and json banter)
 
 \end{document}

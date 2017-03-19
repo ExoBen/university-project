@@ -19,23 +19,13 @@ This is when software uses algorithms to decide (with or without some form of us
 \subsubsection{Node Pruning}
 \label{sec:node-pruning}
 
-An example of a node bundling algorithm is `Node Pruning'. This is a technique that takes each node in a network with only one edge and deletes it from the network. This can often reduce the number of nodes in a network by a significant amount, while retaining its shape. Additionally, it is possible to include information about how many nodes have been bundled into each remaining node. This means less information is lost as a user can clearly see how many nodes with one edge were connected to each node that has been pruned. The algorithm is mentioned in literature as a step to creating a bundled network but is not named \cite{brandes2003experiments}. Hence, for the purpose of this dissertation, it was named `Node Pruning'. The algorithm for doing this is shown below in Algorithm \ref{alg:node-pruning}.
-
-\begin{algorithm}
-\caption{Defines the process for Node Pruning}
-\label{alg:node-pruning}
-\begin{algorithmic}
-\STATE{G = (V,E)} \COMMENT{a graph containing vertices and edges}
-\FORALL{V in G} \IF{V has only 1 edge} \STATE{add V to list to delete} \ENDIF \ENDFOR
-\FORALL{V in list to delete} \STATE{delete V from G} \ENDFOR
-\end{algorithmic}
-\end{algorithm}
+An example of a node bundling algorithm is `Node Pruning'. This is a technique that takes each node in a network with only one edge and deletes it from the network. This can often reduce the number of nodes in a network by a significant amount, while retaining its shape. The algorithm is mentioned in literature as a step to creating a bundled network but is not named \cite{brandes2003experiments}. Hence, for the purpose of this dissertation, it was named `Node Pruning'. More information about Node Pruning can be found in Section \ref{sec:impl-node-prun}.
 
 \subsection{Edge bundling}
 \label{sec:edge_bundling}
 
 This is similar to node bundling but applied to edges. It ``trade[s] clutter for overdraw by routing related edges along similar paths'' \cite{hurter2012graph}, and ``can be seen as sharpening the edge spatial density, by making it high along bundles and low elsewhere'' \cite{hurter2012graph}. If node bundling is done then this process will have less of an impact as all of the edges will already be bundled together, assuming the node bundling algorithm was optimal. Like node bundling, it is often shown through the change of the size of the edge or the colour. See Figure \ref{fig:bundling} and Figure \ref{fig:deletion} for two examples of a combination of node and edge bundling.
-\begin{figure}
+\begin{figure}[htb]
     \centering
     \includegraphics[width=12cm]{4/bundling1}
     \\$\downarrow$\\
@@ -44,7 +34,7 @@ This is similar to node bundling but applied to edges. It ``trade[s] clutter for
     \label{fig:bundling}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
     \centering
     \includegraphics[width=15cm]{4/deletion}
     \caption{This figure clearly shoes how the deletion of many nodes mean that, although information is lost, the visualisation can become more clear as a result of the operation. \cite{hu2015visualizing}}
@@ -54,7 +44,7 @@ This is similar to node bundling but applied to edges. It ``trade[s] clutter for
 \subsection{Local Edge Lens}
 
 This involves rendering all or part of the network, and upon focusing on a section of the network, that part is zoomed in or clarified as if through a lens and that part of the network is zoomed in, becoming more clear. Another way of implementing this can be that when the lens is applied, it can render more information that was not shown before in order to save computational power. ``By doing so, the cluttering of edges is removed for a local focus region defined by the position and scope of the lens'' \cite{tominski2006fisheye} See Figure \ref{fig:local}.
-\begin{figure}
+\begin{figure}[htb]
     \centering
     \includegraphics[width=8cm]{4/local}
     \caption{If a network is cluttered (a), then it can be hard to get useful information from it. A local edge lens (b) lets users easily identify which edges are connected to which nodes. \cite{tominski2006fisheye}}

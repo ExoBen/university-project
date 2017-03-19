@@ -27,9 +27,9 @@ The main Django app and database it creates would be fairly simple to create, an
 
 The Tulip Python API Web Wrapper (itself an API) would include a number of functions that can be called from the front-end of the app, and would take in any necessary parameters and pass them to the Tulip Python API. The main purpose of this would be so that when a network gets loaded, instead of sending it directly to the front-end to be rendered, it is optimised in some way first and then sent to the client in a reduced form which will both mean the network will be transferred faster to the client and then visualised faster too. It was decided that there would be three ways to optimise the information that was to be sent:
 \begin{enumerate}
-    \item Node Pruning. This is removing each node with one edge, and is described fully in Section \ref{sec:node-pruning}.
-    \item Node Bundling based on cliques. This is based on the \texttt{clusteringCoefficient} algorithm provided by Tulip \cite{tulip-clustering-coeff-doc}. Each node is assigned a value between 0 and 1, based on how close to a clique its neighbours are. For each node with a value near 1, an operation is done to bundle that node, shown below. It was decided that a \texttt{clusteringCoefficient} of greater than 0.8 was required for nodes to be bundled after several networks were tested against and less than that resulted in too much information being lost.
-    \item Node Bundling by number of edges. This is done by initially calculating the mean number of edges in the network. Then, any node that has greater than two times the mean number of edges is bundled, as explained below. Two times the mean was chosen after many sample networks were looked at based on data provided by SAS and this number seemed to be optimal in reducing the amount of data that needed to be passed to the client. Lowering the number resulted in too much data resulted in the visualisation loses meaning and increasing it meant there was little or no processing done in most cases.
+    \item \textbf{Node Pruning.} This is removing each node with one edge, and is described fully in Section \ref{sec:node-pruning}.
+    \item \textbf{Node Bundling based on cliques.} This is based on selecting nodes whose neighbours are highly interconnected and results on the selected node having those neighbours bundled into it.
+    \item \textbf{Node Bundling by number of edges.} This is based on finding nodes with the most edges and bundling each node connected to it into it.
 \end{enumerate}
 
 To bundle a node, the node that is to be bundled is passed in to the function. Nodes joined to it via edges are then taken note of. Each of those nodes has all of its edges examined and linked to the original node that was passed in to be bundled. Finally, all of the nodes joined to the original node are deleted.
@@ -46,7 +46,7 @@ The front-end main aim would be to: make calls to the Django back-end, get back 
 
 Although it would be possible to have single JavaScript file that took in input from the web page, called the back-end and then received the result of that call and rendered it, it would be preferable for a number of reasons to split the JavaScript into a library and an interface. The benefits of splitting the data into a library and an interface include the fact that it makes the code far clearer, and that it means that other developers would be able to develop their own interface that calls the JavaScript library created for this project.
 
-When the user wants to upload a file, the user will be given the choice of the file name, what file to upload, and whether it is a .tlp or an industry style .json file (based upon sample SAS data).
+When the user wants to upload a file, the user will be given the choice of the file name, what file to upload, and whether it is a \texttt{.tlp} or an industry style \texttt{.json} file (based upon sample SAS data).
 
 The visualisation of the network would be done using either D3.js or Vis.js which were explored in the systematic review of visualisation software in Section \ref{sec:systematic-review}. They both have advantages and disadvantages that are discussed in Section \ref{sec:designdec}. 
 
@@ -85,9 +85,9 @@ Having a more full-featured and finished interface was not be required in for th
 
 \subsubsection{Uploading files}
 
-When uploading a file, along with a name and the file itself, the decision was made to allow the user to select whether the file is a .tlp of an industry standard .json. If .tlp is selected then the file is uploaded as is. However, if industry standard is selected, then a conversion will be done on the file, and a python script will scrape the .json file for relevant information and a .tlp will be created based on that information. The .json files are provided by SAS and a .json file that is to be uploaded needs to be structured as SAS have in order for the conversion to work. 
+When uploading a file, along with a name and the file itself, the decision was made to allow the user to select whether the file is a \texttt{.tlp} of an industry standard \texttt{.json}. If \texttt{.tlp} is selected then the file is uploaded as is. However, if industry standard is selected, then a conversion will be done on the file, and a python script will scrape the \texttt{.json} file for relevant information and a \texttt{.tlp} will be created based on that information. The \texttt{.json} files are provided by SAS and a \texttt{.json} file that is to be uploaded needs to be structured as SAS have in order for the conversion to work. 
 
-However, the fact that a conversion will be done on the SAS .json files will prove that it is simple for developers to create their own scripts to convert from one file type to .tlp, and insert that script into the system.
+However, the fact that a conversion will be done on the SAS \texttt{.json} files will prove that it is simple for developers to create their own scripts to convert from one file type to \texttt{.tlp}, and insert that script into the system.
 
 \subsubsection{Network Visualisation}
 
@@ -102,7 +102,7 @@ In a similar vein to making the web wrapper flexible, as opposed to just making 
 
 Figure \ref{fig:techinfra} shows the infrastructure for the system.
 
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{6/tech_infra_2}
     \caption{The Technical Infrastructure of the whole system, based off the sketch in Appendix \ref{sec:tech_infra_app}}
@@ -122,7 +122,7 @@ Based on the data flow shown in Figure \ref{fig:techinfra}, the below list was c
     \item If an external data host is set up, then at this point the database would find the location of where the network is stored as opposed to the path the the file locally.
     \item Again, if an external data host is set up, the network would be returned to the application database.
     \item The network is then passed to the web endpoint.
-    \item Once the network is loaded into Django, it then calls a function from the Tulip Python API Web Wrapper while passing in the network, with the network is loaded from a .tlp and then TODO: describe what happens next.
+    \item Once the network is loaded into Django, it then calls a function from the Tulip Python API Web Wrapper while passing in the network, with the network is loaded from a \texttt{.tlp} and then TODO: describe what happens next.
     \item After the network has been processed and minimised, it is then passed back to Django again. There are three different ways that the network can be processed, stated in Section \ref{sec:overview-backend}.
     \item From here Django passes either success or failure back to the JavaScript client, with success including the network that is to be visualised, and with failure including a message as to why the network could not be sent back.
     \item The JavaScript library checks if the interface passed in an error callback function. If not then either nothing is returned if the call failed and the network is returned if it is successful. If as error callback function is passed in then if the call failed then JavaScript interface throws an error explaining why the call failed. If everything was successful then Vis.js renders the network.

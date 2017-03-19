@@ -4,13 +4,13 @@
 \usepackage{hyperref}
 \usepackage{subfiles}
 \usepackage{graphicx}
+\usepackage{float}
 \usepackage{amssymb}
 \usepackage{pifont}
 \usepackage{listings}
 \usepackage{subcaption}
 \usepackage{algorithm}
 \usepackage{algorithmic}
-
 \usepackage{color}
  
 \definecolor{codegreen}{rgb}{0,0.6,0}
@@ -43,11 +43,12 @@
     aboveskip=18pt,
     belowskip=4pt
 }
-
 \lstset{style=diss_style}
 
 \graphicspath{ {images/} }
+
 \setlength\parindent{0pt}
+
 \newcommand{\tmark}{\ding{51}}
 \newcommand{\cmark}{\ding{55}}
 
@@ -55,12 +56,11 @@
 \title{Visualisation of Massive Networks in a Browser}
 \author{Benjamin Jackson}
 \date{\today}
+
 \maketitle
 
 \subfile{sections/00-abstract.tex}
 \subfile{sections/00-acknowledgements.tex}
-
-\educationalconsent
 
 \tableofcontents
 
@@ -74,7 +74,7 @@
 \subfile{sections/05-systematic-rev.tex}
 \subfile{sections/06-design.tex}
 \subfile{sections/07-implementation.tex}
-\subfile{sections/08-evaluation.tex}
+\subfile{sections/08-testing-eval.tex}
 \subfile{sections/09-conclusion.tex}
 \subfile{sections/10-appendices.tex}
 
