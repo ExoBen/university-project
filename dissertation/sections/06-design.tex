@@ -4,38 +4,38 @@
 \chapter{Design}
 \label{chap:design}
 
-\section{Scope of the Tulip Web Wrapper}
+\section{Scope of the System}
 \label{sec:scope}
 
 \subsection{Overview}
 
-The application that was to be created was planned to have:
+The first necessary step was to decide how the server would interact with networks. Given that Tulip was considered the best software under the criteria tested for in Section \ref{sec:systematic-review}, a possibility would be to use the APIs that Tulip provides. Tulip provides both a C++ API \cite{tulipcppapi} and Python API \cite{tulippyapi} (of which the Python API is a wrapper around the C++ API), so the web application could be made using either of the languages. As ``Python is very flexible and makes experimentation easy'' \cite{zelle2004python}, and additionally Python has a popular web framework, Django \cite{django}, which is ``a powerful Web application framework that lets you do everything rapidly — from designing and developing the original application to updating its features'' \cite{forcier2008python}, this seemed a reasonable choice of stack to develop on. Additionally, this stack allows for the flexibility of Python and the power of C++, which makes it ideal for processing massive networks. It is worth noting that Tulip has covered web visualisations before, when its creators visualised the Firefox Dataset as part of a competition \cite{tulipfirefox}. However, this was an isolated project and currently there is no supported web visualisation framework made by Tulip.
+
+The application that was hence to be created was to use:
 
 \begin{itemize}
     \item A Django Web Framework
     \item A database that was to be created and maintained by Django
     \item A Tulip Python API Web Wrapper that would be called by Django and make calls to Tulip
     \item A front-end JavaScript library to interface with the Django web framework, allowing for the uploading, viewing and deletion of networks
-    \item A JavaScript network visualisation frameworks
+    \item A JavaScript network visualisation framework
 \end{itemize}
 
 \subsection{Back-end}
 \label{sec:overview-backend}
 
-The back-end would consist of Django, the database it creates, the Tulip Python API (which is a wrapper around the Tulip C++ API) Web Wrapper, and the possible ability to connect to a file host. This would enable it to be expandable to as many users as the host deemed necessary.
+The back-end would consist of Django, the database it creates, the Tulip Python API (which is a wrapper around the Tulip C++ API) Web Wrapper, and the possible ability to connect to an external file host. This would enable it to be expandable to as many users as the host deemed necessary.
 
-The main Django app and database it creates would be fairly simple to create, and would include the logic for the server.
+The main Django app (and database it creates) would include the logic for the server. This involves setting up the project \texttt{urls} file, which maps each url to a view, then each \texttt{view} has to be created which dictates what is returned to the client, whether a simple text response that is rendered, or a JsonResponse that returns data to an API call. Additionally, both models and forms would have to be created, which define what objects can be stored in the database, and how they are uploaded to the server.
 
-The Tulip Python API Web Wrapper (itself an API) would include a number of functions that can be called from the front-end of the app, and would take in any necessary parameters and pass them to the Tulip Python API. The main purpose of this would be so that when a network gets loaded, instead of sending it directly to the front-end to be rendered, it is optimised in some way first and then sent to the client in a reduced form which will both mean the network will be transferred faster to the client and then visualised faster too. It was decided that there would be three ways to optimise the information that was to be sent:
+The Tulip Python API Web Wrapper (itself a REST API) would include a number of functions that can be called from the front-end of the app, and would take in any necessary parameters and pass them to the Tulip Python API. A REST API is ``the face of a web service, directly listening and responding to client requests'' \cite{masse2011rest}. The main purpose of this would be so that when a network gets loaded, instead of sending it directly to the front-end to be rendered, it is optimised in some way first and then sent to the client in a reduced form which will both mean the network will be transferred faster to the client and then visualised faster too. It was decided that there would be three ways to optimise the information that was to be sent:
 \begin{enumerate}
-    \item \textbf{Node Pruning.} This is removing each node with one edge, and is described fully in Section \ref{sec:node-pruning}.
+    \item \textbf{Node Pruning.} This is removing each node with one edge from the network.
     \item \textbf{Node Bundling based on cliques.} This is based on selecting nodes whose neighbours are highly interconnected and results on the selected node having those neighbours bundled into it.
     \item \textbf{Node Bundling by number of edges.} This is based on finding nodes with the most edges and bundling each node connected to it into it.
 \end{enumerate}
 
-To bundle a node, the node that is to be bundled is passed in to the function. Nodes joined to it via edges are then taken note of. Each of those nodes has all of its edges examined and linked to the original node that was passed in to be bundled. Finally, all of the nodes joined to the original node are deleted.
-
-The web wrapper could be made exactly to match what functions the front-end requires, but a far more elegant and reusable solution would be to make it as flexible and as full as possible, allowing developers to have as much freedom as possible, and not have their options limited by the web wrapper's API. For this project it is likely that the amount of flexibility that the web wrapper would have would be prioritised over the amount of features, given time constraints, although at a later date additional functions could be added with ease. Another advantage of creating an API is that it would mean that developers could make their own client, whether in JavaScript or in another language such as Java or Python.
+The web wrapper could be made exactly to match what functions the front-end requires, but a far more elegant and reusable solution would be to make it as flexible and as full as possible, allowing developers to have as much freedom as possible, and not have their options limited by the web wrapper's API. For this project it is likely that the flexibility of the web wrapper would be prioritised over the number of features, given time constraints, although at a later date additional functions could be added with ease. Another advantage of creating a REST API is that it would mean that developers could make their own client, whether in JavaScript or in another language such as Java or Python.
 
 A necessity for the web wrapper would be that in the vast majority of (or all) cases that the system works better using the web wrapper than just passing the nodes directly to the client. There should be a large increase in performance benefits as the amount of data gets higher.
 
@@ -53,12 +53,12 @@ The visualisation of the network would be done using either D3.js or Vis.js whic
 
 Ideally, the interface would be polished, fully-featured and user tested - with the results of those tests implemented into design. However, given the amount of time allocated for the project, it was likely that a relatively simple interface would be created that exposed all necessary features that the back-end provided, but was not as refined as it could be with more development time.
 
-After defining the scope of the project, MoSCoW requirements were created that can be read in Appendix \ref{sec:moscow}.
+After defining the scope of the project, MoSCoW requirements (a prioritisation technique based on selecting what a project Must Have, Should Have, Could Have and Won't Have) were created that can be read in Appendix \ref{sec:moscow}.
 
 \section{Design Decisions}
 \label{sec:designdec}
 
-Justification for including or not including the following features:
+Upon the scope of the system being decided, design decisions had to be made. This entailed deciding and justifying what features would be included as part of the system, and why.
 
 \subsection{Back-end}
 
@@ -72,7 +72,7 @@ Ensuring that the web wrapper is flexible is not essential for allowing the crea
 
 \subsubsection{Return an image}
 
-As opposed to returning a JSON object that includes nodes and edges, and then visualising them using JavaScript, an option could be added to the client to allow for the user to choose to return just an image of the network. This would allow for the system to work on very low power machines or machines with a bad network connection. However, this is not critical functionality and was not explored in the project.
+As opposed to returning a JSON object that includes nodes and edges, and then visualising them using JavaScript, an option could be added to the client to allow for the user to choose to return just an image of the network. This would allow for the system to work on very low power machines or machines with a bad network connection, but mean that the visualisation was entirely static and there would be no way that the user could interact with it outside the server creating and returning another image. It was decided this was not critical functionality and hence it was not added to the system during this project.
 
 \subsection{Front-end}
 
@@ -82,7 +82,7 @@ It is critical to create an interface as it will let users interact with the bac
 
 \subsubsection{Fully fledged interface}
 
-Having a more full-featured and finished interface was not be required in for the project, as although it would make the system look better, all functionality would be displayed in the basic interface. Additionally, developers could easily make their own interface for the system.
+Having a more full-featured and finished interface was not be required in for the project, as although it would make the system look better, all functionality would be displayed in the basic interface. Additionally, developers could easily make their own interface for the system, due to the fact that the JavaScript library would be kept entirely separate from the interface code.
 
 \subsubsection{Uploading files}
 

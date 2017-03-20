@@ -4,7 +4,7 @@
 \chapter{Implementation}
 \label{chap:impl}
 
-The Django Web App project contained 3 applications: 
+The Django Web App project contained 3 core components: 
 
 \begin{itemize}
     \item The core Django app
@@ -33,7 +33,9 @@ There were two ways in which the network could be sent across a network to the u
     \item Transforming the network into JSON and then sending it over the network
 \end{itemize}
 
-The advantage of serialising and recreating the whole network in JavaScript is that the client then has access to the whole network and there is no data loss in the transaction. However, the advantage of transforming the network into JSON and then sending it across the network is both that the size of the transfer is less as only the required data needs to be sent, superfluous data can be cut out, and also that the client does not need to then recreate the network after receiving it. It was decided that the data would be converted into JSON and then transferred over the network. This decision was made as high performance for massive networks was one of the main goals of the system. Transferring only what is necessary both reduces the amount of data that needs to be sent over the network, and also minimises the amount of processing required by the client. These are both ways to increase performance.
+The advantage of serialising and recreating the network fully in JavaScript is that the client then has access to the whole network and there is no data loss in the transaction. However, the advantage of transforming the network into JSON is both that the size of the transfer is less as only the required data needs to be sent (superfluous data can be cut out) and also that the client does not need to then recreate the network after receiving it (using computational power). Additionally, it would be possible to send the information over the network as a byte-array - which would be even more compact than JSON but sacrifice usability. 
+
+It was decided that the data would be converted into JSON and then transferred over the network. This decision was made as high performance for massive networks was one of the main goals of the system, along with ensuring the system could easily be used by further developers. Transferring only what is necessary both reduces the amount of data that needs to be sent over the network, and also minimises the amount of processing required by the client. These are both ways to increase performance.
 
 \subsection{Storing networks on the server}
 
@@ -62,7 +64,7 @@ It had been decided that the three algorithms that were to be available to apply
 
 Node Pruning involves finding each node with only one edge and removing it from the network. Additionally, it is possible to include information about how many nodes have been bundled into each remaining node. This means less information is lost as a user can clearly see how many nodes with one edge were connected to each node that has been pruned. The algorithm for Node Pruning is outlined in Algorithm \ref{alg:node-pruning}.
 
-\begin{algorithm}
+\begin{algorithm}[H]
 \caption{Defines the process for Node Pruning}
 \label{alg:node-pruning}
 \begin{algorithmic}
@@ -79,10 +81,11 @@ Node Pruning involves finding each node with only one edge and removing it from 
 \end{algorithm}
 
 \subsubsection{Node Bundling based on cliques}
+\label{sec:impl-node-clique}
 
 This is calculated by using the \texttt{clusteringCoefficient} algorithm provided by Tulip \cite{tulip-clustering-coeff-doc}. Each node is assigned a value between 0 and 1, based on how close to a clique its neighbours are. For each node with a value near 1, an operation is done to bundle that node, shown below. It was decided that a \texttt{clusteringCoefficient} of greater than 0.8 was required for nodes to be bundled after several networks were tested against and less than that resulted in too much information being lost. The algorithm for Node Bundling based on cliques presented in Algorithm \ref{alg:node-bundling-clique}.
 
-\begin{algorithm}
+\begin{algorithm}[H]
 \caption{Defines the process for Node Bundling based on cliques}
 \label{alg:node-bundling-clique}
 \begin{algorithmic}
@@ -105,7 +108,7 @@ This is calculated by using the \texttt{clusteringCoefficient} algorithm provide
 
 This is done by initially calculating the mean number of edges in the network. Then, any node that has greater than two times the mean number of edges is bundled, as explained below. Two times the mean was chosen after many sample networks were looked at based on data provided by SAS and this number seemed to be optimal in reducing the amount of data that needed to be passed to the client. Lowering the number resulted in too much data resulted in the visualisation loses meaning and increasing it meant there was little or no processing done in most cases. The algorithm for Node Bundling based on number of edges is outlined in Algorithm \ref{alg:node-bundline-edge}.
 
-\begin{algorithm}
+\begin{algorithm}[H]
 \caption{Defines the process for Node Bundling based on number of edges}
 \label{alg:node-bundline-edge}
 \begin{algorithmic}
@@ -129,9 +132,9 @@ This is done by initially calculating the mean number of edges in the network. T
 
 \subsubsection{Bundling a Node}
 
-Upon discovering what nodes need to be bundled, Algorithm \ref{alg:bundle-node} shows how a node is bundled.
+Upon discovering what nodes need to be bundled, the node then needs to be actually bundled. This involves locating all of the nodes neighbours, getting all of their edges, redirecting all of those edges to the node that is being bundled, and finally deleting each neighbour node. Algorithm \ref{alg:bundle-node} shows this process.
 
-\begin{algorithm}
+\begin{algorithm}[H]
 \caption{Defines the process for bundling a node}
 \label{alg:bundle-node}
 \begin{algorithmic}
@@ -156,12 +159,13 @@ Upon discovering what nodes need to be bundled, Algorithm \ref{alg:bundle-node} 
 \section{JavaScript Library}
 \label{sec:jslib}
 
-The JavaScript library involved creating a function to match each function in the Tulip Python API Web Wrapper, which could be called from an interface. The main aim in creating the library was to make it as open and flexible as possible, allowing for developers to have access to exactly what they need, and on top of that be able to handle errors easily. Given that I had not developed a library before, research was done into the best way to take errors from the web wrapper and then pass them on to the interface. The outcome of this research was that the preferred way of error handling was to:
+The JavaScript library involved creating a function to match each endpoint in the Tulip Python API Web Wrapper, which could be called from an interface. The main aim in creating the library was to make it as open and flexible as possible, allowing for developers to have access to exactly what they need, and on top of that be able to handle errors easily. Given that I had not developed a library before, research was done into the best way to take errors from the web wrapper and then pass them on to the interface. The outcome of this research was that the preferred way of error handling was to:
 
 \begin{enumerate}
     \item Make the interface call a function with any parameters, a success callback, and an \emph{optional} error callback. An example of this can be seen in Listing \ref{listing:interf-to-jslib}
     
     \begin{lstlisting}[caption=How the interface would call the JavaScript library, label=listing:interf-to-jslib]
+// graphToLoad = the name of the network to be loaded
 tulipWebApi.loadGraph(graphToLoad, function(result) {
 	networkCreator.drawSimpleGraph(result);
 }, function(error) {
@@ -246,15 +250,15 @@ There are several different variables that can be set in \texttt{options} on lin
 
 \subsection{Layout}
 
-Within the \texttt{layout} \cite{visjslayout} option, if \texttt{improvedLayout} was set to false, then Kamada Kawai Algorithm \cite{kamada1989algorithm} is \emph{not} applied, which reduces stability of the network but improved rendering times. This parameter was toggled multiple times throughout testing and was found to rarely be beneficial to the visualisation as a whole.
+Within the \texttt{layout} \cite{visjslayout} option, if \texttt{improvedLayout} was set to \texttt{false}, then Kamada Kawai Algorithm \cite{kamada1989algorithm} is \emph{not} applied, which reduces stability of the network but improved rendering times. This parameter was toggled multiple times throughout testing and was found to rarely be beneficial to the visualisation as a whole when disabled, despite decreased rendering times. Thus, it was decided to set it to \texttt{true} for this system.
 
 \subsection{Physics}
 
-In the \texttt{physics} \cite{visjsphysics} option, there were several different parameters which could be finely tuned. Stabilisation was a major parameter experimented on for this project which sets if the network should be stabilised and, if so, by what means. Additionally, the maximum and minimum speed can be set, the time between steps can be changed, and the physics solver can be selected. This can be one of four preset solver: \texttt{barnesHut} \cite{barnes1986hierarchical}, \texttt{forceAtlas2Based} (based on the Force Atlas 2 algorithm \cite{jacomy2014forceatlas2}), \texttt{hierarchicalRepulsion}, or \texttt{repulsion}. Alternatively, a custom model can be supplied. A custom solver could take in the following arguments: \texttt{gravitationalConstant}, \texttt{centralGravity}, \texttt{springLength}, \texttt{springConstant}, \texttt{damping} and \texttt{avoidOverlap}. 
+In the \texttt{physics} \cite{visjsphysics} option, there were several different parameters which could be finely tuned. The first of these was \texttt{stabilisation}, which selected if the network should be stabilised or not, and if so, by what means. It was decided that it would be enabled, as disabling it caused the network to move too erratically on load - despite loading far sooner. 
 
-Although time was spent exploring the physics module and creating several custom solvers, the custom solvers tended to perform more poorly than the preset solvers, and the default option worked the best in most scenarios. 
+Additionally, the maximum and minimum speed could be set, the time between steps could be changed, and the model for the physics solver could be selected. This could be one of four preset solvers: \texttt{barnesHut} \cite{barnes1986hierarchical}, \texttt{forceAtlas2Based} (based on the Force Atlas 2 algorithm \cite{jacomy2014forceatlas2}), \texttt{hierarchicalRepulsion}, or \texttt{repulsion}. Alternatively, a custom model could be supplied. A custom solver could take in the following arguments: \texttt{gravitationalConstant}, \texttt{centralGravity}, \texttt{springLength}, \texttt{springConstant}, \texttt{damping} and \texttt{avoidOverlap}. Although time was spent exploring the physics module and creating several custom solvers, the custom solvers tended to perform more poorly than the preset solvers, and the default option worked the best in most scenarios. 
 
-Additionally, it was possible to disable the Physics module entirely and the network would be displayed in a ring, with nodes equally spaced and edges placed appropriately. This lead to near instant loading times but the visualisations becoming meaningless.
+Additionally, it was possible to disable the Physics module entirely and the network would be displayed in a ring, with nodes equally spaced and edges placed appropriately. This lead to near instant loading times but the visualisations becoming meaningless, so the module remained enabled.
 
 \subsection{Nodes}
 
@@ -289,14 +293,14 @@ Figure \ref{fig:1000-none} and \ref{fig:1000-both} show the final product render
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=12cm]{7/1000_1none}
+    \includegraphics[width=15cm]{7/1000_1none}
     \caption{This shows the system visualising a network with 1000 nodes without any processing taking place.}
     \label{fig:1000-none}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=12cm]{7/1000_4both}
+    \includegraphics[width=15cm]{7/1000_4both}
     \caption{This shows the same network as seen in Figure \ref{fig:1000-none}, but with Node Pruning and then Node Bundling based on number of edges applied to it.}
     \label{fig:1000-both}
 \end{figure}
