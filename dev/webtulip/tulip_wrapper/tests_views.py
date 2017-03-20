@@ -57,7 +57,8 @@ class ViewsTest(TestCase):
 
     def test_delete(self):
         response = self.client.post(reverse('deleteGraph'), {'network_name': 'sas_30_test'})
-        # WHY FAILING?
+        # still not working - CSRF issue?
+        print(response)
         self.assertEqual(200, response.status_code, 'Bad HTTP Response')
         dict_response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(True, dict_response["success"], 'deleteFailed')
