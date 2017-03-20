@@ -2,6 +2,7 @@
 \begin{document}
 
 \chapter{Implementation}
+\label{chap:impl}
 
 The Django Web App project contained 3 applications: 
 
@@ -204,6 +205,7 @@ loadGraph: function(fileName, callback, errorCallback) {
 \end{enumerate}
 
 \section{Interface and Vis.js visualisation}
+\label{sec:in-vis}
 
 The interface involved catching events (such as button clicks) and then calling the appropriate JavaScript library function. If the call is successful then a success message appears and/or an action is executed, and if not then an error is outputted to the console and potentially to the DOM. 
 
@@ -240,22 +242,63 @@ drawSimpleGraph: function(result) {
 }
 \end{lstlisting}
 
-There are several different variables that can be set in \texttt{options} on line 24 of Listing \ref{listing:vis-js}. A full list of options can be seen on the Vis.js website \cite{visjsoptions}. Several options were experimented with for this project, specifically within the layout and physics module. 
+There are several different variables that can be set in \texttt{options} on line 24 of Listing \ref{listing:vis-js}. A full list of options can be seen on the Vis.js website \cite{visjsoptions}. Several options were experimented with for this project, details of which can be seen below. 
 
-In \texttt{layout} \cite{visjslayout}, if \texttt{improvedLayout} was set to false, then Kamada Kawai Algorithm \cite{kamada1989algorithm} is \emph{not} applied, which reduces stability of the network but improved rendering times. 
+\subsection{Layout}
 
-In \texttt{physics} \cite{visjsphysics}, there were several different parameters which could be finely tuned. Stabilisation was a major parameter experimented on for this project which sets if the network should be stabilised and, if so, by what means. Additionally, the maximum and minimum speed can be set, the time between steps can be changed, and the physics solver can be selected. This can be one of four preset solver: \texttt{barnesHut} \cite{barnes1986hierarchical}, \texttt{forceAtlas2Based} (based on the Force Atlas 2 algorithm \cite{jacomy2014forceatlas2}), \texttt{repulsion} or \texttt{hierarchicalRepulsion}, or alternatively a custom model can be supplied. A custom solver could take in the following arguments: \texttt{gravitationalConstant}, \texttt{centralGravity}, \texttt{springLength}, \texttt{springConstant}, \texttt{damping} and \texttt{avoidOverlap}. 
+Within the \texttt{layout} \cite{visjslayout} option, if \texttt{improvedLayout} was set to false, then Kamada Kawai Algorithm \cite{kamada1989algorithm} is \emph{not} applied, which reduces stability of the network but improved rendering times. This parameter was toggled multiple times throughout testing and was found to rarely be beneficial to the visualisation as a whole.
 
-Although time was spent exploring the physics module and creating several custom solvers, it turned out that creating powerful physics solvers would improve the visualisation slightly at the cost of a large decrease in performance. Physics could also be turned off entirely and the network could be displayed in a ring, with nodes equally spaced. 
+\subsection{Physics}
 
-TODO: make the above into a list and maybe include a few more options like size etc.?
+In the \texttt{physics} \cite{visjsphysics} option, there were several different parameters which could be finely tuned. Stabilisation was a major parameter experimented on for this project which sets if the network should be stabilised and, if so, by what means. Additionally, the maximum and minimum speed can be set, the time between steps can be changed, and the physics solver can be selected. This can be one of four preset solver: \texttt{barnesHut} \cite{barnes1986hierarchical}, \texttt{forceAtlas2Based} (based on the Force Atlas 2 algorithm \cite{jacomy2014forceatlas2}), \texttt{hierarchicalRepulsion}, or \texttt{repulsion}. Alternatively, a custom model can be supplied. A custom solver could take in the following arguments: \texttt{gravitationalConstant}, \texttt{centralGravity}, \texttt{springLength}, \texttt{springConstant}, \texttt{damping} and \texttt{avoidOverlap}. 
+
+Although time was spent exploring the physics module and creating several custom solvers, the custom solvers tended to perform more poorly than the preset solvers, and the default option worked the best in most scenarios. 
+
+Additionally, it was possible to disable the Physics module entirely and the network would be displayed in a ring, with nodes equally spaced and edges placed appropriately. This lead to near instant loading times but the visualisations becoming meaningless.
+
+\subsection{Nodes}
+
+The \texttt{nodes} option allowed for each node to be customised. Options included the nodes: size, colour, shape, font, label, border and mass. These could be set for all nodes in the network or individually - and these options were used extensively to illustrate to a user what nodes had been bundled how much bundling had occurred.
+
+\subsection{Interaction}
+
+It was also possible to edit how users could interact with the visualisation through the \texttt{interaction} option. This allowed for: users to select multiple nodes, nodes to be locked into place or free for the user to move, nodes to show tooltips which could contain additional information, and the ability to zoom in or out. Zooming on the network and interaction with nodes was enabled so users could get more detailed information on the network and how it reacted to different nodes being moved. Future iterations of the project could include using tooltips to give more information about each node, depending on what was being visualised.
 
 \section{Front-end}
 
-Screenshots
+\subsection{Architecture}
 
-Bootstrap
+The front-end of the system was written using HTML, CSS and JavaScript. The HTML was written in Django Templates \cite{django-docs-templates}, and a base file was written which acted as a container for each of the other HTML files. A CSS framework, Bootstrap \cite{bootstrap} was utilised in order to allow for a smart interface to be created very quickly, and ensure that development time was not spent on creating a user interface from scratch. The JavaScript for the system used jQuery \cite{jQuery}, which made interacting with the DOM a very easy process. JavaScript was user to pick up events based on user interactions and make appropriate calls to the JavaScript library detailed in Section \ref{sec:jslib}.
 
-Uploading docs (including tlp and json banter)
+\subsection{System Interaction}
+
+To use the finished system, a user would simply select a network to visualise, decide which algorithms would be applied to the network using check boxes, and then select `Load'. This can be seen in Figure \ref{fig:topbar}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=15cm]{7/topbar}
+    \caption{This shows how a user would interact with the system to view a network}
+    \label{fig:topbar}
+\end{figure}
+
+The two other key components of the front-end were uploading and deleting networks. Uploading a network involved: naming the network and selecting either a \texttt{.tlp} or a \texttt{.json} (in SAS's format) file. A \texttt{.tlp} could be loaded directly into the system and would be saved directly. However, the \texttt{.json} file would have to be converted to a \texttt{.tlp} so Tulip could understand it. This involved uploading the \texttt{.json} file, creating a \texttt{.tlp} file the same name but a different file extension, parsing the \texttt{.json} file, and then copying the relevant information into the blank \texttt{.tlp} file. Deleting a network was done by selecting the network to be deleted from a drop-down list, and clicking `Delete'.
+
+\subsection{Finished Product Screenshots}
+
+Figure \ref{fig:1000-none} and \ref{fig:1000-both} show the final product rendering a network of 1000 nodes, and then rendering the same network after it had been Node Pruned and Node Bundled based on number of edges. These both show how Vis.js visualise networks and what the system looks like, and also show the benefit of processing networks on the server. Figure \ref{fig:1000-none} took 59924ms to load and Figure \ref{fig:1000-both} took 153ms to load, further highlighting the benefits of the system.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=12cm]{7/1000_1none}
+    \caption{This shows the system visualising a network with 1000 nodes without any processing taking place.}
+    \label{fig:1000-none}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=12cm]{7/1000_4both}
+    \caption{This shows the same network as seen in Figure \ref{fig:1000-none}, but with Node Pruning and then Node Bundling based on number of edges applied to it.}
+    \label{fig:1000-both}
+\end{figure}
 
 \end{document}
