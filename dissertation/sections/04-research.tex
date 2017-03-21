@@ -14,17 +14,17 @@ In regards to the visualisation of massive networks, some important techniques l
 \subsection{Node Bundling}
 \label{sec:node_bundling}
 
-Node Bundling is using algorithms to decide (with or without some form of user input) which nodes are similar to each other, and upon establishing this relationship, grouping them into a single node, generally visually different in some way (often by size or colour). It ``creates a less complicated visualization without losing connectivity information by automatically abstracting small [...] subgraphs'' \cite{six2003effective}. This allows for hundreds or thousands of nodes to be grouped into a single node in order to require less memory, processing power, bandwidth and screen space on the users machine. A way to further improve the visualisation is to show how the nodes being bundled connected with themselves, for example if they are heavily connected, all connected to just a few nodes, or if they are in a ring formation. Figure \ref{fig:bundling} and \ref{fig:deletion} demonstrate both node and edge bundling.
+Node bundling is using algorithms to decide (with or without some form of user input) which nodes are similar to each other, and upon establishing this relationship, grouping them into a single node, generally visually different in some way (often by size or colour). It ``creates a less complicated visualization without losing connectivity information by automatically abstracting small [...] subgraphs'' \cite{six2003effective}. This allows for hundreds or thousands of nodes to be grouped into a single node in order to require less memory, processing power, bandwidth and screen space on the users machine. A way to further improve the visualisation is to show how the nodes being bundled connected with themselves, for example if they are heavily connected, all connected to just a few nodes, or if they are in a ring formation. Figure \ref{fig:bundling} and \ref{fig:deletion} demonstrate both node and edge bundling.
 
 \subsubsection{Node Pruning}
 \label{sec:node-pruning}
 
-An example of a node bundling algorithm is `Node Pruning'. This is a technique that takes each node in a network with only one edge and deletes it from the network. This can often reduce the number of nodes in a network by a significant amount, while retaining its overall shape. The algorithm is mentioned in literature as a step to creating a bundled network but is not named \cite{brandes2003experiments}. Hence, for the purpose of this dissertation, it was named `Node Pruning'. More information about Node Pruning can be found in Section \ref{sec:impl-node-prun}.
+An example of a node bundling algorithm is `Node Pruning'. This is a technique that takes each node in a network with only one edge and deletes it from the network. This can often reduce the number of nodes in a network by a significant amount, while retaining its overall shape. The algorithm is mentioned in literature as a step to creating a bundled network but is not named \cite{brandes2003experiments}. Hence, for the purpose of this dissertation, it was named `Node Pruning'. More information about node pruning can be found in Section \ref{sec:impl-node-prun}.
 
-\subsubsection{Node Bundling based on cliques}
+\subsubsection{Node bundling based on cliques}
 \label{sec:node-bundling-cliques}
 
-Another example of node bundling is an algorithm based on cliques. This involves analysing each node and deciding which are closest to cliques, with a clique being defined as every node is adjacent to every other \cite{roberts1971characterization}. The result of this is highly interconnected groups of nodes becoming bundled into one node. More information about Node Bundling based on cliques can be found in Section \ref{sec:impl-node-clique}.
+Another example of node bundling is an algorithm based on cliques. This involves analysing each node and deciding which are closest to cliques, with a clique being defined as every node is adjacent to every other \cite{roberts1971characterization}. The result of this is highly interconnected groups of nodes becoming bundled into one node. More information about node bundling based on cliques can be found in Section \ref{sec:impl-node-clique}.
 
 \subsection{Edge bundling}
 \label{sec:edge_bundling}
