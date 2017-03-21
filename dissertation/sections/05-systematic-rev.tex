@@ -6,7 +6,7 @@
 
 \section{Aim} 
 
-The goal of the review was to look into several different types of network visualisation software, gathered in Chapter \ref{sec:research}, and as a result, find out more about how it works. The software would be analysed for several characteristics, both related to the visualising of networks and the visualisation of specifically massive networks.
+The goal of the review was to consider several different types of network visualisation software, gathered in Chapter \ref{sec:research}, and as a result, find out more about how it works. The software would be analysed for several characteristics, both related to the visualising of networks and the visualisation of specifically massive networks.
 
 \section{Methodology}
 \label{sec:sys-rev-method}
@@ -15,17 +15,17 @@ Upon finishing background research and defining a clear aim for the review, a li
 
 The first criteria to assess would be how easy it is to get a basic network (5 or 10 nodes) displayed from scratch, from downloading the software and installing it, to understanding it's documentation and finally to getting a network displayed.
 
-Additionally, another criteria was how easy it is to load a network from a file or save a network to a file. These were important as a system would have limited use if it did not allow a user to upload networks, and allowing users to save networks (potentially after it was modified by the system or the user) would mean the network could be loaded in from another system or at a later date. 
+Additionally, another criterion was how easy it is to load a network from a file or save a network to a file. These were important as a system would have limited use if it did not allow a user to upload networks, and allowing users to save networks (potentially after it was modified by the system or the user) would mean the network could be loaded in from another system or at a later date. 
 
 The next feature to be analysed was based on interactivity - how easily can a user edit the network to get more useful information out of it. This would include the ability to zoom into a part of the network or being able to pan. A more complex feature (that would be rarely used but would occasionally add valuable information to the user) would be the ability to make it dynamic - showing the change in a network over time (or another parameter). 
 
-A major criteria would then be how well the software would scale up to massive networks - this would include running tests on increasingly large networks and seeing how long the software took, and also if it includes node or edge bundling, or other ways of increasing clarity of massive networks. Time taken to render is also an important statistic, but less critical than the clarity of the massive amounts being displayed. This is perhaps the most vital category as no matter the above features, if the network is not clear for huge numbers of nodes or edges then it does not provide a solution to the problem at hand. An additional feature to increase user clarity would be the ability to view the network in many different layouts (such as Force Directed \cite{fruchterman1991graph} - which is most common layout algorithm - or lesser used algorithms such as spectral layout \cite{beckman1994theory} or arc diagrams \cite{didimo2013graph}), which would give users more flexibility and would often lead to a better understanding of the network. 
+A major criterion would then be how well the software would scale up to massive networks - this would include running tests on increasingly large networks and seeing how long the software took, and also if it includes node or edge bundling, or other ways of increasing clarity of massive networks. Time taken to render is also an important statistic, but less critical than the clarity of the massive amounts being displayed. This is perhaps the most vital category as no matter the above features, if the network is not clear for huge numbers of nodes or edges then it does not provide a solution to the problem at hand. An additional feature to increase user clarity would be the ability to view the network in many different layouts (such as Force Directed \cite{fruchterman1991graph} - which is most common layout algorithm - or lesser used algorithms such as spectral layout \cite{beckman1994theory} or arc diagrams \cite{didimo2013graph}), which would give users more flexibility and would often lead to a better understanding of the network. 
 
 This set of criteria, both qualitative and quantitative (to maximise information gathered), was compiled into a list to act as the process for the experiment. This enabled a systematic analysis of the software to take place.
 
 \begin{enumerate}
 	\item \textbf{Standalone or library?}\\
-	If a software package is standalone then can it be executed (often after it has been installed) without any programming on the user's behalf? If the software comes as a library package then that library will provide an API so one can call functions from the library in their own programs. 
+	If a software package is standalone, then can it be executed (often after it has been installed) without any programming on the user's behalf? If the software comes as a library package, then that library will provide an API so one can call functions from the library in their own programs. 
 	\item \textbf{Documentation}:
 	\begin{enumerate}
 		\item Is it easy to understand: is it explained clearly and concisely?
@@ -47,22 +47,22 @@ This set of criteria, both qualitative and quantitative (to maximise information
 	    \item 1000 nodes
 	    \item 3000 nodes
 	\end{enumerate}
-	These numbers were chosen as it was expected that all software could handle all of the values, with all software having no trouble with thirty nodes, but software that performs less well being expected to struggle as the number of nodes got into the range of the thousands. 
+	These numbers were chosen as it was expected that all software could handle all of the values, with all software having no trouble with thirty nodes, but software that performs more poorly being expected to struggle as the number of nodes got into the range of the thousands. 
 	\item \textbf{If the software allowed for:}
 	\begin{enumerate}
 		\item Zooming: if certain parts of a network could be focused on and viewed in more detail.
 		\item Panning: the network could be traversed in the x or y axis.
 	\end{enumerate}
 	\item \textbf{Can a network be dynamic?}\\
-	This would allow for information to be viewed across multiple points in time? This allows certain types of information to be visualised far more easily, in particular when data has been been collected over a long time period over which relationships between the data evolve.
-	\item \textbf{Does the software included features for displaying huge networks:}
+	This would allow for information to be viewed across multiple points in time? This allows certain types of information to be visualised far more easily, in particular when data has been collected over a long time period over which relationships between the data evolve.
+	\item \textbf{Does the software included features for displaying huge networks, such as:}
 	\begin{enumerate} 
 		\item Node Bundling: See section \ref{sec:node_bundling}.
 		\item Edge Bundling: See section \ref{sec:edge_bundling}.
 		\item Alternative layout options: This includes the ability to change what algorithms decide how the network is laid out.
 	\end{enumerate}
 	\item \textbf{Can a network be multivariate?}\\
-	Does the software support nodes being grouped in some way? This could be in many ways, such as based on shape or colour, and would allow users to distinguish different catagories of data.
+	Does the software support nodes being grouped in some way? This could be in many ways, such as based on shape or colour, and would allow users to distinguish different categories of data.
 	\item \textbf{Is there a possibility of changing graphical settings for the network?}\\
 	Can nodes or edges be coloured differently at the users request? This could be done by changing their shape, size, colour or outline?
 	\item \textbf{Can a network be displayed in 3D?}\\
@@ -71,13 +71,13 @@ This set of criteria, both qualitative and quantitative (to maximise information
 	Is there any other aspect of the software of note that is not identified above?
 \end{enumerate}
 
-Each piece of software was evaluated against this criteria, with the goal of both finding out which pieces of software were more successful over many parameters, and also to become more familiar with network visualisation software used in industry.
+Each piece of software was evaluated against this criterion, with the goal of both finding out which pieces of software were more successful over many parameters, and also to become more familiar with network visualisation software used in industry.
 
 \section{Data and Results}
 
 After starting to run the experiments, it became clear that two pieces of software from the list above would not be capable of being compared against the criteria stated in Section \ref{sec:sys-rev-method}, which were GUESS and SNAP.
 
-GUESS was software that never left beta, and was last developed in 2007. Having never been released meant that the software had fairly little documentation and what it did have was not comprehensive. On top of this, the wiki created for it was no longer hosted online which meant many of the links to documentation on the website were broken. Despite it looking promising, it became clear it would not be usable.
+GUESS was software that never left beta, and was last developed in 2007. Having never been released meant that the software had little documentation and what it did have was not comprehensive. On top of this, the wiki created for it was no longer hosted online which meant many of the links to documentation on the website were broken. Despite it looking promising, it became clear it would not be usable.
 
 SNAP could not be compared to much of the criteria as the purpose of it is to analyse and manipulate networks, as opposed to visualising them. However, time was spent reading it’s documentation and going through all the sample code snippets to understanding how the software worked to some degree. The reason this was done was that it both felt important to have some knowledge of how network manipulation software worked, and also depending on the direction the project took, network manipulation may well be used in order to bundle edges or nodes in order to increase performance of massive networks.
 
@@ -184,11 +184,11 @@ Table \ref{table:other_info} presents the data on how long it took to create a s
 
 \section{Conclusion}
 
-Following the process outlined in Section \ref{sec:sys-rev-method} was difficult as a collection of APIs was expected, which could have been easily compared by their distinguishing factors, but most of the software were standalone packages and were more difficult to compare. This highlighted the difficultly in conducting a systematic evaluation as, due to the complexities in comparing such diverse software, the criteria changed several times throughout the evaluation and continually evolved, meaning all previously tested software had to be analysed again. Additionally, only the JavaScript libraries would be directly suitable for SAS as the other pieces of software were standalone applications and could not be be utilised by a web application.
+Following the process outlined in Section \ref{sec:sys-rev-method} was difficult as a collection of APIs was expected, which could have been easily compared by their distinguishing factors, but most of the software were standalone packages and were more difficult to compare. This highlighted the difficultly in conducting a systematic evaluation as, due to the complexities in comparing such diverse software, the criteria changed several times throughout the evaluation and continually evolved, meaning all previously tested software had to be analysed again. Additionally, only the JavaScript libraries would be directly suitable for SAS as the other pieces of software were standalone applications and could not be utilised by a web application.
 
-Despite the aforementioned challenges, a lot of useful information was gained throughout the evaluation, from how individual packages work to what techniques software uses to deal with large networks. Given all of the above data and comparisons, Tulip was clearly the best performing software. Like all of the other software, it allows for:
+Despite the aforementioned challenges, a lot of useful information was gained throughout the evaluation, from how individual packages work to what techniques software uses to deal with large networks. Given all of the above data and comparisons, Tulip was clearly the best performing software. Like all the other software, it allows for:
 \begin{itemize}
-    \item Importing from a file (many file formats supported, including it's own \texttt{.tlp} format)
+    \item Importing from a file (many file formats supported, including its own \texttt{.tlp} format)
     \item Exporting to a file (to a similarly large number of supported formats)
     \item Exporting to an image
     \item High quality documentation
@@ -207,7 +207,7 @@ As a result of the above research and review, there were several different direc
 
 \subsection{Writing Massive Network Algorithms}
 
-One possible choice would be to write several different programs in JavaScript that alter massive networks by any or all of the techniques highlighted in Section \ref{sec:background}. This collection of algorithms would then be analysed for what effect they had on improving visualisations and render times, and would be tested using using D3.js or Vis.js. 
+One possible choice would be to write several different programs in JavaScript that alter massive networks by any or all of the techniques highlighted in Section \ref{sec:background}. This collection of algorithms would then be analysed for what effect they had on improving visualisations and render times, and would be tested using D3.js or Vis.js. 
 
 Upon writing these algorithms, they would be tested:
 \begin{itemize}
@@ -217,13 +217,13 @@ Upon writing these algorithms, they would be tested:
     \item \textbf{With a variety of sparse or highly interconnected networks.} Some algorithms, for example bundling, may work particularly well with highly interconnected networks, and analysing performance for different levels of connectedness could reveal when it is most often best to use a certain algorithm.
 \end{itemize}
 
-For each of the above tests, each run would have it's performance evaluated (from time taken to how much processing power it required and the amount of RAM used) and then what effect it had on the end visualisation (if spending the time to run the algorithm gave any minor or notable benefit to the visualisation of the network).
+For each of the above tests, each run would have its performance evaluated (from time taken to how much processing power it required and the amount of RAM used) and then what effect it had on the end visualisation (if spending the time to run the algorithm gave any minor or notable benefit to the visualisation of the network).
 
 \subsection{Evaluation of existing systems}
 
-For each of the standalone systems evaluated in Section \ref{sec:systematic-review} - which were Gephi, GraphViz and Tulip - explore where each of the packages begin to struggle to display networks clearly or quickly and why. This would include analysing the amount of time taken to run on different datasets, and for massive datasets, discover what task in particular makes it take as long as it would to display. Possible reasons could be that the network can't fit in RAM so data is constantly being put onto and pulled off of backing storage, or that algorithms have exponential performance which is negligible for a while but as networks get massive this performance starts to take it's toll. 
+For each of the standalone systems evaluated in Section \ref{sec:systematic-review} - which were Gephi, GraphViz and Tulip - explore where each of the packages begin to struggle to display networks clearly or quickly and why. This would include analysing the amount of time taken to run on different datasets, and for massive datasets, discover what task in particular makes it take as long as it would to display. Possible reasons could be that the network can't fit in RAM so data is constantly being put onto and pulled off of backing storage, or that algorithms have exponential performance which is negligible for a while but as networks get massive this performance starts to take its toll. 
 
-Additionally, it would look at how effective the visualisations that created were at imparting knowledge to the user. This analysis would both take into account the quality of the visualisation baring in mind how long it took, and also how clear the visualisation was, regardless of time taken to create it. 
+Additionally, it would look at how effective the visualisations that created were at imparting knowledge to the user. This analysis would both take into account the quality of the visualisation bearing in mind how long it took, and also how clear the visualisation was, regardless of time taken to create it. 
 
 \subsection{Exploration of database visualisation systems}
 

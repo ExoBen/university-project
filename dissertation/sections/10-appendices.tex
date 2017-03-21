@@ -6,7 +6,7 @@
 \section{MoSCoW Requirements}
 \label{sec:moscow}
 
-After defining the scope of the project in Section \ref{sec:scope}, the below MoSCoW requirements \cite{moscowreq} were made.
+After defining the scope of the project in Section \ref{sec:scope}, the below MoSCoW requirements \cite{moscowreq} were made. 
 
 Must Have:
 \begin{itemize}
@@ -25,13 +25,13 @@ Should Have:
         \item Letting users make more than just a JavaScript client, so if they want to make a C\# or Java app that would not create a problem
 	\end{itemize}
 \end{itemize}
-
+	
 Could Have:
 \begin{itemize}
     \item \textbf{The ability to ask for an image to be returned if client is low power} This would mean that the visualisation would not be interactive, but would take very little time to transfer the image and next to no time to render it, as opposed to far more time for both tasks to send a network to be constructed on the client.
-	\item \textbf{The ability for a user to link their hosted data to the application} This could be an in-house solution such as a a company network storage, or an external data host such as Amazon's S3 \cite{amazons3}. Hence, big data (hundreds of gigabytes or terrabytes) could be linked to the system with ease, each one being imported and linked to the system manually, or an XML/JSON file could be provided that allowed for batch uploading of data.
+	\item \textbf{The ability for a user to link their hosted data to the application} This could be an in-house solution such as a company network storage, or an external data host such as Amazon's S3 \cite{amazons3}. Hence, big data (hundreds of gigabytes or terabytes) could be linked to the system with ease, each one being imported and linked to the system manually, or an XML/JSON file could be provided that allowed for batch uploading of data. 
 \end{itemize}
-
+	
 Won't have but would like:
 \begin{itemize}
     \item \textbf{A fully fledged and pretty interface.} It would be nice to have a fully completed front-end that is very user-friendly and has been thoroughly evaluated and tested. However, given the amount of time available for the project, it was decided that this is not as critical as having back-end functionality, and additionally that the front-end is being created to demonstrate what the back-end can do as much as to be part of the project.
@@ -165,10 +165,11 @@ Packet Size                        & 114000   & 83500    & 63500   & 42900   \\ 
 %------------------------------------------------------------
 
 \chapter{Screenshots of the System}
+\label{chap:screenshots-all}
 
 The below screenshots show the system visualising a network of: 30 nodes, 200 nodes, 1000 nodes and 3000 nodes. Each network is shown with no algorithm being applied, node pruning being applied, node bundling based on number of edges being applied, and both node pruning and then node bundling based on number of edges being applied.
 
-Additionally, screenshots containing a highly connected network are shown before and after node bundling based on cliques.
+Additionally, screenshots containing a highly-connected network are shown before and after node bundling based on cliques.
 
 % 30 nodes
 
@@ -300,8 +301,8 @@ The server was developed and tested on Linux. Python and Django are both fully s
 
 In order to run the project, the following steps must be taken:
 \begin{enumerate}
-    \item \textbf{Ensure Python 3 is installed.} This can be downloaded from https://www.python.org/downloads/. Make sure that, when installing Python, pip (Python Package Index) is also installed. If pip is not installed then it can be by entering: \texttt{sudo apt install python-pip}.
-    \item \textbf{Create a virtual environment.} If virtualenv is not installed then open a terminal and enter: \\ \texttt{pip install virtualenv}. Once this has finished installing, a virtual environment is created by navigating to the directory where the virtual environment should be stored and then entering: \\ \texttt{virtualenv tulipwebwrapper --python=python3}. The flag ensures that Python 3 is used if multiple versions of Python exist on the system being used.
+    \item \textbf{Ensure Python 3 is installed.} This can be downloaded from https://www.python.org/downloads/. Make sure that, when installing Python, pip (Python Package Index) is also installed. If pip is not installed, then it can be by entering: \texttt{sudo apt install python-pip}.
+    \item \textbf{Create a virtual environment.} If virtualenv is not installed, then open a terminal and enter: \\ \texttt{pip install virtualenv}. Once this has finished installing, a virtual environment is created by navigating to the directory where the virtual environment should be stored and then entering: \\ \texttt{virtualenv tulipwebwrapper --python=python3}. The flag ensures that Python 3 is used if multiple versions of Python exist on the system being used.
     \item \textbf{Activate the virtual environment.} This is done by entering: \\ \texttt{source /path/to/ve/tulipwebwrapper/bin/activate}.
     \item \textbf{Installing the project requirements.} Navigate to the root of the project and then enter the folder named `dev' then `webtulip'. From here, open a terminal and enter: \\ \texttt{pip install -r requirements.txt}.
     \item \textbf{Ensure the database is up to date.} Enter: \texttt{python manage.py makemigrations} to check for and create database migrations (this will have no effect if no models have been changed), and then: \\ \texttt{python manage.py migrate} which will run the migrations and ensure the database schema is up-to-date.
@@ -325,7 +326,7 @@ In short, once Python 3 and pip are installed, the commands are:
 
 Once the server is running, navigating to \texttt{http://127.0.0.1:8000} in any browser will direct users to the home page of the system.
 
-From here, users can navigate to the upload page (\texttt{http://127.0.0.1:8000/upload}) and upload networks into the system. The system accepts \texttt{.tlp} networks and \texttt{.json} networks in the format that SAS use. Examples of these can be found in /path/to/project/data/sas\_data, which contains two folders, one containing the \texttt{.tlp}'s (previously converted) and one containing the original \texttt{.json} files. Additionally, in the project/data folder, there is g1.tlp and g2.tlp, two very simple networks which were used for testing. To upload a \texttt{.tlp}, set the network type to `Tulip TLP' (default) and to upload a \texttt{.json}, set the network type to `Industry Standard'.
+From here, users can navigate to the upload page (\texttt{http://127.0.0.1:8000/upload}) and upload networks into the system. The system accepts \texttt{.tlp} networks and \texttt{.json} networks in the format that SAS use. Examples of these can be found in /path/to/project/data/sas\_data, which contains two folders, one containing the \texttt{.tlp}'s (previously converted) and one containing the original \texttt{.json} files. Additionally, in the project/data folder, there is g1.tlp and g2.tlp, two very simple networks which were used for testing. To upload a \texttt{.tlp}, set the network type to `Tulip TLP' (default) and to upload a \texttt{.json}, set the network type to `Industry Standard'. 
 
 Once network(s) have been uploaded, navigate back to the home page and from there, select the network to visualise and then select any algorithms to be applied to the network.
 

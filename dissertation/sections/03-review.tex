@@ -16,17 +16,17 @@ Network visualisation is a branch of data visualisation involving the ability to
 
 \section{Visualisation of Massive Networks}
 
-Visualisation of massive networks can lead to many challenges. Massive is a term used to refer to a wide variety of network sizes, but is generally considered as anything above approximately a thousand nodes \cite{batagelj1998pajek}. These challenges generally present themselves in the form of computational challenges or visualisation challenges. Computational challenges are defined as when a system cannot quickly execute a given task due to lack of speed or performance from the CPU, RAM or backing storage, and is generally caused by either too much data being passed to the system, or algorithms necessary for the system to work running in exponential time \cite{baker1994approximation}. If a machine has a slow processor then the amount of time required to create and then render the network will be increased greatly. Similarly, ``data sets are often too massive to fit completely inside the computer's internal memory'' \cite{abello2013handbook}. If the system RAM is not large enough to fit the network, then the performance of the network visualisation will degrade significantly due to external memory needing to be used, such as paging to disk. 
+Visualisation of massive networks can lead to many challenges. Massive is a term used to refer to a wide variety of network sizes, but is generally considered as anything above approximately a thousand nodes \cite{batagelj1998pajek}. These challenges generally present themselves in the form of computational challenges or visualisation challenges. Computational challenges are defined as when a system cannot quickly execute a given task due to lack of speed or performance from the CPU, RAM or backing storage, and is generally caused by either too much data being passed to the system, or algorithms necessary for the system to work running in exponential time \cite{baker1994approximation}. If a machine has a slow processor, then the amount of time required to create and then render the network will be increased greatly. Similarly, ``data sets are often too massive to fit completely inside the computer's internal memory'' \cite{abello2013handbook}. If the system RAM is not large enough to fit the network, then the performance of the network visualisation will degrade significantly due to external memory needing to be used, such as paging to disk. 
 
 The other computational challenge is the ability to store the network. Normally data is stored locally on a machine and loaded into a system in order to visualise it. However, when storing multiple massive networks (possibly many terabytes in size), it can be nearly impossible to store this data on one machine. Hence, storing data on the cloud is often chosen, whether internally hosted within a company or externally hosted. This has the benefit that ``Cloud computing is a powerful technology to perform massive-scale and complex computing.'' \cite{hashem2015rise}, meaning that all required data for this challenge can be efficiently stored and processed.
 
-Assuming that the machine is powerful enough in all of the above ways, and is capable of visualising massive networks, the next challenge is how to present that data in any meaningful way. When visualising hundreds or thousands nodes, it is generally fairly easy to get useful information out of the visualisation. However, when a user is faced with a few hundred thousand nodes or even several million, it can be very difficult to gain any sort of insight from the visualisation, as it can be impossible to discern any relevant detail from what is displayed. 
+Assuming that the machine is powerful enough in all the above ways, and is capable of visualising massive networks, the next challenge is how to present that data in any meaningful way. When visualising hundreds or thousands of nodes, it is generally fairly easy to get useful information out of the visualisation. However, when a user is faced with a few hundred thousand nodes or even several million, it can be very difficult to gain any sort of insight from the visualisation, as it can be impossible to discern any relevant detail from what is displayed. 
 
 \section{Visualisation of Massive Networks in a Browser}
 
 Visualising massive networks in a browser environment adds several more constraints. Firstly, it requires all data to be sent over the internet so high bandwidth is required and even then, depending on the network size, a huge amount of time could be taken waiting for the network to download. Secondly, it requires any client-side processing to be done in JavaScript, which means that all code is run on a single thread \cite{herhut2012parallel} and hence performance is poor when working with large datasets, as it is not parallelisable. Furthermore, JavaScript is necessary in order to render the network which is, again, a very slow process for large amounts of information. 
 
-A goal of the project was to research techniques currently used to visualise massive networks, look into how successful they were, and then make a system that allows for the visualisation of massive networks in a browser and across a network such as the internet. 
+A goal of the project was to research techniques currently used to visualise massive networks, consider how successful they were, and then make a system that allows for the visualisation of massive networks in a browser and across a network such as the internet. 
 
 \section{Example within the Field}
 
@@ -36,7 +36,7 @@ Currently, the SAS product Visual Investigator \cite{sasvi} lets users view a ne
 
 As can be seen in Figures \ref{fig:30nodes}, \ref{fig:1000nodes}, \ref{fig:2500nodes}, \ref{fig:7500nodes}, the network starts out clear and loading times are near instant, but it soon becomes both difficult to understand and slow. The times shown in the below figures are from the initial release version of Visual Investigator, and since then performance has improved in many ways. However, if there was a way to both speed up the loading times of huge networks, and make them convey meaningful information to the user, this would be benefit the system greatly.
 
-\begin{figure}
+\begin{figure}[H]
 \centering
 \begin{minipage}{.5\textwidth}
     \includegraphics[width=\textwidth]{3/30_nodes}
@@ -50,7 +50,7 @@ As can be seen in Figures \ref{fig:30nodes}, \ref{fig:1000nodes}, \ref{fig:2500n
 \end{minipage}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[H]
 \centering
 \begin{minipage}{.5\textwidth}
     \includegraphics[width=\textwidth]{3/2500_nodes}

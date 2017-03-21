@@ -47,7 +47,7 @@ Another critical design decision had to be made relating to how the networks wer
     \item The networks could all be saved on Hadoop's HDFS (explained in Appendix \ref{sec:whatishadoop}) so that working with Big Data would be supported.
 \end{itemize}
 
-The advantage of storing the network directly is that all data would be stored in a single database. For a small scale application, this would make managing the system easier and have no notable drawback. However, as many massive networks may be saved to the system, the database would quickly become very large and therefore its performance would suffer greatly. As a requirement for the system was that it would work on massive datasets, an alternative solution would have to be found. Out of the other two solutions, one involved saving all of the networks on the server, and the other on a HDFS cluster. 
+The advantage of storing the network directly is that all data would be stored in a single database. For a small-scale application, this would make managing the system easier and have no notable drawback. However, as many massive networks may be saved to the system, the database would quickly become very large and therefore its performance would suffer greatly. As a requirement for the system was that it would work on massive datasets, an alternative solution would have to be found. Out of the other two solutions, one involved saving all of the networks on the server, and the other on a HDFS cluster. 
 
 The advantage of storing the networks on the server means that you can still store a massive amount of data on the server without the overhead and complications of setting up a Hadoop cluster. However, the advantage of using Hadoop is that it would allow for far more data to be stored in HDFS, and then MapReduce would allow for considerably faster processing of massive networks.
 
@@ -69,13 +69,14 @@ Node pruning involves finding each node with only one edge and removing it from 
 \label{alg:node-pruning}
 \begin{algorithmic}
 \STATE{G = (V,E)} \COMMENT{a graph containing vertices and edges}
-\FORALL{V in G} 
-    \IF{V has only 1 edge} 
-        \STATE{add V to list to delete} 
+\STATE{initialise list toDelete}
+\FORALL{v in V} 
+    \IF{v has only 1 edge} 
+        \STATE{add v to toDelete} 
     \ENDIF 
 \ENDFOR
-\FORALL{V in list to delete} 
-    \STATE{delete V from G} 
+\FORALL{v in toDelete} 
+    \STATE{delete v from V and related edges from E} 
 \ENDFOR
 \end{algorithmic}
 \end{algorithm}
@@ -92,13 +93,13 @@ This is calculated by using the \texttt{clusteringCoefficient} algorithm provide
 \STATE{assign each node a clustering coefficient} \COMMENT{using Tulip's \texttt{tlp.clusteringCoefficient}}
 \STATE{G = (V,E)} \COMMENT{a graph containing vertices and edges}
 \STATE{initialise list toBundle}
-\FORALL{V in G} 
-    \IF{clustering coefficient of V is greater than 0.8}
-        \STATE{add V to toBundle}
+\FORALL{v in V} 
+    \IF{clustering coefficient of v is greater than 0.8}
+        \STATE{add v to toBundle}
     \ENDIF
 \ENDFOR
-\FORALL{V in toBundle}
-    \STATE{bundle V} \COMMENT{The code to bundle can be seen in Algorithm \ref{alg:bundle-node}} 
+\FORALL{v in toBundle}
+    \STATE{bundle v} \COMMENT{The code to bundle can be seen in Algorithm \ref{alg:bundle-node}} 
 \ENDFOR
 
 \end{algorithmic}
@@ -114,19 +115,26 @@ This is done by initially calculating the mean number of edges in the network. T
 \begin{algorithmic}
 \STATE{G = (V,E)} \COMMENT{a graph containing vertices and edges}
 \STATE{initialise integer edgeCounter}
-\FORALL{V in G} 
-    \STATE{add the degree of V to edgeCounter} 
+\FORALL{v in V} 
+    \STATE{add the degree of v to edgeCounter} 
 \ENDFOR
-\STATE{meanNumberOfEdges = edgeCounter/number of vertices in G}
+\STATE{meanNumberOfEdges = edgeCounter / size of V}
 \STATE{initialise list toBundle}
-\FORALL{V in G} 
-    \IF{degree of V greater than meanNumberOfEdges} 
-        \STATE{add V to toBundle} 
+\FORALL{v in V} 
+    \IF{degree of v greater than meanNumberOfEdges * 2} 
+        \STATE{add v to toBundle} 
     \ENDIF
 \ENDFOR
-\FORALL{V in toBundle} 
-    \STATE{bundle the vertex with the highest degree} \COMMENT{The code to bundle can be seen in Algorithm \ref{alg:bundle-node}} 
-\ENDFOR
+\WHILE{toBundle is not empty}
+    \STATE{initialise vertex highestDegree}
+    \FORALL{v in toBundle} 
+        \IF{degree of v is greater than degree of highestDegree}
+            \STATE{highestDegree = v}
+        \ENDIF
+    \ENDFOR
+    \STATE{bundle highestDegree} \COMMENT{The code to bundle can be seen in Algorithm \ref{alg:bundle-node}} 
+    \STATE{remove highestDegree from toBundle}
+\ENDWHILE
 \end{algorithmic}
 \end{algorithm}
 
@@ -138,13 +146,14 @@ Upon discovering what nodes need to be bundled, the node then needs to be actual
 \caption{Defines the process for bundling a node}
 \label{alg:bundle-node}
 \begin{algorithmic}
-\STATE{aNode} \COMMENT{a node is passed in to this function to be bundled, aNode}
+\STATE{toBeBundled} \COMMENT{a node passed into this function to be bundled}
 \STATE{initialise list neighbours}
-\FORALL{neighbour of aNode} 
+\FORALL{neighbour of toBeBundled} 
     \STATE{add neighbour to neighbours}
     \FORALL{edge of neighbour}
-        \IF{edge not connected to aNode}
-            \STATE{connect edge to aNode from neighbour}
+        \IF{edge not connected to toBeBundled}
+            \STATE{disconnect edge from neighbour}
+            \STATE{connect edge to toBeBundled}
         \ELSE
             \STATE{delete edge}
         \ENDIF
@@ -289,18 +298,18 @@ The two other key components of the front-end were uploading and deleting networ
 
 \subsection{Finished Product Screenshots}
 
-Figure \ref{fig:1000-none} and \ref{fig:1000-both} show the final product rendering a network of 1000 nodes, and then rendering the same network after it had been Node Pruned and Node Bundled based on number of edges. These both show how Vis.js visualise networks and what the system looks like, and also show the benefit of processing networks on the server. Figure \ref{fig:1000-none} took 59924ms to load and Figure \ref{fig:1000-both} took 153ms to load, further highlighting the benefits of the system.
+Figure \ref{fig:1000-none} and \ref{fig:1000-both} show the final product rendering a network of 1000 nodes, and then rendering the same network after it had been Node Pruned and Node Bundled based on number of edges. These both show how Vis.js visualise networks and what the system looks like, and also show the benefit of processing networks on the server. Figure \ref{fig:1000-none} took 59924ms to load and Figure \ref{fig:1000-both} took 153ms to load, further highlighting the benefits of the system. All screenshots can be seen in Appendix \ref{chap:screenshots-all}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=12cm]{7/1000_1none}
+    \includegraphics[width=10cm]{7/1000_1none}
     \caption{This shows the system visualising a network with 1000 nodes without any processing taking place.}
     \label{fig:1000-none}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=12cm]{7/1000_4both}
+    \includegraphics[width=10cm]{7/1000_4both}
     \caption{This shows the same network as seen in Figure \ref{fig:1000-none}, but with node pruning and then node bundling based on number of edges applied to it.}
     \label{fig:1000-both}
 \end{figure}

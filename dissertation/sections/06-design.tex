@@ -26,18 +26,38 @@ The application that was hence to be created was to use:
 
 The back-end would consist of Django, the database it creates, the Tulip Python API (which is a wrapper around the Tulip C++ API) Web Wrapper, and the possible ability to connect to an external file host. This would enable it to be expandable to as many users as the host deemed necessary.
 
-The main Django app (and database it creates) would include the logic for the server. This involves setting up the project \texttt{urls} file, which maps each url to a view, then each \texttt{view} has to be created which dictates what is returned to the client, whether a simple text response that is rendered, or a JsonResponse that returns data to an API call. Additionally, both models and forms would have to be created, which define what objects can be stored in the database, and how they are uploaded to the server.
+\subsubsection{Django Code Structure}
 
-The Tulip Python API Web Wrapper (itself a REST API) would include a number of functions that can be called from the front-end of the app, and would take in any necessary parameters and pass them to the Tulip Python API. A REST API is ``the face of a web service, directly listening and responding to client requests'' \cite{masse2011rest}. The main purpose of this would be so that when a network gets loaded, instead of sending it directly to the front-end to be rendered, it is optimised in some way first and then sent to the client in a reduced form which will both mean the network will be transferred faster to the client and then visualised faster too. It was decided that there would be three ways to optimise the information that was to be sent:
+A typical Django project consists of a project and one or more applications. The core application contains all settings and configuration files. Each application is designed to contain an individual component of the system. This commonly consists of a set of urls, views, models and forms. 
+
+The web server for this project will consist of three applications. The core application will contain the settings and configuration, and a \texttt{urls} file that included both of the other applications views. The second application will include all functionality of the app relating to the Tulip Web Wrapper, and contain the model for a network, a form to upload a network, and code for bundling networks and converting networks to \texttt{json}. The final app would oversee the front-end of the system, containing templates for each web page and all JavaScript interfaces and libraries.
+
+\subsubsection{Django \texttt{urls}}
+
+A urls file routes requests from a user to the appropriate view, as well as allowing for reverse look-up to make writing templates neater \cite{django-docs-urls}. The urls for the core applications will route all requests that begun with \texttt{api/} to the Tulip Web Wrapper, and all other requests to the front-end application. 
+
+\subsubsection{Django \texttt{views}}
+
+A views file contains multiple views for a particular application. Each view gets called from a urls file after a web request is sent, and returns a web response \cite{django-docs-views}. They can return a HTML page to be rendered or a static JSON response, but also can contain logic for the application, interfacing with the database and user input. For this project, views would include showing all HTML pages, allowing users to upload and delete networks, and manipulate networks to be visualised.
+
+\subsubsection{Django \texttt{models} and \texttt{forms}}
+
+A models file defines the fields and behaviour of the data to be stored in the database. \cite{django-docs-models}. A forms file defines how the server accepts, processes and responds to data uploaded by a user \cite{django-docs-forms}. The only model and form planned for this project would be for a network.
+
+\subsubsection{Web Wrapper}
+
+The Tulip Python API Web Wrapper (itself a REST API) would include several functions that can be called from the front-end of the app, and would take in any necessary parameters and pass them to the Tulip Python API. A REST API is ``the face of a web service, directly listening and responding to client requests'' \cite{masse2011rest}. The main purpose of this would be so that when a network gets loaded, instead of sending it directly to the front-end to be rendered, it is optimised in some way first and then sent to the client in a reduced form which will both mean the network will be transferred faster to the client and then visualised faster too. It was decided that there would be three ways to optimise the information that was to be sent:
 \begin{enumerate}
     \item \textbf{Node pruning.} This is removing each node with one edge from the network.
     \item \textbf{Node bundling based on cliques.} This is based on selecting nodes whose neighbours are highly interconnected and results on the selected node having those neighbours bundled into it.
     \item \textbf{Node bundling by number of edges.} This is based on finding nodes with the most edges and bundling each node connected to it into it.
 \end{enumerate}
 
-The web wrapper could be made exactly to match what functions the front-end requires, but a far more elegant and reusable solution would be to make it as flexible and as full as possible, allowing developers to have as much freedom as possible, and not have their options limited by the web wrapper's API. For this project it is likely that the flexibility of the web wrapper would be prioritised over the number of features, given time constraints, although at a later date additional functions could be added with ease. Another advantage of creating a REST API is that it would mean that developers could make their own client, whether in JavaScript or in another language such as Java or Python.
+The web wrapper could be made exactly to match what functions the front-end requires, but a far more elegant and reusable solution would be to make it as flexible and as full as possible, allowing developers to have as much freedom as possible, and not have their options limited by the web wrapper's API. For this project, it is likely that the flexibility of the web wrapper would be prioritised over the number of features, given time constraints, although at a later date additional functions could be added with ease. Another advantage of creating a REST API is that it would mean that developers could make their own client, whether in JavaScript or in another language such as Java or Python.
 
-A necessity for the web wrapper would be that in the vast majority of (or all) cases that the system works better using the web wrapper than just passing the nodes directly to the client. There should be a large increase in performance benefits as the amount of data gets higher.
+A necessity for the web wrapper would be that in the clear majority of (or all) cases that the system works better using the web wrapper than just passing the nodes directly to the client. There should be a significant increase in performance benefits as the amount of data gets higher.
+
+\subsubsection{Hosting Data}
 
 Allowing the data to be hosted, either internally on a network drive within a business, or on an external data host such as Amazon's S3 \cite{amazons3}, would allow the user to store multiple massive networks on a low power and low storage machine. Although this was not implemented during the project (both given time constraints and the fact that external storage would have to be rented), it was kept in mind throughout development and the option to expand the application to hosted data remains and minimal development would be required in order to set this up.
 
@@ -45,13 +65,23 @@ Allowing the data to be hosted, either internally on a network drive within a bu
 
 The front-end main aim would be to: make calls to the Django back-end, get back a network, and render that network, along with additional functionality such as uploading new networks and deleting current networks. 
 
-Although it would be possible to have single JavaScript file that took in input from the web page, called the back-end and then received the result of that call and rendered it, it would be preferable for a number of reasons to split the JavaScript into a library and an interface. The benefits of splitting the data into a library and an interface include the fact that it makes the code far clearer, and that it means that other developers would be able to develop their own interface that calls the JavaScript library created for this project.
+\subsubsection{JavaScript Library}
+
+Although it would be possible to have single JavaScript file that took in input from the web page, called the back-end and then received the result of that call and rendered it, it would be preferable for many reasons to split the JavaScript into a library and an interface. The benefits of splitting the data into a library and an interface include the fact that it makes the code far clearer, and that it means that other developers would be able to develop their own interface that calls the JavaScript library created for this project.
+
+\subsubsection{Uploading Files}
 
 When the user wants to upload a file, the user will be given the choice of the file name, what file to upload, and whether it is a \texttt{.tlp} or an industry style \texttt{.json} file (based upon sample SAS data).
 
+\subsubsection{Visualisation Framework}
+
 The visualisation of the network would be done using either D3.js or Vis.js which were explored in the systematic review of visualisation software in Section \ref{sec:systematic-review}. They both have advantages and disadvantages that are discussed in Section \ref{sec:designdec}. 
 
+\subsubsection{Interface}
+
 Ideally, the interface would be polished, fully-featured and user tested - with the results of those tests implemented into design. However, given the amount of time allocated for the project, it was likely that a relatively simple interface would be created that exposed all necessary features that the back-end provided, but was not as refined as it could be with more development time.
+
+Wireframes were not created for the project as the process for development was completed in an iterative and agile style. This resulted in the system evolving throughout development as opposed to spending a block of time designing the interface at the start. Additionally, the user interface was not a primary focus of the project, thus major time was not spent on the design of the user interface.
 
 After defining the scope of the project, MoSCoW requirements (a prioritisation technique based on selecting what a project Must Have, Should Have, Could Have and Won't Have) were created that can be read in Appendix \ref{sec:moscow}.
 
@@ -82,7 +112,7 @@ It is critical to create an interface as it will let users interact with the bac
 
 \subsubsection{Fully fledged interface}
 
-Having a more full-featured and finished interface was not be required in for the project, as although it would make the system look better, all functionality would be displayed in the basic interface. Additionally, developers could easily make their own interface for the system, due to the fact that the JavaScript library would be kept entirely separate from the interface code.
+Having a more full-featured and finished interface was not be required in for the project, as although it would make the system look better, all functionality would be displayed in the basic interface. Additionally, developers could easily make their own interface for the system, since the JavaScript library would be kept entirely separate from the interface code.
 
 \subsubsection{Uploading files}
 
@@ -94,18 +124,18 @@ However, the fact that a conversion will be done on the SAS \texttt{.json} files
 
 The front-end will obviously need some way to render the networks it gets passed from the back-end and it was previously discussed above that either D3.js or Vis.js would be used. There are a number of advantages and disadvantages with each of the systems. D3.js is far more powerful and can do so much more in regards to visualisation of any sort of data than Vis.js, and on top of that is a lot more flexible, giving the developer far more control over what they create. However, these benefits come at a cost - that it is far more complicated to set up and work with. On the other hand, Vis.js is very simple to set up, and it takes no more than two minutes to run the sample code and let one visualise a network. 
 
-After extensive consideration it was decided that \textbf{Vis.js} would be used to visualise the networks created. This was because several days were spent trying to get D3.js to work as desired but a satisfactory implementation was not made, and the fact that Vis.js does not perform as well as D3.js will make it clearer to see if development done on the web endpoint has made an improvement on loading times.
+After extensive consideration, it was decided that \textbf{Vis.js} would be used to visualise the networks created. This was because several days were spent trying to get D3.js to work as desired but a satisfactory implementation was not made, and the fact that Vis.js does not perform as well as D3.js will make it clearer to see if development done on the web endpoint has made an improvement on loading times.
 
 \subsubsection{Creating a JavaScript Library}
 In a similar vein to making the web wrapper flexible, as opposed to just making an interface that has all of the JavaScript calling the web endpoint as part of it, it would be preferable to make a JavaScript library that would interface with the web endpoint, and then the client would call the JS library. This would make it far easier for developers to develop their own client using the library and the web endpoint, which could be hooked into their own data source easily.
 
 \section{Technical Infrastructure}
 
-Figure \ref{fig:techinfra} shows the infrastructure for the system.
+Figure \ref{fig:techinfra} shows the infrastructure for the system, based on the design decisions made in Section \ref{sec:designdec}.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\textwidth]{6/tech_infra_2}
+    \includegraphics[width=14cm]{6/tech_infra_2}
     \caption{The Technical Infrastructure of the whole system, based off the sketch in Appendix \ref{sec:tech_infra_app}}
     \label{fig:techinfra}
     % https://app.moqups.com/ExoBen/rb1XpbcrIp/view/page/ab730d97e?ui=0
@@ -113,20 +143,20 @@ Figure \ref{fig:techinfra} shows the infrastructure for the system.
 
 \subsection{Sample Data Flow}
 
-Based on the data flow shown in Figure \ref{fig:techinfra}, the below list was created to show an example of ahow a user could interact with the system, and what the result of those actions would be.
+Based on the data flow shown in Figure \ref{fig:techinfra}, the below list was created to show an example of how a user could interact with the system, and what the result of those actions would be.
 
 \begin{enumerate}
     \item The user selects a network to open from a list of all networks on the system and clicks on ``Open Network''.
     \item The ID of that network and the request for the network to be loaded is then caught by the JavaScript interface which calls the \texttt{loadGraph} function from the JavaScript library, passing the network ID and a success and error callback.
     \item The JavaScript library makes the appropriate AJAX call to the web endpoint, the Django server.
     \item The Django web application queries the database for the file to load.
-    \item If an external data host is set up, then at this point the database would find the location of where the network is stored as opposed to the path the the file locally.
+    \item If an external data host is set up, then at this point the database would find the location of where the network is stored as opposed to the path the file locally.
     \item Again, if an external data host is set up, the network would be returned to the application database.
     \item The network is then passed to the web endpoint.
     \item Once the network is loaded into Django, Django then calls a function from the Tulip Python API Web Wrapper and passes it the network. Tulip then loads in the network and then possibly reduces the network using any or all of: node pruning, node bundling based on cliques, or node bundling based on number of edges. Finally, it converts the network into a JsonResponse to be returned.
     \item After the network has been processed and minimised, it is then passed back to the web endpoint again.
     \item From here Django passes either success or failure back to the JavaScript client, with success including the network that is to be visualised, and with failure including a message as to why the network could not be sent back.
-    \item The JavaScript library checks if the interface passed in an error callback function. If not then either nothing is returned if the call failed and the network is returned if it is successful. If as error callback function is passed in then if the call failed then JavaScript interface throws an error explaining why the call failed. If everything was successful then Vis.js renders the network.
+    \item The JavaScript library checks if the interface passed in an error callback function. If not, then either nothing is returned if the call failed and the network is returned if it is successful. If as error callback function is passed in, then if the call failed then JavaScript interface throws an error explaining why the call failed. If everything was successful, then Vis.js renders the network.
     \item The user can then examine and explore the visualisation of the network.
 \end{enumerate}
 

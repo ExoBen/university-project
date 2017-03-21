@@ -3,13 +3,29 @@
 
 \chapter{Conclusion}
 
-This project aimed to research how existing software visualised networks, to do a systematic review of existing network visualisation software, and design, implement and evaluate software that could visualise networks within a browser in a performant way. 
+\section{Summary}
+
+This project aimed to research how existing software visualised networks, to do a systematic review of existing network visualisation software, and design, implement and evaluate software that could manipulate networks in a high-performance way and then visualise them within a browser. 
+
+The first half of the project included a review of the field, research on network visualisation and a systematic review. Initially, a review of the field of visualisation, covered in Chapter \ref{sec:review-of-field}, and an exploration of existing solutions to visualisation massive networks, covered in Chapter \ref{sec:research}, was done. This resulted in a solid foundation of knowledge to build on and uncovered techniques such as edge bundling, local edge lenses and node bundling - which was explored later on the project.
+
+The next phase was conducting a systematic review of several network visualisation packages found throughout the research phase of the project, which is covered in Chapter \ref{sec:systematic-review}. This involved creating a set of criteria and defining a strict process for how the software should be reviewed, and resulted in Tulip being declared as the most powerful network visualisation tool. Additionally, this review provided knowledge about how software systems visualise and handle massive networks.
+
+The second half of the project involved designing, implementing, testing evaluating a web application which was to manipulate networks on a server and then send the reduced network to a client to be visualised. The design stage involved confirming the scope of the project, making several design decisions and then designing a technical infrastructure based on the design decisions. This can be read in Chapter \ref{chap:design}.
+
+Implementation mostly included actually creating the web application, which is covered in Chapter \ref{chap:impl}. Several difficult decisions had to be made throughout implementation which are discussed throughout the chapter, and several algorithms were written to optimise and reduce the size of networks in order to make them more easily visualised, and to make load times quicker. Both the Tulip Web Wrapper and JavaScript were designed as APIs so developers could easily interface with them. Finally, the user interface and network visualisation was created, which involved using the CSS framework Bootstrap, and network visualisation framework Vis.js. 
+
+The final part of the project, testing and evaluation, was covered in Chapter \ref{chap:testing-eval}. It begun by writing unit tests and integrations tests for the back-end of the server. These confirmed that each individual component worked as expected, and that all components worked together as they should. Finally, a performance evaluation was conducted on the system. Several optimisation algorithms were evaluated, and using both node pruning and then node bundling based on number of edges resulted in a 99.997\% reduction in load times for a network of approximately 1000 nodes. 
 
 \section{Recommendations}
 
 As a result of the completed research and development of a prototype for this project, and despite the fact that the application developed is some way from being deployable to the public, there are several things I learnt that I feel SAS might benefit from using. Firstly, in regards to the initial research done and then the systematic review conducted, the most valuable piece of information learnt was that the best way to improve the visualisation of a network is to use node bundling, and that the best way to improve performance is to ensure that the server reduces the network as much as possible before sending it to the client to be visualised. These ideas were reaffirmed by the implementation and evaluation of the visualisation system created for this project.
 
-\section{Future Ideas}
+\section{Personal Reflections}
+
+This project has given me great insight into the field of visualisation. Throughout it, I have developed several new skills, such as API design, and the importance and difficulties of conducting a systematic review. Additionally, my time management and task allocation skills have improved throughout the project, and I learnt a lot about self-directed projects.
+
+\section{Future Work}
 \label{sec:further_ideas}
 
 \subsection{Supporting Big Data}
@@ -18,7 +34,7 @@ A possible way that the application could be extended would be to allow it to su
 
 \subsection{External Data Host}
 
-Tied into supporting Big Data, another way the application could be improved is by allowing users of the system to link external data hosts to the database. This would enable users to link their own data host (whether stored locally on company wide network storage or externally on Amazon S3 \cite{amazons3} or Microsoft Azure Storage \cite{msftazure}) to the application. Hence, all of a companies data could be visualised with relative ease.
+Tied into supporting Big Data, another way the application could be improved is by allowing users of the system to link external data hosts to the database. This would enable users to link their own data host (whether stored locally on company wide network storage or externally on Amazon S3 \cite{amazons3} or Microsoft Azure Storage \cite{msftazure}) to the application. Hence, all of a company's data could be visualised with relative ease.
 
 \subsection{More Interactive Visualisation}
 
@@ -27,5 +43,13 @@ A way to further limit the data lost when minimising the amount of data sent acr
 \subsection{Information Before Rendering}
 
 As the amount of time to process a network on the server is insignificant next to how long it takes to render, a possible feature would be, upon selecting parameters that the network is to be loaded using (what network and what bundling algorithms are to be applied) then a request is sent to the server and a number of nodes, edges, bytes and predicted time to render is returned. This would help users in understanding what algorithms are having a big impact on the dataset provided, and ensure that users are warned when loading times would be large.
+
+\subsection{JavaScript Testing}
+
+JavaScript logic is far more difficult to test, with JavaScript code being primarily based on DOM manipulation, reacting to user input and AJAX calls. However, should the project be developed further, and especially if it were to go into production for a system, then testing the JavaScript logic would be critical.
+
+\subsection{Tulip Plug-ins}
+
+Tulip supports many plug-ins created by third party developers. If users could upload their own plug-in and select how it would interact with the APIs then companies could customise each part of the Tulip Web Wrapper to suit their own needs. This would not be difficult to implement to due how modular the system created is, and would significantly increase the flexibility and capabilities of the system.
 
 \end{document}
