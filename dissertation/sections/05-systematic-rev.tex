@@ -197,7 +197,7 @@ Despite the aforementioned challenges, a lot of useful information was gained th
     \item Networks can be multivariate
 \end{itemize}
 
-However, it also rendered networks significantly faster than the other software, supported displaying massive networks in many ways (such as advanced layout options and node/edge bundling), could visualise dynamic information and the software makes it very easy to generate networks which made testing easier and more informative. 
+However, it also rendered networks significantly faster than the other software, supported displaying massive networks in many ways (such as advanced layout options, node and edge bundling), could visualise dynamic information and the software makes it very easy to generate networks which made testing easier and more informative. 
 
 Additionally, Tulip has a full C++ API, and a full Python wrapper around the C++ API, meaning one can interface with it fully in either of the two languages, and a very simple file format, \texttt{.tlp} (of which more information can be found on their website \cite{tuliptlp}), which means that networks can easily be created by hand or converted to and from its format to other formats such as JSON.
 
@@ -211,13 +211,13 @@ One possible choice would be to write several different programs in JavaScript t
 
 Upon writing these algorithms, they would be tested:
 \begin{itemize}
-    \item In isolation - what effect that function has on a networkin regards to visualisability and render tiems
-    \item In conjunction with other algorithms - if combining certain algorithms together leads to a greater improvement
-    \item With a large variety of different sizes of networks - if the algorithm hits a bottleneck after the network contains more than a certain number of nodes, or continues to perform as well as expected.
-    \item With a variety of sparse or highly interconnected networks - some algorithms, for example bundling, may work particularly well with highly interconnected networks, and analysing performance for different levels of connectedness could reveal when it is most often best to use a certain algorithm.
+    \item \textbf{In isolation.} What effect that function has on a network in regards to visualisation quality and render times
+    \item \textbf{In conjunction with other algorithms.} If combining certain algorithms together leads to a greater improvement
+    \item\textbf{ With a large variety of different sizes of networks.} If the algorithm hits a bottleneck after the network contains more than a certain number of nodes, or continues to perform as well as expected.
+    \item \textbf{With a variety of sparse or highly interconnected networks.} Some algorithms, for example bundling, may work particularly well with highly interconnected networks, and analysing performance for different levels of connectedness could reveal when it is most often best to use a certain algorithm.
 \end{itemize}
 
-For each of the above tests, each run would have it's performance evaluated (from time taken to how much processing power it required and the amount of RAM used) and then what effect it had on the end visualisation (if spending the time to run the algorithm gave any minor or notable benefit to the visualisability of the network).
+For each of the above tests, each run would have it's performance evaluated (from time taken to how much processing power it required and the amount of RAM used) and then what effect it had on the end visualisation (if spending the time to run the algorithm gave any minor or notable benefit to the visualisation of the network).
 
 \subsection{Evaluation of existing systems}
 

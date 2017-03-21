@@ -57,15 +57,15 @@ This links in to another challenge faced - if a large amount of backing storage 
 
 \subsection{Bundling a network}
 
-It had been decided that the three algorithms that were to be available to apply were Node Pruning, Node Bundling based on cliques and Node Bundling based on number of edges. Details of how these algorithms worked can be found below.
+It had been decided that the three algorithms that were to be available to apply were node pruning, node bundling based on cliques and node bundling based on number of edges. Details of how these algorithms worked can be found below.
 
 \subsubsection{Node Pruning}
 \label{sec:impl-node-prun}
 
-Node Pruning involves finding each node with only one edge and removing it from the network. Additionally, it is possible to include information about how many nodes have been bundled into each remaining node. This means less information is lost as a user can clearly see how many nodes with one edge were connected to each node that has been pruned. The algorithm for Node Pruning is outlined in Algorithm \ref{alg:node-pruning}.
+Node pruning involves finding each node with only one edge and removing it from the network. Additionally, it is possible to include information about how many nodes have been bundled into each remaining node. This means less information is lost as a user can clearly see how many nodes with one edge were connected to each node that has been pruned. The algorithm for node pruning is outlined in Algorithm \ref{alg:node-pruning}.
 
 \begin{algorithm}[H]
-\caption{Defines the process for Node Pruning}
+\caption{Defines the process for node pruning}
 \label{alg:node-pruning}
 \begin{algorithmic}
 \STATE{G = (V,E)} \COMMENT{a graph containing vertices and edges}
@@ -80,13 +80,13 @@ Node Pruning involves finding each node with only one edge and removing it from 
 \end{algorithmic}
 \end{algorithm}
 
-\subsubsection{Node Bundling based on cliques}
+\subsubsection{Node bundling based on cliques}
 \label{sec:impl-node-clique}
 
-This is calculated by using the \texttt{clusteringCoefficient} algorithm provided by Tulip \cite{tulip-clustering-coeff-doc}. Each node is assigned a value between 0 and 1, based on how close to a clique its neighbours are. For each node with a value near 1, an operation is done to bundle that node, shown below. It was decided that a \texttt{clusteringCoefficient} of greater than 0.8 was required for nodes to be bundled after several networks were tested against and less than that resulted in too much information being lost. The algorithm for Node Bundling based on cliques presented in Algorithm \ref{alg:node-bundling-clique}.
+This is calculated by using the \texttt{clusteringCoefficient} algorithm provided by Tulip \cite{tulip-clustering-coeff-doc}. Each node is assigned a value between 0 and 1, based on how close to a clique its neighbours are. For each node with a value near 1, an operation is done to bundle that node, shown below. It was decided that a \texttt{clusteringCoefficient} of greater than 0.8 was required for nodes to be bundled after several networks were tested against and less than that resulted in too much information being lost. The algorithm for node bundling based on cliques presented in Algorithm \ref{alg:node-bundling-clique}.
 
 \begin{algorithm}[H]
-\caption{Defines the process for Node Bundling based on cliques}
+\caption{Defines the process for node bundling based on cliques}
 \label{alg:node-bundling-clique}
 \begin{algorithmic}
 \STATE{assign each node a clustering coefficient} \COMMENT{using Tulip's \texttt{tlp.clusteringCoefficient}}
@@ -104,12 +104,12 @@ This is calculated by using the \texttt{clusteringCoefficient} algorithm provide
 \end{algorithmic}
 \end{algorithm}
 
-\subsubsection{Node Bundling based on number of edges}
+\subsubsection{Node bundling based on number of edges}
 
-This is done by initially calculating the mean number of edges in the network. Then, any node that has greater than two times the mean number of edges is bundled, as explained below. Two times the mean was chosen after many sample networks were looked at based on data provided by SAS and this number seemed to be optimal in reducing the amount of data that needed to be passed to the client. Lowering the number resulted in too much data resulted in the visualisation loses meaning and increasing it meant there was little or no processing done in most cases. The algorithm for Node Bundling based on number of edges is outlined in Algorithm \ref{alg:node-bundline-edge}.
+This is done by initially calculating the mean number of edges in the network. Then, any node that has greater than two times the mean number of edges is bundled, as explained below. Two times the mean was chosen after many sample networks were looked at based on data provided by SAS and this number seemed to be optimal in reducing the amount of data that needed to be passed to the client. Lowering the number resulted in too much data resulted in the visualisation loses meaning and increasing it meant there was little or no processing done in most cases. The algorithm for node bundling based on number of edges is outlined in Algorithm \ref{alg:node-bundline-edge}.
 
 \begin{algorithm}[H]
-\caption{Defines the process for Node Bundling based on number of edges}
+\caption{Defines the process for node bundling based on number of edges}
 \label{alg:node-bundline-edge}
 \begin{algorithmic}
 \STATE{G = (V,E)} \COMMENT{a graph containing vertices and edges}
@@ -293,15 +293,15 @@ Figure \ref{fig:1000-none} and \ref{fig:1000-both} show the final product render
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=15cm]{7/1000_1none}
+    \includegraphics[width=12cm]{7/1000_1none}
     \caption{This shows the system visualising a network with 1000 nodes without any processing taking place.}
     \label{fig:1000-none}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=15cm]{7/1000_4both}
-    \caption{This shows the same network as seen in Figure \ref{fig:1000-none}, but with Node Pruning and then Node Bundling based on number of edges applied to it.}
+    \includegraphics[width=12cm]{7/1000_4both}
+    \caption{This shows the same network as seen in Figure \ref{fig:1000-none}, but with node pruning and then node bundling based on number of edges applied to it.}
     \label{fig:1000-both}
 \end{figure}
 

@@ -12,11 +12,11 @@ Unit tests have the purpose of testing each individual component of the applicat
 
 \subsubsection{Conversion from \texttt{.tlp} to \texttt{.json}}
 
-To confirm that the conversion from a Tulip graph to a JSON object was successful, tests were created for several different networks. The test set up included loading three network from a file into memory using Tulip's \texttt{tlp.loadGraph()}. Then, on each of the networks, the conversion code was run and it was confirmed that the number of nodes and edges was correct, with the function \texttt{TlpJsonConverter.tlp\_to\_json()}.
+To confirm that the conversion from a Tulip network to a JSON object was successful, tests were created for several different networks. The test set up included loading three network from a file into memory using Tulip's \texttt{tlp.loadGraph()}. Then, on each of the networks, the conversion code was run and it was confirmed that the number of nodes and edges was correct, with the function \texttt{TlpJsonConverter.tlp\_to\_json()}.
 
 \subsubsection{Confirming that each bundling algorithms work}
 
-To test each algorithm initially three different networks were loaded into the system using the Tulip function \texttt{tlp.loadGraph()}. One of these networks would be used to test Node Bundling based on cliques, since it was a very interconnected network. The other two networks would be used to test Node Pruning and Node Bundling based on number of edges, being far more sparsely connected networks. Each test consisted of checking the number of nodes upon loading in the network, applying the appropriate operation that was being tested for, and then confirming that the number of nodes and edges returned from the function was as expected.
+To test each algorithm initially three different networks were loaded into the system using the Tulip function \texttt{tlp.loadGraph()}. One of these networks would be used to test node bundling based on cliques, since it was a very interconnected network. The other two networks would be used to test node pruning and node bundling based on number of edges, being far more sparsely connected networks. Each test consisted of checking the number of nodes upon loading in the network, applying the appropriate operation that was being tested for, and then confirming that the number of nodes and edges returned from the function was as expected.
 
 \subsubsection{Successful page responses}
 
@@ -30,19 +30,24 @@ The integration tests for the Tulip Web Wrapper involved creating a network in t
 
 \section{User Evaluation}
 
-Not appropriate as the main goal was to optimise performance and a very basic interface was created. However, on further development of this project, a full user evaluation would be conducted.
+As stated in Chapter \ref{chap:motiv}, during background research for the project, it was found that the majority of what little there was on massive network visualisation focused on the interface design and quality of interaction between a user and the system. It was hence decided that the aim of this project would be to create a system that enabled users to visualise massive networks within a browser whilst specifically focusing on the performance of the system. This was completed by applying one (or several) algorithm to the network in order to: reduce its size, speed up render times and improve network transfer rates. An additional goal was to ensure that the Tulip Python API Web Endpoint and the JavaScript library were as flexible as possible, to ensure the easy development of future interfaces.
 
-TODO - make this two paragraphs
+The interface made for this project was kept simple to allow for maximal development time to be spent optimising and testing the web wrapper (it can be seen in Figure \ref{fig:topbar}). Additionally, the JavaScript network visualisation framework used (Vis.js) was chosen due to it's simplicity, and it is known to be less flexible than other choices, such as D3.js - and hence if interface design had been a priority then another framework would have been chosen. 
+
+Given all of the above facts, it was decided that a user evaluation was not appropriate for the project, as significant development time was not spent on the interface. The focus of the project was to make the server and client as high performing as possible. The performance is evaluated in Section \ref{sec:perf-eval}.
 
 \section{Performance Evaluation}
+\label{sec:perf-eval}
 
 \subsection{Aim}
 
-The goal of the performance evaluation was to thoroughly test the system that had been created. This would involve loading several different networks into the system, and then recording the performance of the system when different algorithms are used and comparing the results, providing a quantative evaluation.
+The goal of the performance evaluation was to thoroughly test the system that had been created. This would involve loading several different networks into the system, and then recording the performance of the system when different algorithms are used and comparing the results, providing a quantitative evaluation.
 
 \subsection{Methodology}
 
-As SAS had provided four different networks of varying sizes, these would be used evaluate the system. The networks had approximately thirty, two hundred, one thousand and three thousand nodes respectively, and each had approximately the same number of edges as nodes. Each of these networks would first be uploaded into the system and then rendered with the following parameters: no algorithm set, node pruning, node bundling based on number of edges and both node pruning then node bundling based on number of edges.
+As SAS had provided four different networks of varying sizes, these would be used evaluate the system. The networks had approximately thirty, two hundred, one thousand and three thousand nodes respectively, and each had approximately the same number of edges as nodes. Each of these networks would first be uploaded into the system and then rendered with the following parameters: no algorithm set, node pruning, node bundling based on number of edges and both node pruning then node bundling based on number of edges. 
+
+It is worth noting that node bundling based on cliques was not tested as it had no effect on the data provided by SAS due to the tree-like structure of the data.
 
 The runs were conducted on the same machine, one by one, while no other application was running apart from the Django development server which hosted the site. Each run of the evaluation was done five times so a reliable average could be taken. For each run, the following information was collected:
 
@@ -52,11 +57,11 @@ The runs were conducted on the same machine, one by one, while no other applicat
         \item \textbf{The time taken between the user clicking `Load' and the client getting an AJAX response back.} This was recorded to discover how long the JavaScript took to respond, call the server using AJAX, and get a response - essentially recording the time spend processing the network and sending it across the network.
         \item \textbf{The time spent processing the data got from the AJAX call and formatting it for Vis.js.} This was recorded in order to find out how long it took for JavaScript to process the data and format it appropriately for Vis.js, which included adding all of the nodes and edges to a list and then setting properties (such as size, shape and colour) appropriately.
         \item \textbf{The time spent creating the Vis.js network.} How long it took to create the network in memory from the list of nodes and edges, and any \texttt{options} parameters set.
-        \item \textbf{The time spent rendering the network.} How long it took for the visualisation to display. TODO: maybe talk about how vis.js works
+        \item \textbf{The time spent rendering the network.} How long it took for the visualisation to display. This involves Vis.js creating all of the nodes, positioning them in a circle, and then applying the selected physics model and waiting for the network to settle before it is displayed.
     \end{itemize}
     \item Server-Side:
     \begin{itemize}
-        \item \textbf{The time taken to load in the requested \texttt{.tlp} file from the database into Tulip.} This represents how long it took for the network to be located in the database, loaded in to memory and then loaded in to Tulip as a Graph object.
+        \item \textbf{The time taken to load in the requested \texttt{.tlp} file from the database into Tulip.} This represents how long it took for the network to be located in the database, loaded in to memory and then loaded in to Tulip as a network object.
         \item \textbf{How long pruning the network took.} If applicable, the length of time taken to loop over the network and prune it as appropriate, and return both the modified network and a list containing each node that has been pruned as well as noting how many nodes have been removed from it.
         \item \textbf{How long node bundling based on the number of edges took.}  If applicable, the time taken to decide which nodes should be bundled and to then bundle them, whilst tracking how many nodes have been removed from each bundled node.
     \end{itemize}
@@ -77,11 +82,11 @@ The runs were conducted on the same machine, one by one, while no other applicat
 
 The following four tables show the effect of different algorithms on different networks. Each table shows the total time taken to load, manipulate and render the network, and how much data was sent. Table \ref{table:30-nodes} shows the results for a network with thirty nodes, Table \ref{table:200-nodes} shows the results for two hundred nodes, Table \ref{table:1000-nodes} shows the results for one thousand nodes and Table \ref{table:3000-nodes} shows the results for three thousand nodes. 
 
-Each percentage in the following sections is created by comparing the time or packet size of the stated algorithm(s) - which are either Node Pruning, Node Bundling based on number of edges, or both - against not applying any algorithm.
+Each percentage in the following sections is created by comparing the time or packet size of the stated algorithm(s) - which are either node pruning, node bundling based on number of edges, or both - against not applying any algorithm.
 
 \subsubsection{30 Nodes}
 
-For a network with approximately 30 nodes, Node Pruning resulted in a 50\% decrease in total time to visualise, and 36\% decrease in packet size. Node Bundling based on the number of edges resulted in a 24\% decrease in time to generate and render, and 36\% decrease in packet size. Applying both Node Pruning and Node Bundling based on number of edges resulted in a 63\% decrease in amount of time to visualise and a 40\% decrease in packet size. Node Pruning is clearly more effective than Node Bundling, providing lower packet sizes and faster network loading times.
+For a network with approximately 30 nodes, node pruning resulted in a 50\% decrease in total time to visualise, and 36\% decrease in packet size. node bundling based on the number of edges resulted in a 24\% decrease in time to generate and render, and 36\% decrease in packet size. Applying both node pruning and node bundling based on number of edges resulted in a 63\% decrease in amount of time to visualise and a 40\% decrease in packet size. Node pruning is clearly more effective than node bundling, providing lower packet sizes and faster network loading times.
 
 \begin{table}[H]
 \centering
@@ -97,7 +102,7 @@ Packet Size (bytes) & 1300             & 827              & 1012             & 7
 
 \subsubsection{200 Nodes}
 
-For approximately 200 nodes, Node Pruning provides a 91\% decrease in total load time and a 49\% decrease in packet size. For Node Bundling based on number of edges, the decrease in load time was 9\% and the packet size decreased by 20\%. Applying Node Pruning followed by Node Bundling based on number of nodes resulted in a 98\% decrease in loading times and a 70\% decrease in packet size. Node Pruning is again more effective at lowering the amount of data that needs to be transferred and lowering the amount of time to manipulate and render the network.
+For approximately 200 nodes, node pruning provides a 91\% decrease in total load time and a 49\% decrease in packet size. For node bundling based on number of edges, the decrease in load time was 9\% and the packet size decreased by 20\%. Applying node pruning followed by node bundling based on number of nodes resulted in a 98\% decrease in loading times and a 70\% decrease in packet size. node pruning is again more effective at lowering the amount of data that needs to be transferred and lowering the amount of time to manipulate and render the network.
 
 \begin{table}[H]
 \centering
@@ -113,7 +118,7 @@ Packet Size (bytes) & 7600                & 3900              & 6100            
 
 \subsubsection{1000 Nodes}
 
-When the network with approximately 1000 nodes was used, similar results to above were seen. There was an 84\% decrease in loading times and 51\% decrease in packet size for Node Pruning, and a 36\% decrease in loading times and a 29\% decrease in packet size. When applying both Node Pruning and then Node Bundling based on the number of edges, the decrease in loading times was 99.997\% and the packet size was reduced by 70\%. Again, Node Pruning was shown to be more effective than Node Bundling based on number of edges, but additionally there was a massive decrease in loading times when applying both algorithms. It is hypothesised that the reason such an increase in performance was seen was due to the structure of the network lending itself well to being Node Pruned and then Node Bundled based on number of edges, and hence there was a massive reduction in nodes and edges to be rendered.
+When the network with approximately 1000 nodes was used, similar results to above were seen. There was an 84\% decrease in loading times and 51\% decrease in packet size for node pruning, and a 36\% decrease in loading times and a 29\% decrease in packet size. When applying both node pruning and then node bundling based on the number of edges, the decrease in loading times was 99.997\% and the packet size was reduced by 70\%. Again, node pruning was shown to be more effective than node bundling based on number of edges, but additionally there was a massive decrease in loading times when applying both algorithms. It is hypothesised that the reason such an increase in performance was seen was due to the structure of the network lending itself well to being Node Pruned and then Node Bundled based on number of edges, and hence there was a massive reduction in nodes and edges to be rendered.
 
 \begin{table}[H]
 \centering
@@ -129,7 +134,7 @@ Packet Size (bytes) & 41400                & 20300               & 29400        
 
 \subsubsection{3000 Nodes}
 
-For the largest network, with approximately 3000 nodes, the following results were obtained. Loading times decreased by 81\% and packet size decreased by 44\% for Node Pruning. For Node Bundling based on number of edges, a decrease of 48\% was seen for loading times and a 27\% decrease was seen for packet size. When applying Node Pruning followed by Node Bundling based on number of edges the decrease in total time was 94\%, and the decrease of packet size was 72\%. Similar to above, a performance increase was most notable for Node Pruning. 
+For the largest network, with approximately 3000 nodes, the following results were obtained. Loading times decreased by 81\% and packet size decreased by 44\% for node pruning. For node bundling based on number of edges, a decrease of 48\% was seen for loading times and a 27\% decrease was seen for packet size. When applying node pruning followed by node bundling based on number of edges the decrease in total time was 94\%, and the decrease of packet size was 72\%. Similar to above, a performance increase was most notable for node pruning. 
 
 \begin{table}[H]
 \centering
@@ -144,7 +149,7 @@ Packet Size (bytes) & 114000                 & 63500                & 83500     
 \label{table:3000-nodes}
 \end{table}
 
-Figure \ref{fig:loadTimes} shows the total load times for each of the different networks and each of the different algorithms. It can clearly be seen that Node Bundling based on number of edges is less effective than Node Pruning for all network sizes, and applying both algorithms is more effective. It is interesting to note that for different networks the amount of benefit varies. It is hypothesised that this is due to the shape of the network, with networks containing a lot of nodes with a single edge benefiting greatly from Node Pruning, and networks with single nodes connected to many other nodes benefiting when Node Bundling based on number of edges. It is worth noting that the scale on the y-axis is logarithmic.
+Figure \ref{fig:loadTimes} shows the total load times for each of the different networks and each of the different algorithms. It can clearly be seen that node bundling based on number of edges is less effective than node pruning for all network sizes, and applying both algorithms is more effective. It is interesting to note that for different networks the amount of benefit varies. It is hypothesised that this is due to the structure of the network, with networks containing a lot of nodes with a single edge benefiting greatly from node pruning, and networks with single nodes connected to many other nodes benefiting when node bundling based on number of edges. It is worth noting that the scale on the y-axis is logarithmic.
 
 \begin{figure}[H]
     \centering
@@ -153,7 +158,7 @@ Figure \ref{fig:loadTimes} shows the total load times for each of the different 
     \label{fig:loadTimes}
 \end{figure}
 
-Figure \ref{fig:packetSize} shows a steady decrease in packet size from no algorithm being applied, to Node Bundling based on number of edges, to Node Pruning, to applying Node Pruning then Node Bundling based on number of edges. It is again worth noting that the y-axis has a logarithmic scale.
+Figure \ref{fig:packetSize} shows a steady decrease in packet size from no algorithm being applied, to node bundling based on number of edges, to node pruning, to applying node pruning then node bundling based on number of edges. It is again worth noting that the y-axis has a logarithmic scale.
 
 \begin{figure}[H]
     \centering

@@ -30,9 +30,9 @@ The main Django app (and database it creates) would include the logic for the se
 
 The Tulip Python API Web Wrapper (itself a REST API) would include a number of functions that can be called from the front-end of the app, and would take in any necessary parameters and pass them to the Tulip Python API. A REST API is ``the face of a web service, directly listening and responding to client requests'' \cite{masse2011rest}. The main purpose of this would be so that when a network gets loaded, instead of sending it directly to the front-end to be rendered, it is optimised in some way first and then sent to the client in a reduced form which will both mean the network will be transferred faster to the client and then visualised faster too. It was decided that there would be three ways to optimise the information that was to be sent:
 \begin{enumerate}
-    \item \textbf{Node Pruning.} This is removing each node with one edge from the network.
-    \item \textbf{Node Bundling based on cliques.} This is based on selecting nodes whose neighbours are highly interconnected and results on the selected node having those neighbours bundled into it.
-    \item \textbf{Node Bundling by number of edges.} This is based on finding nodes with the most edges and bundling each node connected to it into it.
+    \item \textbf{Node pruning.} This is removing each node with one edge from the network.
+    \item \textbf{Node bundling based on cliques.} This is based on selecting nodes whose neighbours are highly interconnected and results on the selected node having those neighbours bundled into it.
+    \item \textbf{Node bundling by number of edges.} This is based on finding nodes with the most edges and bundling each node connected to it into it.
 \end{enumerate}
 
 The web wrapper could be made exactly to match what functions the front-end requires, but a far more elegant and reusable solution would be to make it as flexible and as full as possible, allowing developers to have as much freedom as possible, and not have their options limited by the web wrapper's API. For this project it is likely that the flexibility of the web wrapper would be prioritised over the number of features, given time constraints, although at a later date additional functions could be added with ease. Another advantage of creating a REST API is that it would mean that developers could make their own client, whether in JavaScript or in another language such as Java or Python.
@@ -123,8 +123,8 @@ Based on the data flow shown in Figure \ref{fig:techinfra}, the below list was c
     \item If an external data host is set up, then at this point the database would find the location of where the network is stored as opposed to the path the the file locally.
     \item Again, if an external data host is set up, the network would be returned to the application database.
     \item The network is then passed to the web endpoint.
-    \item Once the network is loaded into Django, it then calls a function from the Tulip Python API Web Wrapper while passing in the network, with the network is loaded from a \texttt{.tlp} and then TODO: describe what happens next.
-    \item After the network has been processed and minimised, it is then passed back to Django again. There are three different ways that the network can be processed, stated in Section \ref{sec:overview-backend}.
+    \item Once the network is loaded into Django, Django then calls a function from the Tulip Python API Web Wrapper and passes it the network. Tulip then loads in the network and then possibly reduces the network using any or all of: node pruning, node bundling based on cliques, or node bundling based on number of edges. Finally, it converts the network into a JsonResponse to be returned.
+    \item After the network has been processed and minimised, it is then passed back to the web endpoint again.
     \item From here Django passes either success or failure back to the JavaScript client, with success including the network that is to be visualised, and with failure including a message as to why the network could not be sent back.
     \item The JavaScript library checks if the interface passed in an error callback function. If not then either nothing is returned if the call failed and the network is returned if it is successful. If as error callback function is passed in then if the call failed then JavaScript interface throws an error explaining why the call failed. If everything was successful then Vis.js renders the network.
     \item The user can then examine and explore the visualisation of the network.
