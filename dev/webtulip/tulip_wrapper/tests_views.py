@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.test import Client
 from django.core.urlresolvers import reverse
+from django.conf import settings
 from tulip import tlp
 
 from .models import Network
@@ -9,11 +10,15 @@ from .network_optimiser import NetworkOptimiser
 from .tlp_json_converter import TlpJsonConverter
 
 import json
+import os
+from shutil import copyfile
 
 class ViewsTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.testNetwork = Network.objects.create(network_name="sas_30_test", network_file="../tulip_wrapper/tests/sas_30.tlp", network_type="TLP");
+
+        copyfile("tulip_wrapper/tests/sas_30.tlp", os.path.join(settings.MEDIA_ROOT, "networks", "sas_30.tlp"))
+        self.testNetwork = Network.objects.create(network_name="sas_30_test", network_file="networks/sas_30.tlp", network_type="TLP");
 
     def test_base(self):
         response = self.client.get(reverse('loadGraph'), {'network_name': 'sas_30_test'})
@@ -57,8 +62,6 @@ class ViewsTest(TestCase):
 
     def test_delete(self):
         response = self.client.post(reverse('deleteGraph'), {'network_name': 'sas_30_test'})
-        # still not working - CSRF issue?
-        print(response)
         self.assertEqual(200, response.status_code, 'Bad HTTP Response')
         dict_response = json.loads(response.content.decode('utf-8'))
         self.assertEqual(True, dict_response["success"], 'deleteFailed')

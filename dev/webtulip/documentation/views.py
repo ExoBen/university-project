@@ -17,7 +17,6 @@ def home(request):
 
 def upload(request):
     if request.method == 'POST':
-        print(request)
         form = NetworkForm(request.POST, request.FILES)
         if form.is_valid():
             network_model = form.save()
