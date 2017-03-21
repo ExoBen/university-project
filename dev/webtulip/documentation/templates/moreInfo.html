@@ -11,7 +11,11 @@
 
 {% block content %}
 
-Info be here.
+Node Pruning: Node pruning involves finding each node with only one edge and removing it from the network.  Additionally,it is possible to include information about how many nodes have been bundled into each remaining node.  Thismeans less information is lost as a user can clearly see how many nodes with one edge were connected to eachnode that has been pruned.
+
+Node bundling based on cliques: this is calculated by using theclusteringCoefficientalgorithm provided by Tulip. Each node is as-signed a value between 0 and 1, based on how close to a clique its neighbours are. For each node with a value near1, an operation is done to bundle that node, shown below.  It was decided that aclusteringCoefficientof greater than 0.8 was required for nodes to be bundled after several networks were tested against and less thanthat resulted in too much information being lost. 
+
+Node bundling based on number of edges: This is done by initially calculating the mean number of edges in the network. Then, any node that has greaterthan two times the mean number of edges is bundled, as explained below. Two times the mean was chosen aftermany sample networks were looked at based on data provided by SAS and this number seemed to be optimal inreducing the amount of data that needed to be passed to the client.  Lowering the number resulted in too muchdata resulted in the visualisation loses meaning and increasing it meant there was little or no processing done inmost cases
 
 {% endblock %}
 
